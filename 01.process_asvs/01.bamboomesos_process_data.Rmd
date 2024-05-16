@@ -677,7 +677,7 @@ sample_data(ps.clean.decontam)$lib_size_clean <- sample_sums(ps.clean.decontam)
 samdf.clean <- data.frame(ps.clean.decontam@sam_data)
 #write.csv(samdf.clean,file="samdf.clean.csv")
 
-samdf.low <- subset(samdf.clean,lib_size_clean<10000)
+samdf.low <- subset(samdf.clean,lib_size_clean<20000)
 
 ggplot(data=samdf.low, aes(x=Longer_name, y=lib_size_clean, color=Mesocosm_type))+
   geom_point()+
@@ -694,9 +694,10 @@ df2$Index <- seq(nrow(df2))
 ggplot(data=df2, aes(x=Index, y=libsize))+
   geom_point()
 
-head(df2$libsize) 
+head(df2$libsize,n=25) 
 tail(df2$libsize,n=50)
 
+##higher ones
 ggplot(data=df2, aes(x=Index, y=libsize))+
   geom_point()+
   ylim(120000,270000)+
@@ -704,26 +705,31 @@ ggplot(data=df2, aes(x=Index, y=libsize))+
 #there's definitely a natural break between 132086 and 144974
 #10% of that would be 13,208
 
-ps.neg1 <- subset_samples(ps,Sample_type=="Negative")
-ps.neg <- prune_taxa(taxa_sums(ps.neg1)>0,ps.neg1)
-ps.neg
-taxa_sums(ps.neg)
-sample_sums(ps.neg)
+##lower ones
+ggplot(data=df2, aes(x=Index, y=libsize))+
+  geom_point()+
+  ylim(0,50000)+
+  xlim(0,50)
+##pretty obvious natural break ~47,000 but obviously I'm not going to sacrifice that many samples. It looks like another slight break ~11k
+#11396 more specifically
 
 set.seed(2939)
 
+ps.rare <- rarefy_even_depth(ps.clean.decontam,sample.size=11396,replace=FALSE)
+#saveRDS(ps.rare,"bamboomesos_ps.lulu.clean.decontam.rare11k.rds")
 
-otu.trim.sub <- data.frame(ps.trim.sub@otu_table)
+##removing the same samples from the other ps object for continuity with comparisons
 
-total <- rowSums(otu.trim.sub)
-fewer <- subset(total, total <9200)
-fewer
 
-ps.trim.rare <- rarefy_even_depth(ps.trim.sub,sample.size=9200,replace=FALSE)
-# 1 otus were removed because they are no longer 
-# present in any sample after random subsampling
+##just negative control checks for curiosity
+# ps.neg1 <- subset_samples(ps,Sample_type=="Negative")
+# ps.neg <- prune_taxa(taxa_sums(ps.neg1)>0,ps.neg1)
+# ps.neg
+# taxa_sums(ps.neg)
+# sample_sums(ps.neg)
+# 
 
-#saveRDS(ps.trim.rare,"ps.clean.trim.rare9200.rds")
+
 ```
 
 ```{r}
