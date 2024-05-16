@@ -40,6 +40,11 @@ library("bestNormalize")
 setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Summer2023_REU/Bamboo_mesos/02.diversity")
 
 ps.clean <- readRDS("../01.process_asvs/bamboomesos_ps.lulu.clean.decontam.less.rds")
+<<<<<<< HEAD
+=======
+ps.clean <- readRDS("../01.process_asvs/bamboomesos_ps.lulu.clean.decontam.rare11k.rds")
+
+>>>>>>> 0487d10 (edits)
 ps.clean #500 taxa, 156 samples
 
 #ps.clean.exp <- subset_samples(ps.clean,Mesocosm_type=="AHK")
@@ -404,7 +409,11 @@ df.div.lar$pup.cs <- log(df.div.lar$Proportion_pupated)
 ##mixed mods
 #df.div.lar$Proportion_pupated.scale <- scale(df.div.lar$Proportion_pupated, center = TRUE, scale = TRUE)
 
+<<<<<<< HEAD
 mod.obs.lar <- lmer(Proportion_pupated ~ Observed+Food_type.x+Observed:Food_type.x+(1|Microbe_treatment.x),data=df.div.wtr)
+=======
+mod.obs.lar <- lmer(Biomass_day40 ~ Observed+Food_type.x+Observed:Food_type.x+(1|Microbe_treatment.x),data=df.div.lar)
+>>>>>>> 0487d10 (edits)
 summary(mod.obs.lar)
 Anova(mod.obs.lar)
 
