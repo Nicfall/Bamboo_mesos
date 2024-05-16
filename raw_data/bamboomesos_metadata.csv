@@ -1,0 +1,173 @@
+Short_label,Longer_name,Sample_type,Num_larvae,Date_collected,Exp_day,Mesocosm_id,Mesocosm_treatment,Microbe_treatment,Food_type,Mesocosm_type,Treatment_notes,Notes,Raw_reads
+M1,M_D0_Microbe_stock_ecoli,Microbe Stock,,6/22/23,0,Microbe_stock_ecoli,Microbe_stock_ecoli,E. coli,Microbe stock,Microbe stock,E. coli stock,,63554
+M2,M_D0_Microbe_stock_mosq,Microbe Stock,,6/22/23,0,Microbe_stock_mosq,Microbe_stock_mosq,Mosquito microbes,Microbe stock,Microbe stock,Mosquito microbes stock,,31740
+M3,M_D0_Microbe_stock_brom,Microbe Stock,,6/22/23,0,Microbe_stock_brom,Microbe_stock_brom,Env. microbes,Microbe stock,Microbe stock,Environmental microbes stock,,62671
+WB5,W_D5_B_AHK.1,Water,,6/27/23,5,B_AHK.1,B_AHK,AHK,Bamboo,Experiment,All heat-killed microbes,,91658
+WB3,W_D5_B_AHK+,Water,,6/27/23,5,B_AHK+,B_AHK+,AHK,Bamboo,Additional control,No larvae - all heat-killed microbes,,9849
+WB31,W_D5_B_ALL.1,Water,,6/27/23,5,B_ALL.1,B_ALL,ALL,Bamboo,Experiment,All live microbes,,210029
+WB32,W_D5_B_ALL.2,Water,,6/27/23,5,B_ALL.2,B_ALL,ALL,Bamboo,Experiment,All live microbes,,266325
+WB33,W_D5_B_ALL.3,Water,,6/27/23,5,B_ALL.3,B_ALL,ALL,Bamboo,Experiment,All live microbes,,332097
+WB34,W_D5_B_ALL.4,Water,,6/27/23,5,B_ALL.4,B_ALL,ALL,Bamboo,Experiment,All live microbes,,238232
+WB35,W_D5_B_ALL.5,Water,,6/27/23,5,B_ALL.5,B_ALL,ALL,Bamboo,Experiment,All live microbes,,162232
+WB36,W_D5_B_ALL+,Water,,6/27/23,5,B_ALL+,B_ALL+,ALL,Bamboo,Additional control,No larvae - all live microbes,,86077
+WB19,W_D5_B_ECO.1,Water,,6/27/23,5,B_ECO.1,B_ECO,ECO,Bamboo,Experiment,E. coli only,,147700
+WB20,W_D5_B_ECO.2,Water,,6/27/23,5,B_ECO.2,B_ECO,ECO,Bamboo,Experiment,E. coli only,,135746
+WB21,W_D5_B_ECO.3,Water,,6/27/23,5,B_ECO.3,B_ECO,ECO,Bamboo,Experiment,E. coli only,,124189
+WB22,W_D5_B_ECO.4,Water,,6/27/23,5,B_ECO.4,B_ECO,ECO,Bamboo,Experiment,E. coli only,,122674
+WB23,W_D5_B_ECO.5,Water,,6/27/23,5,B_ECO.5,B_ECO,ECO,Bamboo,Experiment,E. coli only,,100709
+WB24,W_D5_B_ECO+,Water,,6/27/23,5,B_ECO+,B_ECO+,ECO,Bamboo,Additional control,No larvae - E. coli,,75079
+WB13,W_D5_B_EMO.1,Water,,6/27/23,5,B_EMO.1,B_EMO,EMO,Bamboo,Experiment,Environmental microbes only,,193555
+WB14,W_D5_B_EMO.2,Water,,6/27/23,5,B_EMO.2,B_EMO,EMO,Bamboo,Experiment,Environmental microbes only,,166592
+WB15,W_D5_B_EMO.3,Water,,6/27/23,5,B_EMO.3,B_EMO,EMO,Bamboo,Experiment,Environmental microbes only,,121161
+WB16,W_D5_B_EMO.4,Water,,6/27/23,5,B_EMO.4,B_EMO,EMO,Bamboo,Experiment,Environmental microbes only,,151569
+WB17,W_D5_B_EMO.5,Water,,6/27/23,5,B_EMO.5,B_EMO,EMO,Bamboo,Experiment,Environmental microbes only,,159928
+WB18,W_D5_B_EMO+,Water,,6/27/23,5,B_EMO+,B_EMO+,EMO,Bamboo,Additional control,No larvae - environmental microbes,,228989
+WB4,W_D5_B_food,Water,,6/27/23,5,B_food,B_food,None_food,Bamboo,Additional control,Food only,,83833
+WB6,W_D5_B_larvae,Water,,6/27/23,5,B_larvae,B_larvae,None_larvae,Bamboo,Additional control,Larvae & food only,,65165
+WB25,W_D5_B_MEM.1,Water,,6/27/23,5,B_MEM.1,B_MEM,MEM,Bamboo,Experiment,Mosquito & environmental microbes,,198167
+WB26,W_D5_B_MEM.2,Water,,6/27/23,5,B_MEM.2,B_MEM,MEM,Bamboo,Experiment,Mosquito & environmental microbes,,204624
+WB27,W_D5_B_MEM.3,Water,,6/27/23,5,B_MEM.3,B_MEM,MEM,Bamboo,Experiment,Mosquito & environmental microbes,,197298
+WB28,W_D5_B_MEM.4,Water,,6/27/23,5,B_MEM.4,B_MEM,MEM,Bamboo,Experiment,Mosquito & environmental microbes,,147391
+WB29,W_D5_B_MEM.5,Water,,6/27/23,5,B_MEM.5,B_MEM,MEM,Bamboo,Experiment,Mosquito & environmental microbes,,162113
+WB30,W_D5_B_MEM+,Water,,6/27/23,5,B_MEM+,B_MEM+,MEM,Bamboo,Additional control,No larvae - mosquito & environmental microbes,,177379
+WB7,W_D5_B_MMO.1,Water,,6/27/23,5,B_MMO.1,B_MMO,MMO,Bamboo,Experiment,Mosquito microbes only,,133173
+WB8,W_D5_B_MMO.2,Water,,6/27/23,5,B_MMO.2,B_MMO,MMO,Bamboo,Experiment,Mosquito microbes only,,150363
+WB9,W_D5_B_MMO.3,Water,,6/27/23,5,B_MMO.3,B_MMO,MMO,Bamboo,Experiment,Mosquito microbes only,,149261
+WB10,W_D5_B_MMO.4,Water,,6/27/23,5,B_MMO.4,B_MMO,MMO,Bamboo,Experiment,Mosquito microbes only,,154756
+WB11,W_D5_B_MMO.5,Water,,6/27/23,5,B_MMO.5,B_MMO,MMO,Bamboo,Experiment,Mosquito microbes only,,150697
+WB12,W_D5_B_MMO+,Water,,6/27/23,5,B_MMO+,B_MMO+,MMO,Bamboo,Additional control,No larvae - mosquito microbes,,114495
+WB2,W_D5_Hatch_flask,Water,,6/27/23,5,Hatch_flask,Hatch_flask,None_hatch,Hatching flask,Hatching flask,Hatching flask,,1870
+WL4,W_D5_L_AHK.1,Water,,6/27/23,5,L_AHK.1,L_AHK,AHK,Larval food,Experiment,All heat-killed microbes,,60375
+WL2,W_D5_L_AHK+,Water,,6/27/23,5,L_AHK+,L_AHK+,AHK,Larval food,Additional control,No larvae - all heat-killed microbes,,1011
+WL29,W_D5_L_ALL.1,Water,,6/27/23,5,L_ALL.1,L_ALL,ALL,Larval food,Experiment,All live microbes,,134586
+WL30,W_D5_L_ALL.2,Water,,6/27/23,5,L_ALL.2,L_ALL,ALL,Larval food,Experiment,All live microbes,,122343
+WL31,W_D5_L_ALL.3,Water,,6/27/23,5,L_ALL.3,L_ALL,ALL,Larval food,Experiment,All live microbes,,90049
+WL32,W_D5_L_ALL.4,Water,,6/27/23,5,L_ALL.4,L_ALL,ALL,Larval food,Experiment,All live microbes,,174386
+WL33,W_D5_L_ALL.5,Water,,6/27/23,5,L_ALL.5,L_ALL,ALL,Larval food,Experiment,All live microbes,,147990
+WL34,W_D5_L_ALL+,Water,,6/27/23,5,L_ALL+,L_ALL+,ALL,Larval food,Additional control,No larvae - all live microbes,,153574
+WL17,W_D5_L_ECO.1,Water,,6/27/23,5,L_ECO.1,L_ECO,ECO,Larval food,Experiment,E. coli only,,148743
+WL18,W_D5_L_ECO.2,Water,,6/27/23,5,L_ECO.2,L_ECO,ECO,Larval food,Experiment,E. coli only,,105803
+WL19,W_D5_L_ECO.3,Water,,6/27/23,5,L_ECO.3,L_ECO,ECO,Larval food,Experiment,E. coli only,,134358
+WL20,W_D5_L_ECO.4,Water,,6/27/23,5,L_ECO.4,L_ECO,ECO,Larval food,Experiment,E. coli only,,112521
+WL21,W_D5_L_ECO.5,Water,,6/27/23,5,L_ECO.5,L_ECO,ECO,Larval food,Experiment,E. coli only,,82024
+WL22,W_D5_L_ECO+,Water,,6/27/23,5,L_ECO+,L_ECO+,ECO,Larval food,Additional control,No larvae - E. coli,,84065
+WL11,W_D5_L_EMO.1,Water,,6/27/23,5,L_EMO.1,L_EMO,EMO,Larval food,Experiment,Environmental microbes only,,156662
+WL12,W_D5_L_EMO.2,Water,,6/27/23,5,L_EMO.2,L_EMO,EMO,Larval food,Experiment,Environmental microbes only,,143158
+WL13,W_D5_L_EMO.3,Water,,6/27/23,5,L_EMO.3,L_EMO,EMO,Larval food,Experiment,Environmental microbes only,,99916
+WL14,W_D5_L_EMO.4,Water,,6/27/23,5,L_EMO.4,L_EMO,EMO,Larval food,Experiment,Environmental microbes only,,124777
+WL15,W_D5_L_EMO.5,Water,,6/27/23,5,L_EMO.5,L_EMO,EMO,Larval food,Experiment,Environmental microbes only,,143576
+WL16,W_D5_L_EMO+,Water,,6/27/23,5,L_EMO+,L_EMO+,EMO,Larval food,Additional control,No larvae - environmental microbes,,113153
+WL3,W_D5_L_food,Water,,6/27/23,5,L_food,L_food,None_food,Larval food,Additional control,Food only,,1121
+WL1,W_D5_L_larvae,Water,,6/27/23,5,L_larvae,L_larvae,None_larvae,Larval food,Additional control,Larvae & food only,,88708
+WL23,W_D5_L_MEM.1,Water,,6/27/23,5,L_MEM.1,L_MEM,MEM,Larval food,Experiment,Mosquito & environmental microbes,,77744
+WL24,W_D5_L_MEM.2,Water,,6/27/23,5,L_MEM.2,L_MEM,MEM,Larval food,Experiment,Mosquito & environmental microbes,,119945
+WL25,W_D5_L_MEM.3,Water,,6/27/23,5,L_MEM.3,L_MEM,MEM,Larval food,Experiment,Mosquito & environmental microbes,,171802
+WL26,W_D5_L_MEM.4,Water,,6/27/23,5,L_MEM.4,L_MEM,MEM,Larval food,Experiment,Mosquito & environmental microbes,,130957
+WL27,W_D5_L_MEM.5,Water,,6/27/23,5,L_MEM.5,L_MEM,MEM,Larval food,Experiment,Mosquito & environmental microbes,,161014
+WL28,W_D5_L_MEM+,Water,,6/27/23,5,L_MEM+,L_MEM+,MEM,Larval food,Additional control,No larvae - mosquito & environmental microbes,,170049
+WL5,W_D5_L_MMO.1,Water,,6/27/23,5,L_MMO.1,L_MMO,MMO,Larval food,Experiment,Mosquito microbes only,,128296
+WL6,W_D5_L_MMO.2,Water,,6/27/23,5,L_MMO.2,L_MMO,MMO,Larval food,Experiment,Mosquito microbes only,,92704
+WL7,W_D5_L_MMO.3,Water,,6/27/23,5,L_MMO.3,L_MMO,MMO,Larval food,Experiment,Mosquito microbes only,,137202
+WL8,W_D5_L_MMO.4,Water,,6/27/23,5,L_MMO.4,L_MMO,MMO,Larval food,Experiment,Mosquito microbes only,,117557
+WL9,W_D5_L_MMO.5,Water,,6/27/23,5,L_MMO.5,L_MMO,MMO,Larval food,Experiment,Mosquito microbes only,,77045
+WL10,W_D5_L_MMO+,Water,,6/27/23,5,L_MMO+,L_MMO+,MMO,Larval food,Additional control,No larvae - mosquito microbes,,213471
+WB1,W_D5_Lab_water,Water,,6/27/23,5,Lab_water,Lab_water,None_labwater,Lab water,Lab water,Lab water,Sterile/autoclaved water from 06/22/23,63140
+LH1,L_D6_Hatch_flask,Larvae,10,6/28/23,6,Hatch_flask,Hatch_flask,None_hatch,Hatching flask,Hatching flask,Hatching flask,This sample tube contains extra L1 larvae prepared a day after in case the first tube (the one with issues with L1s sticking to the tube walls) was not enough.,70837
+LB2,L_D8_B_AHK.1,Larvae,5,6/30/23,8,B_AHK.1,B_AHK,AHK,Bamboo,Experiment,All heat-killed microbes,,33655
+LB23,L_D8_B_ALL.1,Larvae,5,6/30/23,8,B_ALL.1,B_ALL,ALL,Bamboo,Experiment,All live microbes,,73665
+LB24,L_D8_B_ALL.2,Larvae,5,6/30/23,8,B_ALL.2,B_ALL,ALL,Bamboo,Experiment,All live microbes,,36399
+LB25,L_D8_B_ALL.3,Larvae,5,6/30/23,8,B_ALL.3,B_ALL,ALL,Bamboo,Experiment,All live microbes,,66744
+LB26,L_D8_B_ALL.4,Larvae,5,6/30/23,8,B_ALL.4,B_ALL,ALL,Bamboo,Experiment,All live microbes,,60546
+LB27,L_D8_B_ALL.5,Larvae,5,6/30/23,8,B_ALL.5,B_ALL,ALL,Bamboo,Experiment,All live microbes,,66531
+LB13,L_D8_B_ECO.1,Larvae,5,6/30/23,8,B_ECO.1,B_ECO,ECO,Bamboo,Experiment,E. coli only,,3440
+LB14,L_D8_B_ECO.2,Larvae,5,6/30/23,8,B_ECO.2,B_ECO,ECO,Bamboo,Experiment,E. coli only,,4158
+LB15,L_D8_B_ECO.3,Larvae,5,6/30/23,8,B_ECO.3,B_ECO,ECO,Bamboo,Experiment,E. coli only,,12836
+LB16,L_D8_B_ECO.4,Larvae,5,6/30/23,8,B_ECO.4,B_ECO,ECO,Bamboo,Experiment,E. coli only,,13301
+LB17,L_D8_B_ECO.5,Larvae,5,6/30/23,8,B_ECO.5,B_ECO,ECO,Bamboo,Experiment,E. coli only,,8468
+LB8,L_D8_B_EMO.1,Larvae,5,6/30/23,8,B_EMO.1,B_EMO,EMO,Bamboo,Experiment,Environmental microbes only,,43588
+LB9,L_D8_B_EMO.2,Larvae,5,6/30/23,8,B_EMO.2,B_EMO,EMO,Bamboo,Experiment,Environmental microbes only,,40579
+LB10,L_D8_B_EMO.3,Larvae,5,6/30/23,8,B_EMO.3,B_EMO,EMO,Bamboo,Experiment,Environmental microbes only,,76367
+LB11,L_D8_B_EMO.4,Larvae,5,6/30/23,8,B_EMO.4,B_EMO,EMO,Bamboo,Experiment,Environmental microbes only,,22627
+LB12,L_D8_B_EMO.5,Larvae,5,6/30/23,8,B_EMO.5,B_EMO,EMO,Bamboo,Experiment,Environmental microbes only,,15378
+LB1,L_D8_B_larvae,Larvae,5,6/30/23,8,B_larvae,B_larvae,None_larvae,Bamboo,Additional control,Larvae & food only,,57253
+LB18,L_D8_B_MEM.1,Larvae,5,6/30/23,8,B_MEM.1,B_MEM,MEM,Bamboo,Experiment,Mosquito & environmental microbes,,64329
+LB19,L_D8_B_MEM.2,Larvae,5,6/30/23,8,B_MEM.2,B_MEM,MEM,Bamboo,Experiment,Mosquito & environmental microbes,,46890
+LB20,L_D8_B_MEM.3,Larvae,5,6/30/23,8,B_MEM.3,B_MEM,MEM,Bamboo,Experiment,Mosquito & environmental microbes,,46052
+LB21,L_D8_B_MEM.4,Larvae,5,6/30/23,8,B_MEM.4,B_MEM,MEM,Bamboo,Experiment,Mosquito & environmental microbes,,54131
+LB22,L_D8_B_MEM.5,Larvae,5,6/30/23,8,B_MEM.5,B_MEM,MEM,Bamboo,Experiment,Mosquito & environmental microbes,,69479
+LB3,L_D8_B_MMO.1,Larvae,5,6/30/23,8,B_MMO.1,B_MMO,MMO,Bamboo,Experiment,Mosquito microbes only,,69866
+LB4,L_D8_B_MMO.2,Larvae,5,6/30/23,8,B_MMO.2,B_MMO,MMO,Bamboo,Experiment,Mosquito microbes only,,55250
+LB5,L_D8_B_MMO.3,Larvae,5,6/30/23,8,B_MMO.3,B_MMO,MMO,Bamboo,Experiment,Mosquito microbes only,,62607
+LB6,L_D8_B_MMO.4,Larvae,5,6/30/23,8,B_MMO.4,B_MMO,MMO,Bamboo,Experiment,Mosquito microbes only,,79263
+LB7,L_D8_B_MMO.5,Larvae,5,6/30/23,8,B_MMO.5,B_MMO,MMO,Bamboo,Experiment,Mosquito microbes only,,83117
+LL2,L_D8_L_AHK.1,Larvae,5,6/30/23,8,L_AHK.1,L_AHK,AHK,Larval food,Experiment,All heat-killed microbes,,51522
+LL23,L_D8_L_ALL.1,Larvae,5,6/30/23,8,L_ALL.1,L_ALL,ALL,Larval food,Experiment,All live microbes,,55042
+LL24,L_D8_L_ALL.2,Larvae,5,6/30/23,8,L_ALL.2,L_ALL,ALL,Larval food,Experiment,All live microbes,,52771
+LL25,L_D8_L_ALL.3,Larvae,5,6/30/23,8,L_ALL.3,L_ALL,ALL,Larval food,Experiment,All live microbes,,66477
+LL26,L_D8_L_ALL.4,Larvae,5,6/30/23,8,L_ALL.4,L_ALL,ALL,Larval food,Experiment,All live microbes,,97749
+LL27,L_D8_L_ALL.5,Larvae,5,6/30/23,8,L_ALL.5,L_ALL,ALL,Larval food,Experiment,All live microbes,,99386
+LL13,L_D8_L_ECO.1,Larvae,5,6/30/23,8,L_ECO.1,L_ECO,ECO,Larval food,Experiment,E. coli only,,51457
+LL14,L_D8_L_ECO.2,Larvae,5,6/30/23,8,L_ECO.2,L_ECO,ECO,Larval food,Experiment,E. coli only,,90315
+LL15,L_D8_L_ECO.3,Larvae,5,6/30/23,8,L_ECO.3,L_ECO,ECO,Larval food,Experiment,E. coli only,,83512
+LL16,L_D8_L_ECO.4,Larvae,5,6/30/23,8,L_ECO.4,L_ECO,ECO,Larval food,Experiment,E. coli only,,60309
+LL17,L_D8_L_ECO.5,Larvae,5,6/30/23,8,L_ECO.5,L_ECO,ECO,Larval food,Experiment,E. coli only,,54799
+LL8,L_D8_L_EMO.1,Larvae,5,6/30/23,8,L_EMO.1,L_EMO,EMO,Larval food,Experiment,Environmental microbes only,,101732
+LL9,L_D8_L_EMO.2,Larvae,5,6/30/23,8,L_EMO.2,L_EMO,EMO,Larval food,Experiment,Environmental microbes only,,111660
+LL10,L_D8_L_EMO.3,Larvae,5,6/30/23,8,L_EMO.3,L_EMO,EMO,Larval food,Experiment,Environmental microbes only,,55881
+LL11,L_D8_L_EMO.4,Larvae,5,6/30/23,8,L_EMO.4,L_EMO,EMO,Larval food,Experiment,Environmental microbes only,,59663
+LL12,L_D8_L_EMO.5,Larvae,5,6/30/23,8,L_EMO.5,L_EMO,EMO,Larval food,Experiment,Environmental microbes only,,39221
+LL1,L_D8_L_larvae,Larvae,5,6/30/23,8,L_larvae,L_larvae,None_larvae,Larval food,Additional control,Larvae & food only,,29615
+LL18,L_D8_L_MEM.1,Larvae,5,6/30/23,8,L_MEM.1,L_MEM,MEM,Larval food,Experiment,Mosquito & environmental microbes,,87019
+LL19,L_D8_L_MEM.2,Larvae,4,6/30/23,8,L_MEM.2,L_MEM,MEM,Larval food,Experiment,Mosquito & environmental microbes,,91113
+LL20,L_D8_L_MEM.3,Larvae,5,6/30/23,8,L_MEM.3,L_MEM,MEM,Larval food,Experiment,Mosquito & environmental microbes,,54597
+LL21,L_D8_L_MEM.4,Larvae,2,6/30/23,8,L_MEM.4,L_MEM,MEM,Larval food,Experiment,Mosquito & environmental microbes,,54577
+LL22,L_D8_L_MEM.5,Larvae,5,6/30/23,8,L_MEM.5,L_MEM,MEM,Larval food,Experiment,Mosquito & environmental microbes,,50438
+LL3,L_D8_L_MMO.1,Larvae,5,6/30/23,8,L_MMO.1,L_MMO,MMO,Larval food,Experiment,Mosquito microbes only,,101981
+LL4,L_D8_L_MMO.2,Larvae,5,6/30/23,8,L_MMO.2,L_MMO,MMO,Larval food,Experiment,Mosquito microbes only,,83175
+LL5,L_D8_L_MMO.3,Larvae,5,6/30/23,8,L_MMO.3,L_MMO,MMO,Larval food,Experiment,Mosquito microbes only,,44031
+LL6,L_D8_L_MMO.4,Larvae,5,6/30/23,8,L_MMO.4,L_MMO,MMO,Larval food,Experiment,Mosquito microbes only,,90456
+LL7,L_D8_L_MMO.5,Larvae,5,6/30/23,8,L_MMO.5,L_MMO,MMO,Larval food,Experiment,Mosquito microbes only,,47330
+WB40,W_D20_B_AHK.1,Water,,7/12/23,20,B_AHK.1,B_AHK,AHK,Bamboo,Experiment,All heat-killed microbes,,45843
+WB39,W_D20_B_AHK+,Water,,7/12/23,20,B_AHK+,B_AHK+,AHK,Bamboo,Additional control,No larvae - all heat-killed microbes,,61698
+WB65,W_D20_B_ALL.1,Water,,7/12/23,20,B_ALL.1,B_ALL,ALL,Bamboo,Experiment,All live microbes,,164239
+WB66,W_D20_B_ALL.2,Water,,7/12/23,20,B_ALL.2,B_ALL,ALL,Bamboo,Experiment,All live microbes,,134307
+WB67,W_D20_B_ALL.3,Water,,7/12/23,20,B_ALL.3,B_ALL,ALL,Bamboo,Experiment,All live microbes,,119012
+WB68,W_D20_B_ALL.4,Water,,7/12/23,20,B_ALL.4,B_ALL,ALL,Bamboo,Experiment,All live microbes,,123522
+WB69,W_D20_B_ALL.5,Water,,7/12/23,20,B_ALL.5,B_ALL,ALL,Bamboo,Experiment,All live microbes,,142364
+WB70,W_D20_B_ALL+,Water,,7/12/23,20,B_ALL+,B_ALL+,ALL,Bamboo,Additional control,No larvae - all live microbes,,170574
+WB53,W_D20_B_ECO.1,Water,,7/12/23,20,B_ECO.1,B_ECO,ECO,Bamboo,Experiment,E. coli only,,70965
+WB54,W_D20_B_ECO.2,Water,,7/12/23,20,B_ECO.2,B_ECO,ECO,Bamboo,Experiment,E. coli only,,71826
+WB55,W_D20_B_ECO.3,Water,,7/12/23,20,B_ECO.3,B_ECO,ECO,Bamboo,Experiment,E. coli only,,104622
+WB56,W_D20_B_ECO.4,Water,,7/12/23,20,B_ECO.4,B_ECO,ECO,Bamboo,Experiment,E. coli only,,143682
+WB57,W_D20_B_ECO.5,Water,,7/12/23,20,B_ECO.5,B_ECO,ECO,Bamboo,Experiment,E. coli only,,102762
+WB58,W_D20_B_ECO+,Water,,7/12/23,20,B_ECO+,B_ECO+,ECO,Bamboo,Additional control,No larvae - E. coli,,101372
+WB47,W_D20_B_EMO.1,Water,,7/12/23,20,B_EMO.1,B_EMO,EMO,Bamboo,Experiment,Environmental microbes only,,114290
+WB48,W_D20_B_EMO.2,Water,,7/12/23,20,B_EMO.2,B_EMO,EMO,Bamboo,Experiment,Environmental microbes only,,134593
+WB49,W_D20_B_EMO.3,Water,,7/12/23,20,B_EMO.3,B_EMO,EMO,Bamboo,Experiment,Environmental microbes only,,91941
+WB50,W_D20_B_EMO.4,Water,,7/12/23,20,B_EMO.4,B_EMO,EMO,Bamboo,Experiment,Environmental microbes only,,151644
+WB51,W_D20_B_EMO.5,Water,,7/12/23,20,B_EMO.5,B_EMO,EMO,Bamboo,Experiment,Environmental microbes only,,90710
+WB52,W_D20_B_EMO+,Water,,7/12/23,20,B_EMO+,B_EMO+,EMO,Bamboo,Additional control,No larvae - environmental microbes,,136381
+WB38,W_D20_B_food,Water,,7/12/23,20,B_food,B_food,None_food,Bamboo,Additional control,Food only,,91154
+WB37,W_D20_B_larvae,Water,,7/12/23,20,B_larvae,B_larvae,None_larvae,Bamboo,Additional control,Larvae & food only,,70004
+WB59,W_D20_B_MEM.1,Water,,7/12/23,20,B_MEM.1,B_MEM,MEM,Bamboo,Experiment,Mosquito & environmental microbes,,66999
+WB60,W_D20_B_MEM.2,Water,,7/12/23,20,B_MEM.2,B_MEM,MEM,Bamboo,Experiment,Mosquito & environmental microbes,,128894
+WB61,W_D20_B_MEM.3,Water,,7/12/23,20,B_MEM.3,B_MEM,MEM,Bamboo,Experiment,Mosquito & environmental microbes,,121032
+WB62,W_D20_B_MEM.4,Water,,7/12/23,20,B_MEM.4,B_MEM,MEM,Bamboo,Experiment,Mosquito & environmental microbes,,164334
+WB63,W_D20_B_MEM.5,Water,,7/12/23,20,B_MEM.5,B_MEM,MEM,Bamboo,Experiment,Mosquito & environmental microbes,,104178
+WB64,W_D20_B_MEM+,Water,,7/12/23,20,B_MEM+,B_MEM+,MEM,Bamboo,Additional control,No larvae - mosquito & environmental microbes,,117541
+WB41,W_D20_B_MMO.1,Water,,7/12/23,20,B_MMO.1,B_MMO,MMO,Bamboo,Experiment,Mosquito microbes only,,90585
+WB42,W_D20_B_MMO.2,Water,,7/12/23,20,B_MMO.2,B_MMO,MMO,Bamboo,Experiment,Mosquito microbes only,,142302
+WB43,W_D20_B_MMO.3,Water,,7/12/23,20,B_MMO.3,B_MMO,MMO,Bamboo,Experiment,Mosquito microbes only,,142075
+WB44,W_D20_B_MMO.4,Water,,7/12/23,20,B_MMO.4,B_MMO,MMO,Bamboo,Experiment,Mosquito microbes only,,141822
+WB45,W_D20_B_MMO.5,Water,,7/12/23,20,B_MMO.5,B_MMO,MMO,Bamboo,Experiment,Mosquito microbes only,,120582
+WB46,W_D20_B_MMO+,Water,,7/12/23,20,B_MMO+,B_MMO+,MMO,Bamboo,Additional control,No larvae - mosquito microbes,,136799
+N1,N_Negative1,Negative,,,,Negative,Negative,Negative,Negative,Negative,Negative,,481
+N2,N_Negative2,Negative,,,,Negative,Negative,Negative,Negative,Negative,Negative,,1292
+N3,N_Negative3,Negative,,,,Negative,Negative,Negative,Negative,Negative,Negative,,1244
+N4,N_Negative4,Negative,,,,Negative,Negative,Negative,Negative,Negative,Negative,,3175
+N5,N_Negative5,Negative,,,,Negative,Negative,Negative,Negative,Negative,Negative,,1350
+N6,N_Negative6,Negative,,,,Negative,Negative,Negative,Negative,Negative,Negative,,1270
+PCR-NEG-1,N_PCR_Negative1,Negative,,,,Negative,Negative,Negative,Negative,Negative,Negative,,419
+PCR-NEG-2,N_PCR_Negative2,Negative,,,,Negative,Negative,Negative,Negative,Negative,Negative,,2368
+PCR-POS-1,P_PCR_Positive1,Positive,,,,Positive,Positive,Positive,Positive,Positive,Positive,,267070
+PCR-POS-2,P_PCR_Positive2,Positive,,,,Positive,Positive,Positive,Positive,Positive,Positive,,193237
