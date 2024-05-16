@@ -523,7 +523,7 @@ samdf <- read.csv("../raw_data/bamboomesos_metadata.csv")
 rownames(samdf) <- samdf$Short_label
 
 #phyloseq object with new taxa ids
-##otu table that's trimmed af
+##otu table that's trimmed
 ps1 <- phyloseq(otu_table(seqtab.lulu.keep2, taxa_are_rows=FALSE), 
                sample_data(samdf), 
                tax_table(as.matrix(taxa)))
@@ -671,13 +671,16 @@ ggplot(data=samdf.low, aes(x=Longer_name, y=lib_size_clean, color=Mesocosm_type)
 Doesn't make sense to rarefy a bunch of these samples
 
 ```{r, eval=F}
+ps.clean.decontam <- readRDS("bamboomesos_ps.lulu.clean.decontam.rds")
 ps.clean.decontam
+
 sample_data(ps.clean.decontam)$lib_size_clean <- sample_sums(ps.clean.decontam)
 
 samdf.clean <- data.frame(ps.clean.decontam@sam_data)
 #write.csv(samdf.clean,file="samdf.clean.csv")
 
 samdf.low <- subset(samdf.clean,lib_size_clean<20000)
+samdf.low
 
 ggplot(data=samdf.low, aes(x=Longer_name, y=lib_size_clean, color=Mesocosm_type))+
   geom_point()+
@@ -719,6 +722,30 @@ ps.rare <- rarefy_even_depth(ps.clean.decontam,sample.size=11396,replace=FALSE)
 #saveRDS(ps.rare,"bamboomesos_ps.lulu.clean.decontam.rare11k.rds")
 
 ##removing the same samples from the other ps object for continuity with comparisons
+ps.rare <- readRDS("bamboomesos_ps.lulu.clean.decontam.rare11k.rds")
+ps.rare #156 samples, 554 taxa
+
+ps.clean.decontam
+
+samdf.clean <- data.frame(ps.clean.decontam@sam_data)
+
+samdf.low <- subset(samdf.clean,lib_size_clean<11000)
+samdf.low
+rownames(samdf.low)
+
+otu.clean <- data.frame(ps.clean.decontam@otu_table)
+
+otu.less <- subset(otu.clean,!rownames(otu.clean)%in% c(rownames(samdf.low)))
+ps.clean.decontam.copy <- ps.clean.decontam
+ps.clean.decontam.copy@otu_table <- otu_table(otu.less,taxa_are_rows = F)
+ps.clean.decontam.copy
+
+ps.less <- phyloseq(otu_table(otu.less, taxa_are_rows=FALSE), 
+               sample_data(samdf.clean), 
+               tax_table(as.matrix(taxa)))
+
+ps.less
+#saveRDS(ps.less,"bamboomesos_ps.lulu.clean.decontam.less.rds")
 
 
 ##just negative control checks for curiosity
@@ -728,8 +755,6 @@ ps.rare <- rarefy_even_depth(ps.clean.decontam,sample.size=11396,replace=FALSE)
 # taxa_sums(ps.neg)
 # sample_sums(ps.neg)
 # 
-
-
 ```
 
 ```{r}
