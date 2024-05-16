@@ -487,6 +487,11 @@ setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Summer2023_REU/Bamboo_mesos
 ##counts table
 seqtab.lulu <- readRDS("bamboomesos_seqtab.nochim.lulu.rds")
 
+##raw reads for trimming levels below
+seqtab.lulu.sums <- seqtab.lulu
+seqtab.lulu.sums$sums <- rowSums(seqtab.lulu.sums)
+sample.sums.df <- seqtab.lulu.sums[,1958, drop=FALSE]
+
 ##remove singletons
 seqtab.lulu.pa <- seqtab.lulu
 seqtab.lulu.pa[seqtab.lulu.pa > 0] <- 1 
@@ -495,20 +500,44 @@ seqtab.lulu.nosing <- seqtab.lulu.pa[,colSums(seqtab.lulu.pa)!=1]
 colnames.keep <- c(colnames(seqtab.lulu.nosing))
 
 ##subset the ones to keep in the original table
-seqtab.lulu.keep <- seqtab.lulu[,colnames(seqtab.lulu) %in% c(colnames.keep)]
+seqtab.lulu.keep <- seqtab.lulu[,colnames(seqtab.lulu) %in% c(colnames.keep)] 
 ```
 
-## Remove ASVs supported by less than 0.001% of total reads
+## Trimming <0.1% abundance per sample
+
+Decided on this threshold by examining the results of the positive control reads
 
 ```{r}
-sum(rowSums(seqtab.lulu)) #13546765
-sum(rowSums(seqtab.lulu))*0.00001 #135
+seqtab.trimmed <- seqtab.lulu.keep
+##checking the sample sums line up with the current otu table
+row.names(seqtab.trimmed)==row.names(sample.sums.df)
 
-seqtab.lulu.keep2 <- seqtab.lulu.keep[colSums(seqtab.lulu.keep)>135]
-tail(sort(colSums(seqtab.lulu.keep),decreasing=T)) #before
-tail(sort(colSums(seqtab.lulu.keep2),decreasing=T)) #after
-sum(rowSums(seqtab.lulu.keep2)) #13444749
-##leaves 580 ASVs
+for (i in 1:nrow(seqtab.trimmed)) {
+  #row_sum <- sum(seqtab.trimmed[i,])
+  threshold <- sample.sums.df[i,] * 0.001001
+  #print(threshold)
+  seqtab.trimmed[i,seqtab.trimmed[i,] <= threshold] <- 0
+}
+
+tail(sort(colSums(seqtab.trimmed),decreasing=T),500)
+##remove 0s
+seqtab.trimmed2 <- seqtab.trimmed[,colSums(seqtab.trimmed)>0]
+##540 ASVs
+tail(sort(colSums(seqtab.trimmed2),decreasing=T),500)
+
+```
+
+## Remove ASVs supported by less than 0.001% of total reads - skipping
+
+```{r}
+#sum(rowSums(seqtab.lulu)) #13546765
+#sum(rowSums(seqtab.lulu))*0.00001 #135
+
+#seqtab.trimmed.135 <- seqtab.trimmed[colSums(seqtab.trimmed)>135]
+# tail(sort(colSums(seqtab.lulu),decreasing=T)) #before
+# tail(sort(colSums(seqtab.trimmed),decreasing=T)) #after
+# sum(rowSums(seqtab.trimmed.135)) #13245039
+##leaves 476 ASVs
 ```
 
 ## Make phyloseq object
@@ -524,7 +553,7 @@ rownames(samdf) <- samdf$Short_label
 
 #phyloseq object with new taxa ids
 ##otu table that's trimmed
-ps1 <- phyloseq(otu_table(seqtab.lulu.keep2, taxa_are_rows=FALSE), 
+ps1 <- phyloseq(otu_table(seqtab.trimmed2, taxa_are_rows=FALSE), 
                sample_data(samdf), 
                tax_table(as.matrix(taxa)))
 
@@ -534,9 +563,9 @@ ps1
 ps <- prune_taxa(taxa_sums(ps1)!=0,ps1)
 ps
 # phyloseq-class experiment-level object
-# otu_table()   OTU Table:         [ 580 taxa and 172 samples ]
+# otu_table()   OTU Table:         [ 540 taxa and 172 samples ]
 # sample_data() Sample Data:       [ 172 samples by 14 sample variables ]
-# tax_table()   Taxonomy Table:    [ 580 taxa by 9 taxonomic ranks ]
+# tax_table()   Taxonomy Table:    [ 540 taxa by 9 taxonomic ranks ]
 ```
 
 ## Remove chloroplasts etc. 
@@ -544,10 +573,10 @@ ps
 ```{r}
 tax.pre <- data.frame(ps@tax_table)
 
-ps.mito <- subset_taxa(ps, Family=="Mitochondria")
-ps.mito #1 taxa to remove
+#ps.mito <- subset_taxa(ps, Family=="Mitochondria")
+#ps.mito #0 taxa to remove
 ps.chlor <- subset_taxa(ps, Order=="Chloroplast")
-ps.chlor #2 taxa to remove
+ps.chlor #1 taxa to remove
 ps.notbact <- subset_taxa(ps, Kingdom!="Bacteria")
 ps.notbact #1 taxa to remove
 
@@ -556,7 +585,7 @@ ps.nomito
 ps.nochlor <- subset_taxa(ps.nomito, Order!="Chloroplast")
 ps.nochlor
 ps.clean <- subset_taxa(ps.nochlor, Kingdom=="Bacteria")
-ps.clean #537 taxa
+ps.clean #538 taxa
 
 #just archaea
 ps.arch <- subset_taxa(ps, Kingdom=="Archaea")
@@ -577,7 +606,7 @@ sample_data(ps.clean)$is.neg <- sample_data(ps.clean)$Mesocosm_type == "Negative
 contamdf.prev <- isContaminant(ps.clean, neg="is.neg",threshold=0.5)
 table(contamdf.prev$contaminant)
 # FALSE  TRUE 
-#   554    22 
+#   514    24 
 
 # Make phyloseq object of presence-absence in negative controls and true samples
 ps.pa <- transform_sample_counts(ps.clean, function(abund) 1*(abund>0))
@@ -600,9 +629,9 @@ ps.clean.decontam3
 ps.clean.decontam <- prune_samples(sample_sums(ps.clean.decontam3)!=0,ps.clean.decontam3)
 ps.clean.decontam 
 # phyloseq-class experiment-level object
-# otu_table()   OTU Table:         [ 554 taxa and 164 samples ]
-# sample_data() Sample Data:       [ 164 samples by 16 sample variables ]
-# tax_table()   Taxonomy Table:    [ 554 taxa by 9 taxonomic ranks ]
+# otu_table()   OTU Table:         [ 506 taxa and 163 samples ]
+# sample_data() Sample Data:       [ 163 samples by 16 sample variables ]
+# tax_table()   Taxonomy Table:    [ 506 taxa by 9 taxonomic ranks ]
 
 tail(taxa_sums(ps.clean.decontam))
 tail(sort(sample_sums(ps.clean.decontam),decreasing=T))
@@ -672,7 +701,7 @@ Doesn't make sense to rarefy a bunch of these samples
 
 ```{r, eval=F}
 ps.clean.decontam <- readRDS("bamboomesos_ps.lulu.clean.decontam.rds")
-ps.clean.decontam
+ps.clean.decontam #506 taxa, 163 samples
 
 sample_data(ps.clean.decontam)$lib_size_clean <- sample_sums(ps.clean.decontam)
 
@@ -705,31 +734,30 @@ ggplot(data=df2, aes(x=Index, y=libsize))+
   geom_point()+
   ylim(120000,270000)+
   xlim(130,173)
-#there's definitely a natural break between 132086 and 144974
-#10% of that would be 13,208
+#there's definitely a natural break between 130950 and 144273
+#10% of that would be 13,095
 
 ##lower ones
 ggplot(data=df2, aes(x=Index, y=libsize))+
   geom_point()+
   ylim(0,50000)+
   xlim(0,50)
-##pretty obvious natural break ~47,000 but obviously I'm not going to sacrifice that many samples. It looks like another slight break ~11k
-#11396 more specifically
 
 set.seed(2939)
 
-ps.rare <- rarefy_even_depth(ps.clean.decontam,sample.size=11396,replace=FALSE)
+ps.rare <- rarefy_even_depth(ps.clean.decontam,sample.size=10999,replace=FALSE)
 #saveRDS(ps.rare,"bamboomesos_ps.lulu.clean.decontam.rare11k.rds")
+##7 samples removed, 6 OTUs removed
 
 ##removing the same samples from the other ps object for continuity with comparisons
 ps.rare <- readRDS("bamboomesos_ps.lulu.clean.decontam.rare11k.rds")
-ps.rare #156 samples, 554 taxa
+ps.rare #156 samples, 500 taxa
 
 ps.clean.decontam
 
 samdf.clean <- data.frame(ps.clean.decontam@sam_data)
 
-samdf.low <- subset(samdf.clean,lib_size_clean<11000)
+samdf.low <- subset(samdf.clean,lib_size_clean<10999)
 samdf.low
 rownames(samdf.low)
 
@@ -740,20 +768,23 @@ ps.clean.decontam.copy <- ps.clean.decontam
 ps.clean.decontam.copy@otu_table <- otu_table(otu.less,taxa_are_rows = F)
 ps.clean.decontam.copy
 
-ps.less <- phyloseq(otu_table(otu.less, taxa_are_rows=FALSE), 
+ps.less1 <- phyloseq(otu_table(otu.less, taxa_are_rows=FALSE), 
                sample_data(samdf.clean), 
                tax_table(as.matrix(taxa)))
+ps.less1
 
+ps.less <- prune_taxa(taxa_sums(ps.less)>0,ps.less)
 ps.less
+
 #saveRDS(ps.less,"bamboomesos_ps.lulu.clean.decontam.less.rds")
 
 
 ##just negative control checks for curiosity
-# ps.neg1 <- subset_samples(ps,Sample_type=="Negative")
-# ps.neg <- prune_taxa(taxa_sums(ps.neg1)>0,ps.neg1)
-# ps.neg
-# taxa_sums(ps.neg)
-# sample_sums(ps.neg)
+ps.neg1 <- subset_samples(ps,Sample_type=="Negative")
+ps.neg <- prune_taxa(taxa_sums(ps.neg1)>0,ps.neg1)
+ps.neg
+taxa_sums(ps.neg)
+sample_sums(ps.neg)
 # 
 ```
 
