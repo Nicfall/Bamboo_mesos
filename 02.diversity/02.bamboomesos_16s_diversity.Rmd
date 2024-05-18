@@ -39,18 +39,15 @@ library("bestNormalize")
 ```{r}
 setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Summer2023_REU/Bamboo_mesos/02.diversity")
 
-ps.clean <- readRDS("../01.process_asvs/bamboomesos_ps.lulu.clean.decontam.less.rds")
-<<<<<<< HEAD
-=======
 ps.clean <- readRDS("../01.process_asvs/bamboomesos_ps.lulu.clean.decontam.rare11k.rds")
-
->>>>>>> 0487d10 (edits)
 ps.clean #500 taxa, 156 samples
 
 #ps.clean.exp <- subset_samples(ps.clean,Mesocosm_type=="AHK")
 
 # ps.clean.exp.noahk1 <- subset_samples(ps.clean,Microbe_treatment!="AHK")
 # ps.clean.exp.noahk <- prune_taxa(taxa_sums(ps.clean.exp.noahk1) > 0, ps.clean.exp.noahk1)
+
+sample_sums(ps.clean)
 
 samdf <- data.frame(ps.clean@sam_data)
 ```
@@ -382,9 +379,220 @@ ggarrange(gg.fit.bio.rich,gg.fit.bio.simp,labels=c("(a)","(b)"),nrow=2,common.le
 #ggsave("alpha.fitness.biomass.pdf",height=5,width=6)
 ```
 
+# Getting unique ASV richness per mesocosm
+
+So totaling the number of ASVs present in both the water and the larvae, but only counting the ones that are shared once...
+
+```{r}
+melt <- psmelt(ps.clean)
+meso.list <- unique(melt$Mesocosm_id)
+df.meso.rich <- c()
+
+for (meso.id in 1:length(meso.list)){
+  Mesocosm_id <- meso.list[meso.id]
+  relevant.meso <- melt[melt$Mesocosm_id==Mesocosm_id,]
+  relevant.meso.no0 <- relevant.meso[relevant.meso$Abundance>0,]
+  unique.meso.otus <- unique(relevant.meso.no0$OTU)
+  richness.unique <- length(unique.meso.otus)
+  df.meso.rich <- rbind(df.meso.rich,data.frame(Mesocosm_id,richness.unique))
+}
+
+##adding more metadata
+samdf <- data.frame(ps.clean@sam_data)
+library("dplyr")
+samdf.meso.rich <- inner_join(df.meso.rich,samdf,multiple="first")
+
+#write.csv(df.meso.rich,file="bamboomesos_mesocosm.unique.richness.csv")
+
+##double checking 
+# bfood <- subset(melt,Mesocosm_id=="B_food")
+# bfood.no0 <- bfood[bfood$Abundance>0,]
+# unique(bfood.no0$OTU)
+```
+
+# Richness x biomass
+
+## Using unique richness per mesocosm
+
+```{r}
+pupae.weights <- read.csv("../raw_data/bamboomesos_pupaeweights.csv")
+
+aggregate(Dry_weightAVG~Exp_day+Mesocosm_id, data=pupae.weights, FUN=sum)
+
+biomass <- with(merge(expand.grid(Exp_day=8:40,Mesocosm_id=c(unique(pupae.weights$Mesocosm_id)), value=0), pupae.weights, all=TRUE), 
+              aggregate(Dry_weightAVG, by=(list(Exp_day, Mesocosm_id)), FUN=sum))
+biomass[is.na(biomass)] <- 0
+
+colnames(biomass) <- c("day","Mesocosm_id","biomass")
+
+biomass.rich1 <- join(biomass,samdf.meso.rich,by="Mesocosm_id")
+biomass.rich2 <- subset(biomass.rich1,Mesocosm_type=="Experiment")
+biomass.rich3 <- subset(biomass.rich2,Microbe_treatment!="AHK")
+biomass.rich <- subset(biomass.rich3,Exp_day!=20)
+
+summary(tweediefit1 <- glmmTMB(biomass~Food_type*scale(richness.unique)*scale(day)+Food_type*scale(richness.unique)*scale(I(day^2))+(1|Microbe_treatment)+(1|Mesocosm_id), data=biomass.rich, family=tweedie()))
+#Anova(tweediefit1)
+
+summary(tweediefit2 <- glmmTMB(biomass~Food_type*scale(richness.unique)+Food_type*scale(day)+Food_type*scale(I(day^2))+scale(richness.unique)*scale(day)+scale(richness.unique)*scale(I(day^2))+(1|Microbe_treatment)+(1|Mesocosm_id), data=biomass.rich, family=tweedie()))
+
+anova(tweediefit1,tweediefit2)
+
+#visualize model
+library("ggeffects")
+predict <- ggpredict(tweediefit1, terms=c("Food_type", "richness.unique[all]", "day[all]"), type="re")
+ggplot(predict,aes(x=facet,y=sqrt(predicted),group=interaction(x,group),color=as.numeric(group),linetype=x))+
+  geom_line()+
+  scale_color_gradientn(colors=hcl.colors(20,"Sunset"))+
+  theme_cowplot()
+
+
+# predict <- ggpredict(tweediefit1, terms=c("Food_type","richness.unique","day[all]"), type="re")
+# ggplot(predict,aes(x=facet,y=sqrt(predicted)))
+# #predictbamboo <- subset(predict, group=="Bamboo")
+# ggplot(predict, aes(x=facet, y=sqrt(predicted), group=factor(group),color=x))+
+#   geom_line() 
+# 
+# predictlarval<-subset(predict, group=="Larval")
+# ggplot(predictlarval, aes(x=facet, y=sqrt(predicted), group=x)) + geom_line(aes(color=)) 
+# 
+
+```
+
+## Water by itself
+
+```{r}
+biomass.rich1 <- join(biomass,df.div.exp,by="Mesocosm_id")
+biomass.rich2 <- subset(biomass.rich1,Mesocosm_type=="Experiment")
+biomass.rich3 <- subset(biomass.rich2,Microbe_treatment!="AHK")
+biomass.rich4 <- subset(biomass.rich3,Exp_day!=20)
+biomass.rich.water <- subset(biomass.rich4,Sample_type=="Water")
+
+##without scale
+summary(tweediefit1.water <- glmmTMB(biomass~Food_type*Observed*scale(day)+Food_type*Observed*scale(I(day^2))+(1|Mesocosm_id), data=biomass.rich.water, family=tweedie()))
+#Anova(tweediefit1)
+
+summary(tweediefit2.water <- glmmTMB(biomass~Food_type*Observed+Food_type*scale(day)+Food_type*scale(I(day^2))+Observed*scale(day)+Observed*scale(I(day^2))+(1|Mesocosm_id), data=biomass.rich.water, family=tweedie()))
+
+anova(tweediefit1,tweediefit2)
+
+##with scale
+summary(tweediefit1.water <- glmmTMB(biomass~Food_type*scale(Observed)*scale(day)+Food_type*scale(Observed)*scale(I(day^2))+(1|Microbe_treatment)+(1|Mesocosm_id), data=biomass.rich.water, family=tweedie()))
+#Anova(tweediefit1)
+
+summary(tweediefit2.water <- glmmTMB(biomass~Food_type*scale(Observed)+Food_type*scale(day)+Food_type*scale(I(day^2))+scale(Observed)*scale(day)+scale(Observed)*scale(I(day^2))+(1|Microbe_treatment)+(1|Mesocosm_id), data=biomass.rich.water, family=tweedie()))
+
+anova(tweediefit1,tweediefit2)
+```
+
+## Larvae by themselves
+
+A few low-read samples are lost during rarefaction that may be messing with the stats, seeing what their richness values are here
+
+```{r}
+setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Summer2023_REU/Bamboo_mesos/02.diversity")
+
+ps.clean <- readRDS("../01.process_asvs/bamboomesos_ps.lulu.clean.decontam.rds")
+ps.clean ##163 samples - 7 lost
+
+ps.lost1 <- prune_samples(sample_sums(ps.clean)<10999,ps.clean)
+ps.lost <- prune_taxa(taxa_sums(ps.lost1)>0,ps.lost1)
+ps.lost@otu_table
+samples.lost <- row.names(ps.lost@sam_data)
+##going to retain their individual richness values below
+
+df.lost <- data.frame(estimate_richness(ps.lost, split=TRUE, measures=c("Shannon","InvSimpson","Observed")))
+
+df.lost$Short_label <- rownames(df.lost)
+
+df.lost.div <- merge(df.lost,samdf,by="Short_label") #add sample data
+df.lost.div
+```
+
+```{r}
+biomass.rich.larv <- subset(biomass.rich4,Sample_type=="Larvae")
+
+summary(tweediefit1.larv <- glmmTMB(biomass~Food_type*Observed*scale(day)+Food_type*Observed*scale(I(day^2))+(1|Microbe_treatment)+(1|Mesocosm_id), data=biomass.rich.larv, family=tweedie()))
+#Anova(tweediefit1)
+
+summary(tweediefit2.larv <- glmmTMB(biomass~Food_type*scale(richness.unique)+Food_type*scale(day)+Food_type*scale(I(day^2))+scale(richness.unique)*scale(day)+scale(richness.unique)*scale(I(day^2))+(1|Microbe_treatment)+(1|Mesocosm_id), data=biomass.rich, family=tweedie()))
+
+anova(tweediefit1,tweediefit2)
+
+#visualize model
+library("ggeffects")
+predict <- ggpredict(tweediefit1, terms=c("Food_type", "richness.unique[all]", "day[all]"), type="re")
+ggplot(predict,aes(x=facet,y=sqrt(predicted),group=interaction(x,group),color=as.numeric(group),linetype=x))+
+  geom_line()+
+  scale_color_gradientn(colors=hcl.colors(20,"Sunset"))+
+  theme_cowplot()
+```
+
 ## Richness stats
 
 ```{r}
+df.div.exp.meso.water <- subset(df.div.exp.meso,Sample_type=="Water")
+
+summary(tweediefit1 <- glmmTMB(Biomass_day40~Food_type.x*Observed+(1|Microbe_treatment.x), data=df.div.exp.meso.water, family=tweedie()))
+#Anova(tweediefit1)
+
+df.div.exp.meso.larv <- subset(df.div.exp.meso,Sample_type=="Larvae")
+
+summary(tweediefit1 <- glmmTMB(Biomass_day40~Food_type.x*Observed+(1|Microbe_treatment.x), data=df.div.exp.meso.larv, family=tweedie()))
+Anova(tweediefit1)
+
+summary(tweediefit1 <- glmmTMB(Biomass_day40~Food_type.x*Observed+(1|Microbe_treatment.x)+(1|Mesocosm_id), data=df.div.exp.meso.water, family=tweedie()))
+Anova(tweediefit1)
+
+summary(tweediefit1 <- glmmTMB(Biomass_day40~Food_type.x*Observed+(1|Microbe_treatment.x), data=df.div.exp.meso, family=tweedie()))
+
+##unique richness values 
+#biomass.rich.d40 <- join(biomass.rich,df.div.exp.meso)
+biomass.rich.meso1 <- join(samdf.meso.rich,df.div.exp.meso)
+str(biomass.rich.meso1)
+biomass.rich.meso2 <- subset(biomass.rich.meso1,Mesocosm_type=="Experiment")
+biomass.rich.meso <- subset(biomass.rich.meso2,Microbe_treatment!="AHK")
+str(biomass.rich.meso)
+str(biomass.rich.meso)
+#biomass.rich.meso$Biomass_day40[is.na(biomass.rich.meso$Biomass_day40)] <- 0
+#biomass.rich.meso[is.na(biomass.rich.meso]
+
+##more simple version
+summary(tweediefit.simple <- glmmTMB(Biomass_day40~Food_type*scale(richness.unique)+(1|Microbe_treatment), data=biomass.rich.meso, family=tweedie()))
+Anova(tweediefit.simple)
+
+summary(tweediefit.simple.noint <- glmmTMB(Biomass_day40~Food_type+scale(richness.unique)+(1|Microbe_treatment), data=biomass.rich.meso, family=tweedie()))
+
+anova(tweediefit.simple,tweediefit.simple.noint)
+
+##plotting
+str(tweediefit.simple)
+predict <- ggpredict(tweediefit.simple, terms=c("richness.unique[all]","Food_type"), type="re")
+ggplot(predict,aes(x=x,y=predicted,color=group))+
+  geom_line()+
+  #geom_smooth()+
+  xlab("ASV richness")+
+  theme_cowplot()
+  #ylab("Predicted")
+  #geom_errorbar(aes(ymin=predicted-std.error,ymax=predicted+std.error))+
+
++
+  scale_color_gradientn(colors=hcl.colors(20,"Sunset"))+
+  theme_cowplot()
+
+biomass.rich.meso.lf <- subset(biomass.rich.meso,Food_type=="Larval food")
+ggplot(biomass.rich.meso,aes(x=richness.unique,y=Biomass_day40,color=Food_type))+
+  geom_point()+
+  geom_smooth()
+
+##quadratic?
+summary(tweediefit.quad <- glmmTMB(Biomass_day40~Food_type*scale(richness.unique)+Food_type*scale(day)+Food_type*scale(I(day^2))+scale(richness.unique)*scale(day)+scale(richness.unique)*scale(I(day^2))+(1|Microbe_treatment)+(1|Mesocosm_id), data=biomass.rich, family=tweedie()))
+
+summary(tweediefit1.larv <- glmmTMB(biomass~Food_type*Observed*scale(day)+Food_type*Observed*scale(I(day^2))+(1|Microbe_treatment)+(1|Mesocosm_id), data=biomass.rich.larv, family=tweedie()))
+
+
+summary(tweediefit.simple <- glmmTMB(Biomass_day40~Food_type*scale(richness.unique)+(1|Microbe_treatment), data=biomass.rich.meso, family=tweedie()))
+
+
 ##stats
 df.div.lar <- subset(df.div.exp.meso,Sample_type=="Larvae")
 df.div.wtr <- subset(df.div.exp.meso,Sample_type=="Water")
@@ -392,41 +600,67 @@ df.div.wtr <- subset(df.div.exp.meso,Sample_type=="Water")
 ##larvae
 shapiro.test(df.div.lar$Observed)
 
-a.lar.pup <- aov(Proportion_pupated~InvSimpson*Food_type.x,data=df.div.lar)
+a.lar.pup <- aov(Proportion_pupated~Observed*Food_type.x,data=df.div.lar)
 summary(a.lar.pup)
 
 ##water
 shapiro.test(df.div.wtr$Observed)
 
-a.wtr.pup <- aov(Proportion_pupated~InvSimpson*Food_type.x,data=df.div.wtr)
+a.wtr.pup <- aov(Proportion_pupated~Observed*Food_type.x,data=df.div.wtr)
 summary(a.wtr.pup)
 
-library("bestNormalize")
-bestNormalize(df.div.lar$Proportion_pupated)
-df.div.lar$pup.cs <- center_scale(df.div.lar$Proportion_pupated)$x
-df.div.lar$pup.cs <- log(df.div.lar$Proportion_pupated)
+# library("bestNormalize")
+# bestNormalize(df.div.lar$Proportion_pupated)
+# df.div.lar$pup.cs <- center_scale(df.div.lar$Proportion_pupated)$x
+# df.div.lar$pup.cs <- log(df.div.lar$Proportion_pupated)
 
 ##mixed mods
 #df.div.lar$Proportion_pupated.scale <- scale(df.div.lar$Proportion_pupated, center = TRUE, scale = TRUE)
 
-<<<<<<< HEAD
-mod.obs.lar <- lmer(Proportion_pupated ~ Observed+Food_type.x+Observed:Food_type.x+(1|Microbe_treatment.x),data=df.div.wtr)
-=======
+mod.obs.wtr <- lmer(Proportion_pupated ~ Observed+Food_type.x+Observed:Food_type.x+(1|Microbe_treatment.x),data=df.div.wtr)
+
+summary(mod.obs.wtr)
+Anova(mod.obs.wtr)
+
+##larvae full mod - biomass
 mod.obs.lar <- lmer(Biomass_day40 ~ Observed+Food_type.x+Observed:Food_type.x+(1|Microbe_treatment.x),data=df.div.lar)
->>>>>>> 0487d10 (edits)
+
 summary(mod.obs.lar)
 Anova(mod.obs.lar)
 
-mod.obs.lar.noobs <- lmer(Biomass_day40 ~ Food_type.x+Observed:Food_type.x+(1|Microbe_treatment.x),data=df.div.lar)
-anova(mod.obs.lar,mod.obs.lar.noobs) #ns 0.1765
-
-mod.obs.lar.nofoo <- lmer(Biomass_day40 ~ Observed+Observed:Food_type.x+(1|Microbe_treatment.x),data=df.div.lar)
-#summary(mod.obs.lar.nofoo)
-anova(mod.obs.lar,mod.obs.lar.nofoo) #sig 0.001***
-
 mod.obs.lar.noint <- lmer(Biomass_day40 ~ Observed+Food_type.x+(1|Microbe_treatment.x),data=df.div.lar)
 #summary(mod.obs.lar)
-anova(mod.obs.lar,mod.obs.lar.noint) #sig 0.01**
+anova(mod.obs.lar,mod.obs.lar.noint) #sig 0.05*
+
+##larvae full mod - pupation
+mod.obs.lar <- lmer(Proportion_pupated ~ Observed+Food_type.x+Observed:Food_type.x+(1|Microbe_treatment.x),data=df.div.lar)
+
+summary(mod.obs.lar)
+Anova(mod.obs.lar)
+
+mod.obs.lar.noint <- lmer(Proportion_pupated ~ Observed+Food_type.x+(1|Microbe_treatment.x),data=df.div.lar)
+#summary(mod.obs.lar)
+anova(mod.obs.lar,mod.obs.lar.noint) #sig**
+
+##water full mod - biomass
+mod.obs.wtr <- lmer(Biomass_day40 ~ Observed+Food_type.x+Observed:Food_type.x+(1|Microbe_treatment.x),data=df.div.wtr)
+
+summary(mod.obs.wtr)
+Anova(mod.obs.wtr)
+
+mod.obs.wtr.noint <- lmer(Biomass_day40 ~ Observed+Food_type.x+(1|Microbe_treatment.x),data=df.div.wtr)
+#summary(mod.obs.wtr)
+anova(mod.obs.wtr,mod.obs.wtr.noint) #sig 0.05*
+
+##water full mod - pupation
+mod.obs.wtr <- lmer(Proportion_pupated ~ Observed+Food_type.x+Observed:Food_type.x+(1|Microbe_treatment.x),data=df.div.wtr)
+
+summary(mod.obs.wtr)
+Anova(mod.obs.wtr)
+
+mod.obs.wtr.noint <- lmer(Proportion_pupated ~ Observed+Food_type.x+(1|Microbe_treatment.x),data=df.div.wtr)
+#summary(mod.obs.wtr)
+anova(mod.obs.wtr,mod.obs.wtr.noint) #sig**
 
 ##reduced mod
 mod.obs.lar.red <- lmer(Biomass_day40 ~ Food_type.x+Observed:Food_type.x+(1|Microbe_treatment.x),data=df.div.lar)
