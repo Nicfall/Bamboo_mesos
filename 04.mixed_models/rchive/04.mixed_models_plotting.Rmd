@@ -1,0 +1,1078 @@
+---
+title: "Mixed models plotting"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+ rmarkdown::html_document:
+    theme: cerulean
+    toc: yes
+    toc_float: yes
+    highlight: haddock
+    number_sections: true
+editor_options: 
+  chunk_output_type: console
+---
+
+# Setup
+
+## Libs, directory
+
+```{r}
+library("stringr")
+library("plyr")
+library("dplyr")
+library("tidyr")
+library("cowplot")
+library("ggplot2")
+library("cowplot")
+library("pheatmap")
+library("RColorBrewer")
+library(colorspace)
+library("phyloseq")
+library("pheatmap")
+
+setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/04.mixed_models")
+```
+
+## Data
+
+```{r}
+#larv.ranef <- read.csv("larv.mod.ranef.csv")
+#larv.ranef <- read.csv("larv.mod.ranef.all.csv")
+#larv.ranef <- larv.mod.ranef.2ways
+larv.ranef <- read.csv("larv.mod.ranef.2ways.csv",row.names=1)
+
+##ps object & taxa table
+#ps.lar.trim <- readRDS("ps.exp.lar.trim.rds")
+ps.lar.trim <- readRDS("ps.exp.all.lar.trim.rds")
+ps.lar.trim #54 taxa, 50 samples
+tax.lar.trim <- data.frame(ps.lar.trim@tax_table)
+#tax.lar.trim
+```
+
+## Checking raw stuff
+
+```{r}
+##individual ASVs in all treats
+##raw counts
+ps.lar.trim.asv <- subset_taxa(ps.lar.trim,id=="ASV0006")
+plot_bar(ps.lar.trim.asv)+
+  facet_wrap(Food_type~Microbe_treatment,scales="free",ncol=5)
+
+ps.lar.trim.rel = transform_sample_counts(ps.lar.trim, function(x) x / sum(x))
+#ps.lar.trim.rel.trt <- subset_samples(ps.lar.trim.rel,Microbe_treatment=="MEM")
+ps.lar.trim.rel.asv <- subset_taxa(ps.lar.trim.rel,id=="ASV0085")
+
+plot_bar(ps.lar.trim.rel.asv)+
+  facet_wrap(Food_type~Microbe_treatment,ncol=5,scales="free")+
+  ggtitle("ASV0085 - Comamonas")
+```
+
+### Reformatting ranef table
+
+```{r}
+table(larv.ranef$grpvar)
+
+larv.ranef.food <- subset(larv.ranef, grpvar=="variable:Food_type")
+larv.ranef.micr <- subset(larv.ranef, grpvar=="variable:Microbe_treatment")
+table(larv.ranef.food$grpvar)
+
+# larv.ranef.treat$id <- substr(larv.ranef.treat$grp,1,7)
+# larv.ranef.treat$food <- str_sub(larv.ranef.treat$grp,13,18)
+# larv.ranef.treat$microbes <- str_sub(larv.ranef.treat$grp,9,11)
+# larv.ranef.treat$food_micr <- paste0(larv.ranef.treat$food,"_",larv.ranef.treat$microbes)
+#larv.ranef.treat$food_micr <- substr(larv.ranef.treat$grp,9,18)
+
+larv.ranef.food$id <- str_split_fixed(larv.ranef.food$grp,":",n=2)[,1]
+larv.ranef.food$food <- str_split_fixed(larv.ranef.food$grp,":",n=2)[,2]
+
+larv.ranef.micr$id <- str_split_fixed(larv.ranef.micr$grp,":",n=2)[,1]
+larv.ranef.micr$microbes <- str_split_fixed(larv.ranef.micr$grp,":",n=2)[,2]
+
+##just the columns for stuff below:
+larv.ranef.food.less <- larv.ranef.food %>%
+  select(-component,-term,-grp,-condsd)
+
+larv.ranef.micr.less <- larv.ranef.micr %>%
+  select(-component,-term,-grp,-condsd)
+
+# Reshape the data frame to have the food types as two columns
+larv.ranef.food.wide <- larv.ranef.food.less %>%
+  pivot_wider(
+    names_from = food,   # Column to use for new column names
+    values_from = condval       # Column to fill the new columns
+  )
+
+larv.ranef.micr.wide <- larv.ranef.micr.less %>%
+  pivot_wider(
+    names_from = microbes,   # Column to use for new column names
+    values_from = condval       # Column to fill the new columns
+  )
+
+##add taxa info
+larv.ranef.micr.wide.tax <- merge(larv.ranef.micr.wide,tax.lar.trim,by="id")
+larv.ranef.food.wide.tax <- merge(larv.ranef.food.wide,tax.lar.trim,by="id")
+##more informative ASV ids
+larv.ranef.micr.wide.tax$asv.gen <- paste0(larv.ranef.micr.wide.tax$id,"_",larv.ranef.micr.wide.tax$Genus)
+larv.ranef.food.wide.tax$asv.gen <- paste0(larv.ranef.food.wide.tax$id,"_",larv.ranef.food.wide.tax$Genus)
+```
+
+# Uncorrected conditional modes
+
+```{r}
+library("pheatmap")
+library("RColorBrewer")
+
+cond.micr.df <- larv.ranef.micr.wide.tax[,c("asv.gen","ECO","MMO","EMO","MEM","ALL")]
+
+#subset(cond.df)
+
+row.names(cond.micr.df) <- cond.micr.df$asv.gen
+cond.micr.df2 <- cond.micr.df[,colnames(cond.micr.df)!="asv.gen"]
+cond.micr.mat <- as.matrix(cond.micr.df2)
+
+#row.names(otu.rel) == row.names(sam.rel)
+
+max(cond.micr.mat)
+min(cond.micr.mat)
+# Get symmetric range around 0
+
+abs_max <- max(abs(min_val), abs(max_val))
+
+my_palette <- colorRampPalette(rev(brewer.pal(n=7, name="PiYG")))(10)
+breaks <- seq(-abs_max, abs_max, length.out = 11)
+
+# Actual data limits
+min_val <- min(cond.micr.mat, na.rm = TRUE)
+max_val <- max(cond.micr.mat, na.rm = TRUE)
+
+# Define number of colors on each side of 0 (you can adjust this)
+n_neg <- round(100 * abs(min_val) / (abs(min_val) + max_val))  # e.g., ~33
+n_pos <- 100 - n_neg                                           # e.g., ~67
+
+# Define color gradients
+neg_cols <- colorRampPalette(hcl.colors(7, "Heat 2")[1:4])(n_neg)  # pink to white
+pos_cols <- colorRampPalette(hcl.colors(7, "Heat 2")[4:7])(n_pos)  # white to green
+my_palette <- c(neg_cols, pos_cols)
+
+# Define breaks so that 0 falls exactly at the transition
+breaks <- seq(min_val, max_val, length.out = length(my_palette) + 1)
+
+# Draw the heatmap
+pheatmap(cond.micr.mat,
+         #color = my_palette,
+        color = colorRampPalette(c("blue","white","red"))(100),
+         breaks = breaks,
+         cluster_cols=F)
+
+library(pheatmap)
+
+# Define your matrix
+mat <- cond.micr.mat
+
+# Get data range
+min_val <- min(mat, na.rm = TRUE)
+max_val <- max(mat, na.rm = TRUE)
+
+# Safety check in case 0 is outside the data range
+if (min_val > 0 | max_val < 0) stop("Data does not span 0!")
+
+# Set number of colors (feel free to increase for smoothness)
+n_total <- 100
+
+# Calculate number of breaks below and above 0 based on data
+n_neg <- round(n_total * abs(min_val) / (abs(min_val) + max_val))
+n_pos <- n_total - n_neg
+
+# Create separate color gradients
+pink_gradient <- colorRampPalette(c("#FEE0D2", "#FCBBA1", "#FB6A4A", "#EF3B2C", "#CB181D"))(100)
+
+neg_colors <- colorRampPalette(c("white", "black"))(n_neg)
+pos_colors <- colorRampPalette(c("black", "#F14C7C"))(n_pos)
+full_palette <- c(neg_colors, pos_colors)
+
+# Create matching breaks (length = #colors + 1)
+breaks <- c(seq(min_val, 0, length.out = n_neg + 1),
+            seq(0, max_val, length.out = n_pos + 1)[-1])  # remove duplicate 0
+
+# Plot!
+pheatmap(mat,
+         color = full_palette,
+         breaks = breaks,
+         #scale="row",
+         cluster_cols = FALSE,
+         border_color=NA)
+
+# Plot!
+heatmap <- pheatmap(mat,
+         color = colorRampPalette(c("black", "white", "#F14C7C"))(100),
+         #breaks = breaksb
+         #scale="row",
+         cluster_cols = FALSE,
+         border_color=NA)
+
+library("colorBlindness")
+cvdPlot(heatmap)
+
+
+ramp <- colorRampPalette(c("#F14C7C", "white", "black"))(100)  # You can also try "Protan" or "Tritan"
+cvdPlot()
+show_col(ramp)
+cvdPlot(ramp)
+
+c(
+  "#FF4D92",  # bright fuchsia-pink
+  "#FF007F",  # vivid magenta
+  "#D5006D",  # strong pink with purple hue
+  "#F14C7C",  # rich rose pink
+  "#FF3385"   # neon-pink
+)
+
+pheatmap(my_matrix,
+         color = colorRampPalette(c("#D730A1", "white", "#999999"))(100),
+         cluster_cols = FALSE)
+
+
+(
+  "#FEE0D2",  # light pink
+  "#FCBBA1",  # peachy pink
+  "#FB6A4A",  # coral pink
+  "#EF3B2C",  # rose pink
+  "#CB181D",  # hot pink
+  "#E377C2",  # fuchsia
+  "#D4A5A5",  # dusty rose
+  "#F781BF"   # magenta-ish
+)
+
+# Define your color palette
+my_palette = colorRampPalette(brewer.pal(n=9,name="PuRd"))(100)
+
+# Create a ggplot object displaying the color palette
+palette_data <- data.frame(
+  color = my_palette,
+  x = 1:length(my_palette)
+)
+
+gg.pal <- ggplot(palette_data, aes(x = x, y=1, fill = color)) +
+  geom_bar(stat = "identity") +
+  scale_fill_identity() +
+  theme_void() +
+  labs(title = "Color Palette for cvdPlot")
+
+cvdPlot(gg.pal)
+
+row.source <- data.frame(likely_source=larv.ranef.micr.wide.tax$likely_source, row.names=larv.ranef.micr.wide.tax$asv.gen)
+
+ann_colors = list(likely_source=c(ENV="#84D1B5",LAB="#7D0112",Lab_water="grey80",MOS="#C6A947",`MOS/ENV`="#0085A6"))
+
+pheatmap(cond.micr.mat,
+         #scale="row",
+         #cluster_cols=F,
+        #color = colorRampPalette(c("powderblue", "white","violetred4"))(100),
+        annotation_row = row.source,
+        annotation_colors = ann_colors,
+        border_color = F,
+        #color = colorRampPalette(brewer.pal(n=9,name="Purple-Blue"))(100)
+        color = colorRampPalette(rev(hcl.colors(n=10,"PinkYl")))(100)
+)
+
+
+# row_annotation <- data.frame(
+#   Treatment = c("Control", "Treated", "Treated", "Control"),
+#   Timepoint = c("Day1", "Day1", "Day2", "Day2")
+# )
+
+# Now pass the annotation to pheatmap
+pheatmap(cond.mat.mmo,
+         color = colorRampPalette(c("black", "white", "#C6A947"))(100),
+         annotation_row = row_annotation
+)
+
+
+
+```
+
+## Checking origin sources?
+
+```{r}
+##MMO origin?
+larv.ranef.micr.wide.tax$origin.mmo <- (larv.ranef.micr.wide.tax$MMO/larv.ranef.micr.wide.tax$MEM) - (larv.ranef.micr.wide.tax$EMO/larv.ranef.micr.wide.tax$MEM)
+
+##EMO origin? 
+larv.ranef.micr.wide.tax$origin.emo <- (larv.ranef.micr.wide.tax$EMO/larv.ranef.micr.wide.tax$MEM) - (larv.ranef.micr.wide.tax$MMO/larv.ranef.micr.wide.tax$MEM)
+
+ggplot(larv.ranef.micr.wide.tax,aes(x=reorder(asv.gen,origin.mmo),y=origin.mmo,fill=likely_source))+
+  geom_bar(stat="identity")+
+  theme(axis.text.x=element_text(angle=90,hjust=1))
+
+ps.lar.sourceglom <- tax_glom(ps.lar.trim.rel,"likely_source")
+
+plot_bar(ps.lar.sourceglom,fill="Microbe_treatment",x="likely_source")+
+  facet_wrap(~Microbe_treatment,scales="free")
+```
+
+
+
+# Conditional modes by treatments
+
+## Calculate differences
+
+### Between foods
+
+```{r}
+larv.ranef.food.wide.tax$diff.bvl <- larv.ranef.food.wide.tax$Bamboo - larv.ranef.food.wide.tax$`Larval food`
+
+##MMO - MMO BETWEEN FOODS
+larv.ranef.wide.tax$diff.bmmo.lmmo <- larv.ranef.wide.tax$Bamboo_MMO - larv.ranef.wide.tax$Larval_MMO
+##EMO - EMO BETWEEN FOODS
+larv.ranef.wide.tax$diff.bemo.lemo <- larv.ranef.wide.tax$Bamboo_EMO - larv.ranef.wide.tax$Larval_EMO
+##MEM - MEM BETWEEN FOODS
+larv.ranef.wide.tax$diff.bmem.lmem <- larv.ranef.wide.tax$Bamboo_MEM - larv.ranef.wide.tax$Larval_MEM
+
+##All & eco
+##EMO - EMO BETWEEN FOODS
+larv.ranef.wide.tax$diff.ball.lall <- larv.ranef.wide.tax$Bamboo_ALL - larv.ranef.wide.tax$Larval_ALL
+##MEM - MEM BETWEEN FOODS
+larv.ranef.wide.tax$diff.beco.leco <- larv.ranef.wide.tax$Bamboo_ECO - larv.ranef.wide.tax$Larval_ECO
+
+##MMO - EMO BETWEEN FOODS
+# larv.ranef.wide.tax$diff.bmmo.lemo <- larv.ranef.wide.tax$Larval_MMO - larv.ranef.wide.tax$Bamboo_EMO
+# ##MMO - MEM BETWEEN FOODS
+# larv.ranef.wide.tax$diff.bmmo.lmem <- larv.ranef.wide.tax$Larval_MMO - larv.ranef.wide.tax$Bamboo_MEM
+
+##EMO - MMO BETWEEN FOODS
+#larv.ranef.wide.tax$diff.lemo.bmmo <- larv.ranef.wide.tax$Larval_EMO - larv.ranef.wide.tax$Bamboo_MMO
+
+##EMO - MEM BETWEEN FOODS
+#larv.ranef.wide.tax$diff.lemo.bmem <- larv.ranef.wide.tax$Larval_EMO - larv.ranef.wide.tax$Bamboo_MEM
+
+##MEM - MMO BETWEEN FOODS
+#larv.ranef.wide.tax$diff.lmem.bmmo <- larv.ranef.wide.tax$Larval_MEM - larv.ranef.wide.tax$Bamboo_MMO
+##MEM - EMO BETWEEN FOODS
+#larv.ranef.wide.tax$diff.lmem.bemo <- larv.ranef.wide.tax$Larval_MEM - larv.ranef.wide.tax$Bamboo_EMO
+
+```
+
+## Heat map with everything? 
+
+```{r}
+larv.ranef.all <- join(larv.ranef.food.wide.tax,larv.ranef.micr.wide.tax,by="asv.gen")
+
+cond.all.df <- larv.ranef.all[,c("asv.gen","ECO","MMO","EMO","MEM","ALL","Bamboo","Larval food")]
+
+#subset(cond.df)
+
+row.names(cond.all.df) <- cond.all.df$asv.gen
+cond.all.df2 <- cond.all.df[,colnames(cond.all.df)!="asv.gen"]
+cond.all.mat <- as.matrix(cond.all.df2)
+
+##full thing
+pheatmap(cond.all.mat,
+         #color = my_palette,
+        #color = colorRampPalette(c("blue","white","red"))(100),
+         #breaks = breaks,
+        scale="row",
+         cluster_cols=F)
+
+#row.names(otu.rel) == row.names(sam.rel)
+
+row.source <- data.frame(likely_source=larv.ranef.all$likely_source, row.names=larv.ranef.all$asv.gen)
+
+ann_colors = list(likely_source=c(ENV="#84D1B5",LAB="#7D0112",Lab_water="grey80",MOS="#C6A947",`MOS/ENV`="#0085A6"))
+
+# Actual data limits
+min_val <- min(cond.all.mat, na.rm = TRUE)
+max_val <- max(cond.all.mat, na.rm = TRUE)
+
+# Define number of colors on each side of 0 (you can adjust this)
+n_neg <- round(100 * abs(min_val) / (abs(min_val) + max_val))  # e.g., ~33
+n_pos <- 100 - n_neg                                           # e.g., ~67
+
+# Define color gradients
+# neg_cols <- colorRampPalette(hcl.colors(10, "RdGy")[1:5])(n_neg)  # pink to white
+# pos_cols <- colorRampPalette(hcl.colors(10, "RdGy")[5:10])(n_pos)  # white to green
+# my_palette <- c(neg_cols, pos_cols)
+
+neg_colors <- colorRampPalette(c("grey50", "white"))(n_neg)
+pos_colors <- colorRampPalette(c("white","orchid4"))(n_pos)
+my_palette <- c(neg_colors, pos_colors)
+
+# Define breaks so that 0 falls exactly at the transition
+breaks <- seq(min_val, max_val, length.out = length(my_palette) + 1)
+
+# Draw the heatmap
+pheatmap(cond.all.mat,
+         color = my_palette,
+         #color = colorRampPalette(c("blue","white","red"))(100),
+         breaks = breaks,
+         annotation_row = row.source,
+         annotation_colors = ann_colors,
+         border_color = F,
+         cluster_cols=F)
+
+ramp <- colorRampPalette(c("black","lightsalmon3", "white", "slategray"))(10)  # You can also try "Protan" or "Tritan"
+palette_data <- data.frame(
+  color = ramp,
+  x = 1:length(ramp)
+)
+
+gg.pal <- ggplot(palette_data, aes(x = x, y=1, fill = color)) +
+  geom_bar(stat = "identity") +
+  scale_fill_identity() +
+  theme_void() +
+  labs(title = "Color Palette for cvdPlot")
+
+cvdPlot(gg.pal)
+
+library(pheatmap)
+
+# Define your matrix
+mat <- cond.micr.mat
+
+# Get data range
+min_val <- min(mat, na.rm = TRUE)
+max_val <- max(mat, na.rm = TRUE)
+
+# Set number of colors (feel free to increase for smoothness)
+n_total <- 100
+
+# Calculate number of breaks below and above 0 based on data
+n_neg <- round(n_total * abs(min_val) / (abs(min_val) + max_val))
+n_pos <- n_total - n_neg
+
+# Create separate color gradients
+pink_gradient <- colorRampPalette(c("#FEE0D2", "#FCBBA1", "#FB6A4A", "#EF3B2C", "#CB181D"))(100)
+
+neg_colors <- colorRampPalette(c("white", "black"))(n_neg)
+pos_colors <- colorRampPalette(c("black", "#F14C7C"))(n_pos)
+full_palette <- c(neg_colors, pos_colors)
+
+# Create matching breaks (length = #colors + 1)
+breaks <- c(seq(min_val, 0, length.out = n_neg + 1),
+            seq(0, max_val, length.out = n_pos + 1)[-1])  # remove duplicate 0
+
+# Plot!
+pheatmap(mat,
+         color = full_palette,
+         breaks = breaks,
+         #scale="row",
+         cluster_cols = FALSE,
+         border_color=NA)
+
+# Plot!
+heatmap <- pheatmap(mat,
+         color = colorRampPalette(c("black", "white", "#F14C7C"))(100),
+         #breaks = breaksb
+         #scale="row",
+         cluster_cols = FALSE,
+         border_color=NA)
+
+library("colorBlindness")
+cvdPlot(heatmap)
+
+
+ramp <- colorRampPalette(c("#F14C7C", "white", "black"))(100)  # You can also try "Protan" or "Tritan"
+cvdPlot()
+show_col(ramp)
+cvdPlot(ramp)
+
+c(
+  "#FF4D92",  # bright fuchsia-pink
+  "#FF007F",  # vivid magenta
+  "#D5006D",  # strong pink with purple hue
+  "#F14C7C",  # rich rose pink
+  "#FF3385"   # neon-pink
+)
+
+pheatmap(my_matrix,
+         color = colorRampPalette(c("#D730A1", "white", "#999999"))(100),
+         cluster_cols = FALSE)
+
+
+(
+  "#FEE0D2",  # light pink
+  "#FCBBA1",  # peachy pink
+  "#FB6A4A",  # coral pink
+  "#EF3B2C",  # rose pink
+  "#CB181D",  # hot pink
+  "#E377C2",  # fuchsia
+  "#D4A5A5",  # dusty rose
+  "#F781BF"   # magenta-ish
+)
+
+# Define your color palette
+my_palette = colorRampPalette(brewer.pal(n=9,name="PuRd"))(100)
+
+# Create a ggplot object displaying the color palette
+palette_data <- data.frame(
+  color = my_palette,
+  x = 1:length(my_palette)
+)
+
+gg.pal <- ggplot(palette_data, aes(x = x, y=1, fill = color)) +
+  geom_bar(stat = "identity") +
+  scale_fill_identity() +
+  theme_void() +
+  labs(title = "Color Palette for cvdPlot")
+
+cvdPlot(gg.pal)
+
+row.source <- data.frame(likely_source=larv.ranef.micr.wide.tax$likely_source, row.names=larv.ranef.micr.wide.tax$asv.gen)
+
+ann_colors = list(likely_source=c(ENV="#84D1B5",LAB="#7D0112",Lab_water="grey80",MOS="#C6A947",`MOS/ENV`="#0085A6"))
+
+pheatmap(cond.micr.mat,
+         #scale="row",
+         #cluster_cols=F,
+        #color = colorRampPalette(c("powderblue", "white","violetred4"))(100),
+        annotation_row = row.source,
+        annotation_colors = ann_colors,
+        border_color = F,
+        #color = colorRampPalette(brewer.pal(n=9,name="Purple-Blue"))(100)
+        color = colorRampPalette(rev(hcl.colors(n=10,"PinkYl")))(100)
+)
+
+
+# row_annotation <- data.frame(
+#   Treatment = c("Control", "Treated", "Treated", "Control"),
+#   Timepoint = c("Day1", "Day1", "Day2", "Day2")
+# )
+
+# Now pass the annotation to pheatmap
+pheatmap(cond.mat.mmo,
+         color = colorRampPalette(c("black", "white", "#C6A947"))(100),
+         annotation_row = row_annotation
+)
+
+
+```
+
+### Within foods
+
+```{r}
+##MMO - EMO WITHIN BAMBOO
+#larv.ranef.wide.tax$diff.bmmo.bemo <- larv.ranef.wide.tax$Bamboo_MMO - larv.ranef.wide.tax$Bamboo_EMO
+##MMO - MEM WITHIN BAMBOO
+larv.ranef.wide.tax$diff.bmmo.bmem <- larv.ranef.wide.tax$Bamboo_MMO - larv.ranef.wide.tax$Bamboo_MEM
+##EMO - MEM WITHIN BAMBOO
+larv.ranef.wide.tax$diff.bemo.bmem <- larv.ranef.wide.tax$Bamboo_EMO - larv.ranef.wide.tax$Bamboo_MEM
+
+##MMO - EMO WITHIN LARVAL FOOD
+#larv.ranef.wide.tax$diff.lmmo.lemo <- larv.ranef.wide.tax$Larval_MMO - larv.ranef.wide.tax$Larval_EMO
+##MMO - MEM WITHIN LARVAL FOOD
+larv.ranef.wide.tax$diff.lmmo.lmem <- larv.ranef.wide.tax$Larval_MMO - larv.ranef.wide.tax$Larval_MEM
+##EMO - MEM WITHIN LARVAL FOOD
+larv.ranef.wide.tax$diff.lemo.lmem <- larv.ranef.wide.tax$Larval_EMO - larv.ranef.wide.tax$Larval_MEM
+
+```
+
+## Saving
+
+```{r}
+#write.csv(larv.ranef.wide.tax,file="larv.ranef.wide.tax.all.csv")
+#write.csv(larv.ranef.wide.tax,file="larv.ranef.wide.tax.csv")
+```
+
+## Checking one out as an example
+
+```{r}
+larv.ranef.diffs <- larv.ranef.wide.tax %>%
+  select(id, starts_with("diff.")) %>%
+  pivot_longer(
+    cols = starts_with("diff."),
+    names_to = "comparison",
+    values_to = "difference"
+  )
+
+#larv.ranef.diffs.asv1 <- subset(larv.ranef.diffs,id=="ASV0001")
+
+#ggplot(larv.ranef.diffs.asv1,aes(x=comparison,y=difference))+
+#  geom_bar(stat="identity")+
+#  theme(axis.text.x=element_text(angle=45,hjust=1))
+
+##alternatively
+ggplot(larv.ranef.wide.tax,aes(x=reorder(asv.gen,diff.bemo.lemo),y=diff.bemo.lemo))+
+  geom_bar(stat="identity")+
+  theme(axis.text.x=element_text(angle=45,hjust=1))+
+  ggtitle("EMO - bamboo minus larval food")
+
+##individual ASVs within treatments
+ps.lar.trim.rel = transform_sample_counts(ps.lar.trim, function(x) x / sum(x))
+ps.lar.trim.rel.trt <- subset_samples(ps.lar.trim.rel,Microbe_treatment=="MEM")
+ps.lar.trim.rel.trt.asv <- subset_taxa(ps.lar.trim.rel.trt,id=="ASV0027")
+
+plot_bar(ps.lar.trim.rel.trt.asv)+
+  facet_wrap(Food_type~Microbe_treatment)
+```
+
+## Plotting{.tabset}
+
+```{r}
+larv.ranef.wide.tax <- read.csv("larv.ranef.wide.tax.csv")
+```
+
+### Just food
+
+```{r}
+ggplot(larv.ranef.food.wide.tax,aes(x=reorder(asv.gen,diff.bvl),y=diff.bvl,fill=likely_source))+
+  #geom_bar(stat="identity",position=position_dodge(1))+
+  geom_bar(stat="identity",color="black")+
+  scale_fill_manual(values=c("#84D1B5","#7D0112","grey80","#C6A947","#0085A6"))+
+  theme_cowplot()+
+  theme(axis.text.x=element_text(angle=90,hjust=1))+
+  ggtitle("Bamboo - larval food")
+```
+
+### MMO as the reference level
+
+```{r}
+larv.ranef.micr.wide.tax$diff.mmo.emo <- larv.ranef.micr.wide.tax$MMO - larv.ranef.micr.wide.tax$EMO
+larv.ranef.micr.wide.tax$diff.mmo.mem <- larv.ranef.micr.wide.tax$MMO - larv.ranef.micr.wide.tax$MEM
+larv.ranef.micr.wide.tax$diff.mmo.all <- larv.ranef.micr.wide.tax$MMO - larv.ranef.micr.wide.tax$ALL
+larv.ranef.micr.wide.tax$diff.mmo.eco <- larv.ranef.micr.wide.tax$MMO - larv.ranef.micr.wide.tax$ECO
+```
+
+#### Plot
+
+```{r}
+cond.df.mmo <- larv.ranef.micr.wide.tax[,c("asv.gen","diff.mmo.emo","diff.mmo.mem","diff.mmo.all","diff.mmo.eco")]
+
+#subset(cond.df)
+
+row.names(cond.df.mmo) <- cond.df.mmo$asv.gen
+cond.df.mmo2 <- cond.df.mmo[,colnames(cond.df.mmo)!="asv.gen"]
+cond.mat.mmo <- as.matrix(cond.df.mmo2)
+
+#row.names(otu.rel) == row.names(sam.rel)
+
+# Suppose cond.mat.mmo has samples (rows) and features (columns)
+# and your annotation looks like this:
+row.source <- data.frame(likely_source=larv.ranef.micr.wide.tax$likely_source, row.names=larv.ranef.micr.wide.tax$asv.gen)
+# row_annotation <- data.frame(
+#   Treatment = c("Control", "Treated", "Treated", "Control"),
+#   Timepoint = c("Day1", "Day1", "Day2", "Day2")
+# )
+
+# Now pass the annotation to pheatmap
+pheatmap(cond.mat.mmo,
+         color = colorRampPalette(c("black", "white", "#C6A947"))(100),
+         annotation_row = row_annotation
+)
+
+ann_colors = list(
+    likely_source=c(ENV="#84D1B5",LAB="#7D0112",Lab_water="grey80",MOS="#C6A947",`MOS/ENV`="#0085A6")
+)
+
+pheatmap(cond.mat.mmo,
+        scale="row",
+         #cluster_cols=F,
+        color = colorRampPalette(c("black","white","#C6A947"))(100),
+        annotation_row = row.source,
+        annotation_colors = ann_colors
+        #color = colorRampPalette(rev(brewer.pal(n=7,name="PiYG")))(100)
+        #color = colorRampPalette(rev(brewer.pal(n=7,name="PiYG")))(100)
+)
+#("#84D1B5","#7D0112","grey80","#C6A947","#0085A6"))+
+
+pheatmap(cond.mat,
+         scale="row",
+         #cluster_cols=F,
+        #color = colorRampPalette(c("blue", "white", "red"))(100),
+        color = colorRampPalette(rev(brewer.pal(n=7,name="PiYG")))(100)
+)
+```
+
+### Mosq. microbes
+
+```{r}
+ggplot(larv.ranef.wide.tax,aes(x=reorder(asv.gen,diff.bmmo.lmmo),y=diff.bmmo.lmmo))+
+  #geom_bar(stat="identity",position=position_dodge(1))+
+  geom_bar(stat="identity")+
+  #scale_fill_manual(values=c("#C6A947","#0085A6","#84D1B5"))+
+  theme_cowplot()+
+  theme(axis.text.x=element_text(angle=90,hjust=1))+
+  ggtitle("MMO - bamboo minus larval food")
+
+```
+
+### Env. microbes
+
+```{r}
+ggplot(larv.ranef.wide.tax,aes(x=reorder(asv.gen,diff.bemo.lemo),y=diff.bemo.lemo))+
+  #geom_bar(stat="identity",position=position_dodge(1))+
+  geom_bar(stat="identity")+
+  #scale_fill_manual(values=c("#C6A947","#0085A6","#84D1B5"))+
+  theme_cowplot()+
+  theme(axis.text.x=element_text(angle=90,hjust=1))+
+  ggtitle("EMO - bamboo minus larval food")
+
+```
+
+### Mosq + env microbes
+
+```{r}
+ggplot(larv.ranef.wide.tax,aes(x=reorder(asv.gen,diff.bmem.lmem),y=diff.bmem.lmem))+
+  #geom_bar(stat="identity",position=position_dodge(1))+
+  geom_bar(stat="identity")+
+  #scale_fill_manual(values=c("#C6A947","#0085A6","#84D1B5"))+
+  theme_cowplot()+
+  theme(axis.text.x=element_text(angle=90,hjust=1))+
+  ggtitle("MEM - bamboo minus larval food")
+```
+
+## Heat map
+
+```{r}
+library("pheatmap")
+library("RColorBrewer")
+
+#diff.df <- larv.ranef.wide.tax[,c("asv.gen","diff.beco.leco","diff.bemo.lemo","diff.bmmo.lmmo","diff.bmem.lmem","diff.ball.lall")]
+diff.df <- larv.ranef.wide.tax[,c("asv.gen","diff.bemo.lemo","diff.bmmo.lmmo","diff.bmem.lmem")]
+
+row.names(diff.df) <- diff.df$asv.gen
+diff.df2 <- diff.df[,2:4]
+#diff.df2 <- diff.df[,2:6]
+diff.mat <- as.matrix(diff.df2)
+
+#row.names(otu.rel) == row.names(sam.rel)
+
+pheatmap(diff.mat,
+        color = colorRampPalette(c("#8C510A", "white", "darkolivegreen4"))(100),
+        scale="row",
+        cluster_rows=T,
+        cluster_cols=T,
+        #color = colorRampPalette(brewer.pal(n=7,name="BrBG"))(100)
+        #color = colorRampPalette(brewer.pal(n=7,name="PiYG"))(100)
+        #color = colorRampPalette(rev(brewer.pal(n=7,name="PiYG")))(100)
+)
+
+"#8C510A"
+```
+
+## Plotting - all treatments{.tabset}
+
+```{r}
+larv.ranef.wide.tax <- read.csv("larv.ranef.wide.tax.all.csv")
+```
+
+### Mosq. microbes
+
+```{r}
+ggplot(larv.ranef.wide.tax,aes(x=reorder(asv.gen,diff.bmmo.lmmo),y=diff.bmmo.lmmo))+
+  #geom_bar(stat="identity",position=position_dodge(1))+
+  geom_bar(stat="identity")+
+  #scale_fill_manual(values=c("#C6A947","#0085A6","#84D1B5"))+
+  theme_cowplot()+
+  theme(axis.text.x=element_text(angle=90,hjust=1))+
+  ggtitle("MMO - bamboo minus larval food")
+
+```
+
+### Env. microbes
+
+```{r}
+ggplot(larv.ranef.wide.tax,aes(x=reorder(asv.gen,diff.bemo.lemo),y=diff.bemo.lemo))+
+  #geom_bar(stat="identity",position=position_dodge(1))+
+  geom_bar(stat="identity")+
+  #scale_fill_manual(values=c("#C6A947","#0085A6","#84D1B5"))+
+  theme_cowplot()+
+  theme(axis.text.x=element_text(angle=90,hjust=1))+
+  ggtitle("EMO - bamboo minus larval food")
+
+```
+
+### Mosq + env microbes
+
+```{r}
+ggplot(larv.ranef.wide.tax,aes(x=reorder(asv.gen,diff.bmem.lmem),y=diff.bmem.lmem))+
+  #geom_bar(stat="identity",position=position_dodge(1))+
+  geom_bar(stat="identity")+
+  #scale_fill_manual(values=c("#C6A947","#0085A6","#84D1B5"))+
+  theme_cowplot()+
+  theme(axis.text.x=element_text(angle=90,hjust=1))+
+  ggtitle("MEM - bamboo minus larval food")
+```
+
+## Heat map
+
+```{r}
+library("pheatmap")
+library("RColorBrewer")
+
+diff.df <- larv.ranef.wide.tax[,c("asv.gen","diff.beco.leco","diff.bemo.lemo","diff.bmmo.lmmo","diff.bmem.lmem","diff.ball.lall")]
+#diff.df <- larv.ranef.wide.tax[,c("asv.gen","diff.bemo.lemo","diff.bmmo.lmmo","diff.bmem.lmem")]
+
+row.names(diff.df) <- diff.df$asv.gen
+#diff.df2 <- diff.df[,2:4]
+diff.df2 <- diff.df[,2:6]
+diff.mat <- as.matrix(diff.df2)
+
+#row.names(otu.rel) == row.names(sam.rel)
+
+pheatmap(diff.mat,
+        color = colorRampPalette(c("#8C510A", "white", "darkolivegreen4"))(100),
+        scale="row",
+        cluster_rows=T,
+        cluster_cols=T,
+        #color = colorRampPalette(brewer.pal(n=7,name="BrBG"))(100)
+        #color = colorRampPalette(brewer.pal(n=7,name="PiYG"))(100)
+        #color = colorRampPalette(rev(brewer.pal(n=7,name="PiYG")))(100)
+)
+
+"#8C510A"
+```
+
+# Stopped updating script here
+
+# ggpredict
+
+```{r, eval=F}
+#install.packages("ggeffects")
+library("ggeffects")
+
+setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/04.mixed_models")
+
+larv.mod.nb1 <- readRDS("larv.mod.nb1.rds")
+
+#ps.trim.wtr <- readRDS("ps.exp.wtr.trim.rds")
+#ps.trim.wtr
+ps.trim.lar <- readRDS("ps.exp.lar.trim.rds")
+ps.trim.lar
+```
+
+```{r, eval=F}
+pred.lar.nb1 <- ggpredict(larv.mod.nb1, terms=c("variable", "Food_type","Microbe_treatment"), type="re")
+
+plot(pred.lar.nb1)+
+  theme(axis.text.x=element_text(angle=90))+
+  theme_classic()
+
+# pred.lar.nb2 <- ggpredict(larv.mod.nb2, terms=c("variable", "Food_type","Microbe_treatment"), type="re")
+# plot(pred.lar.nb2)
+
+tax.trim.lar <- data.frame(ps.trim.lar@tax_table)
+
+##make same column names
+pred.lar.nb1$id <- pred.lar.nb1$x
+pred.lar.tax <- merge(tax.trim.lar,pred.lar.nb1,by="id")
+
+ggplot(pred.lar.tax,aes(x=group,y=predicted,color=facet))+
+  geom_point()+
+  facet_wrap(~facet)
+
+pred.lar.tax.mmo <- subset(pred.lar.tax,facet=="MMO")
+
+ggplot(pred.lar.tax.mmo,aes(x=group,y=predicted,fill=id))+
+  #geom_bar(stat="identity",position=position_dodge(0.5))+
+  geom_bar(stat="identity")+
+  facet_wrap(~Genus,scales="free")+
+  theme(legend.position="none")
+
+pred.lar.tax.bamb <- subset(pred.lar.tax,group=="Bamboo")
+
+ggplot(pred.lar.tax.bamb,aes(x=facet,y=predicted,fill=id))+
+  geom_bar(stat="identity")+
+  facet_wrap(~Family,scales="free")+
+  theme(legend.position="none")
+```
+
+Trying some different plots
+
+```{r, eval=F}
+library("cowplot")
+
+pred.lar.tax.comp <- subset(pred.lar.tax,facet!="ECO"&facet!="ALL")
+
+pred.lar.tax.comp.bam <- subset(pred.lar.tax.comp,group=="Bamboo")
+
+ggplot(pred.lar.tax.comp.bam,aes(x=facet,y=predicted,fill=facet))+
+  facet_wrap(~id,scales="free")+
+  geom_bar(stat="identity")+
+  theme_cowplot()
+
+##heatmap
+library("pheatmap")
+library("RColorBrewer")
+
+library("tidyr")
+
+#pred.lar.tax.comp$asv_food <- paste0(pred.lar.tax.comp$id,"_",pred.lar.tax.comp$group)
+
+colnames(pred.lar.tax.comp)
+
+##remove not needed columns
+pred.lar.min <- pred.lar.tax.comp %>%
+  select(predicted,facet,group,id)
+
+##bamboo
+pred.lar.min.bam <- subset(pred.lar.min,group=="Bamboo")
+
+pred.lar.min.bamw <- pred.lar.min.bam %>%
+  pivot_wider(names_from=id,values_from=predicted) %>%
+  as.data.frame()
+
+row.names(pred.lar.min.bamw) <- pred.lar.min.bamw$facet
+
+pred.lar.min.bamw2 <- pred.lar.min.bamw[,3:ncol(pred.lar.min.bamw)]
+
+pheatmap(as.matrix(pred.lar.min.bamw2),
+        color = colorRampPalette(c("white", "orange", "red"))(100),
+        #color = colorRampPalette(rev(brewer.pal(n=7,name="PiYG")))(100),
+        #scale="column",
+        cluster_cols = F,
+        cluster_rows=F
+)
+
+##larval food
+pred.lar.min.lar <- subset(pred.lar.min,group=="Larval food")
+
+pred.lar.min.larw <- pred.lar.min.lar %>%
+  pivot_wider(names_from=id,values_from=predicted) %>%
+  as.data.frame()
+
+row.names(pred.lar.min.larw) <- pred.lar.min.larw$facet
+
+pred.lar.min.larw2 <- pred.lar.min.larw[,3:ncol(pred.lar.min.larw)]
+
+pheatmap(as.matrix(pred.lar.min.larw2),
+        color = colorRampPalette(c("white", "orange", "red"))(100),
+        #color = colorRampPalette(rev(brewer.pal(n=7,name="PiYG")))(100),
+        #scale="column",
+        cluster_cols = F,
+        cluster_rows=F
+)
+
+library("ggrepel")
+
+##correlating what happened in bamboo & larval food
+pred.lar.min$group <- gsub("Larval food","Larval",pred.lar.min$group)
+
+pred.lar.min.cor <- pred.lar.min %>%
+  pivot_wider(names_from=group,values_from=predicted)
+
+pred.lar.min.cor$facet <- factor(pred.lar.min.cor$facet,levels=c("MMO","EMO","MEM"))
+
+##full plot
+ggplot(pred.lar.min.cor,aes(x=Bamboo,y=Larval,color=facet,shape=facet,label=id))+
+  geom_point(size=2)+
+  geom_abline(intercept=0,slope=1,linetype="dotted")+
+  geom_text_repel(color="black")+
+  theme_cowplot()+
+  ylab("Standard diet")+
+  xlab("Bamboo leaves")+
+  scale_color_manual(values=c("#C6A947","#84D1B5","#0085A6"))
+
+##zooming into the low section
+ggplot(pred.lar.min.cor,aes(x=Bamboo,y=Larval,color=facet,shape=facet,label=id))+
+  geom_point()+
+  geom_abline(intercept=0,slope=1,linetype="dotted")+
+  geom_abline(intercept=0,slope=0.5,linetype="dotted")+
+  geom_abline(intercept=0,slope=2,linetype="dotted")+
+  xlim(0,100)+
+  ylim(0,100)+
+  geom_text_repel(color="black")+
+  theme_cowplot()+
+  ylab("Standard diet")+
+  xlab("Bamboo leaves")+
+  scale_color_manual(values=c("#C6A947","#84D1B5","#0085A6"))
+
+mean(sample_sums(ps.lar.trim))
+#47762.4
+1000/47762.4
+
+##max 2k - larval food
+ggplot(pred.lar.min.cor,aes(x=Bamboo,y=Larval,color=facet,shape=facet,label=id))+
+  geom_point()+
+  geom_abline(intercept=0,slope=1,linetype="dotted")+
+  geom_abline(intercept=0,slope=0.5,linetype="dotted")+
+  geom_abline(intercept=0,slope=2,linetype="dotted")+
+  #xlim(0,4000)+
+  ylim(1000,30000)+
+  geom_text_repel(color="black")+
+  theme_cowplot()+
+  ylab("Standard diet")+
+  xlab("Bamboo leaves")+
+  scale_color_manual(values=c("#C6A947","#84D1B5","#0085A6"))
+
+##max 2k - bamboo
+ggplot(pred.lar.min.cor,aes(x=Bamboo,y=Larval,color=facet,shape=facet,label=id))+
+  geom_point()+
+  geom_abline(intercept=0,slope=1,linetype="dotted")+
+  geom_abline(intercept=0,slope=0.5,linetype="dotted")+
+  geom_abline(intercept=0,slope=2,linetype="dotted")+
+  xlim(1000,30000)+
+  #ylim(1000,30000)+
+  geom_text_repel(color="black")+
+  theme_cowplot()+
+  ylab("Standard diet")+
+  xlab("Bamboo leaves")+
+  scale_color_manual(values=c("#C6A947","#84D1B5","#0085A6"))
+```
+
+Checking what the actual data look like
+
+```{r, eval=F}
+ps.trim.lar.comp <- subset_samples(ps.lar.trim,Microbe_treatment!="ALL"&Microbe_treatment!="ECO")
+ps.trim.lar.comp
+
+ps.lar.trim.rel = transform_sample_counts(ps.trim.lar.comp, function(x) x / sum(x))
+ps.lar.trim.rel
+
+ps.asv1 <- subset_taxa(ps.trim.lar.comp,id=="ASV0001")
+ps.asv1@otu_table
+plot_bar(ps.asv1,x="Sample")+
+  facet_wrap(Microbe_treatment~Food_type)
+plot_bar(ps.asv1)+
+  facet_wrap(Microbe_treatment~Food_type,scales="free")
+
+ps.asv3 <- subset_taxa(ps.lar.trim.rel,id=="ASV0003")
+ps.asv3
+plot_bar(ps.asv3,x="Microbe_treatment")+
+  facet_wrap(~Food_type)
+plot_bar(ps.asv3)+
+  facet_wrap(Microbe_treatment~Food_type,scales="free")
+
+ps.asv4 <- subset_taxa(ps.lar.trim.rel,id=="ASV0004")
+ps.asv4
+plot_bar(ps.asv4,x="Microbe_treatment")+
+  facet_wrap(~Food_type)
+
+ps.asv6 <- subset_taxa(ps.lar.trim.rel,id=="ASV0006")
+ps.asv6
+plot_bar(ps.asv6,x="Microbe_treatment")+
+  facet_wrap(~Food_type)
+
+ps.asv7 <- subset_taxa(ps.lar.trim.rel,id=="ASV0007")
+ps.asv7
+plot_bar(ps.asv7,x="Microbe_treatment")+
+  facet_wrap(~Food_type)
+
+ps.asv19 <- subset_taxa(ps.trim.lar.comp,id=="ASV0019")
+ps.asv19
+plot_bar(ps.asv19,x="Microbe_treatment")+
+  facet_wrap(~Food_type)
+plot_bar(ps.asv19)+
+  facet_wrap(Microbe_treatment~Food_type,scales="free")
+
+ps.asv33 <- subset_taxa(ps.trim.lar.comp,id=="ASV0033")
+ps.asv33
+plot_bar(ps.asv33,x="Microbe_treatment")+
+  facet_wrap(~Food_type)
+plot_bar(ps.asv33)+
+  facet_wrap(Microbe_treatment~Food_type,scales="free")
+
+ps.asv54 <- subset_taxa(ps.lar.trim.rel,id=="ASV0054")
+ps.asv54
+plot_bar(ps.asv54,x="Microbe_treatment")+
+  facet_wrap(~Food_type)
+plot_bar(ps.asv54)+
+  facet_wrap(Microbe_treatment~Food_type)
+
+larv.ranef.wide.tax[6,]
+
+
+         
+#         )+
+#  facet_wrap(Food_type~Microbe_treatment)
+```
+
+

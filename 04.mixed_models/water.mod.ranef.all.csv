@@ -1,0 +1,1243 @@
+"","component","grpvar","term","grp","condval","condsd"
+"cond.1","cond","variable","(Intercept)","ASV0001",0.147808238825976,0.902272032703834
+"cond.2","cond","variable","(Intercept)","ASV0002",0.300560530816597,1.63496980289359
+"cond.3","cond","variable","(Intercept)","ASV0003",0.0791709612805215,0.624798551110748
+"cond.4","cond","variable","(Intercept)","ASV0004",0.176561336624972,1.0349565098873
+"cond.5","cond","variable","(Intercept)","ASV0005",0.18819210763638,1.08939485899624
+"cond.6","cond","variable","(Intercept)","ASV0007",0.180331270804454,1.05124195070096
+"cond.7","cond","variable","(Intercept)","ASV0008",0.150691059775104,0.915370081815339
+"cond.8","cond","variable","(Intercept)","ASV0009",0.191845032120697,1.10507524761515
+"cond.9","cond","variable","(Intercept)","ASV0010",0.151020655698464,0.917822760353218
+"cond.10","cond","variable","(Intercept)","ASV0011",0.144031149311891,0.886815857656373
+"cond.11","cond","variable","(Intercept)","ASV0012",0.183475907395232,1.06603697896334
+"cond.12","cond","variable","(Intercept)","ASV0015",0.106194659465367,0.727044719965543
+"cond.13","cond","variable","(Intercept)","ASV0016",0.120623244766113,0.785265928167694
+"cond.14","cond","variable","(Intercept)","ASV0017",-0.0156612229637805,0.476484458857644
+"cond.15","cond","variable","(Intercept)","ASV0018",0.0106912095725241,0.472673511577545
+"cond.16","cond","variable","(Intercept)","ASV0020",0.105821076020213,0.725227062848581
+"cond.17","cond","variable","(Intercept)","ASV0021",-0.0280589831854204,0.49282438438339
+"cond.18","cond","variable","(Intercept)","ASV0022",0.0967211012623924,0.689485251806339
+"cond.19","cond","variable","(Intercept)","ASV0023",-0.00406387622247288,0.47045595179815
+"cond.20","cond","variable","(Intercept)","ASV0024",0.109300114488521,0.739101250510042
+"cond.21","cond","variable","(Intercept)","ASV0025",-0.0385719875602325,0.510685693008015
+"cond.22","cond","variable","(Intercept)","ASV0027",-0.00490218583077584,0.469570377029141
+"cond.23","cond","variable","(Intercept)","ASV0033",-0.0215621289027893,0.483821997455344
+"cond.24","cond","variable","(Intercept)","ASV0036",0.114223602611308,0.76023705461832
+"cond.25","cond","variable","(Intercept)","ASV0037",0.110543595344221,0.744719017699689
+"cond.26","cond","variable","(Intercept)","ASV0039",0.0129288465687371,0.474089715053938
+"cond.27","cond","variable","(Intercept)","ASV0040",-0.0566222601346118,0.555728862980478
+"cond.28","cond","variable","(Intercept)","ASV0042",0.101843012508456,0.70967036542595
+"cond.29","cond","variable","(Intercept)","ASV0044",-0.00499954659861698,0.470584155709831
+"cond.30","cond","variable","(Intercept)","ASV0051",0.0913843004273837,0.668508850852012
+"cond.31","cond","variable","(Intercept)","ASV0054",0.00332651658552984,0.469525541972219
+"cond.32","cond","variable","(Intercept)","ASV0057",-0.0277800623672864,0.491418733486887
+"cond.33","cond","variable","(Intercept)","ASV0059",0.0411409371922904,0.516087321650131
+"cond.34","cond","variable","(Intercept)","ASV0063",0.0369504440136904,0.50715798602808
+"cond.35","cond","variable","(Intercept)","ASV0065",-0.0443736807556645,0.523729052060348
+"cond.36","cond","variable","(Intercept)","ASV0066",0.00967484087456452,0.472373053781024
+"cond.37","cond","variable","(Intercept)","ASV0069",-0.0747436019123781,0.610197824793452
+"cond.38","cond","variable","(Intercept)","ASV0072",-0.0494228278006107,0.535717599437668
+"cond.39","cond","variable","(Intercept)","ASV0073",0.0289500201956439,0.493307000260009
+"cond.40","cond","variable","(Intercept)","ASV0079",-0.0666815803617655,0.584861568821859
+"cond.41","cond","variable","(Intercept)","ASV0080",0.028858748835366,0.493207718153516
+"cond.42","cond","variable","(Intercept)","ASV0082",0.0188608412647666,0.47967113924869
+"cond.43","cond","variable","(Intercept)","ASV0083",-0.102599237721085,0.71309656427438
+"cond.44","cond","variable","(Intercept)","ASV0084",-0.0162196749104909,0.477319277330013
+"cond.45","cond","variable","(Intercept)","ASV0085",0.040149145635198,0.513760739954255
+"cond.46","cond","variable","(Intercept)","ASV0089",-0.0317934443826619,0.498545504474188
+"cond.47","cond","variable","(Intercept)","ASV0091",-0.0550769848571045,0.551995740011995
+"cond.48","cond","variable","(Intercept)","ASV0093",-0.079867816197069,0.628095112055563
+"cond.49","cond","variable","(Intercept)","ASV0094",-0.0364101485748731,0.506104560237712
+"cond.50","cond","variable","(Intercept)","ASV0095",-0.041654996793007,0.517813482798101
+"cond.51","cond","variable","(Intercept)","ASV0101",0.0200125861027636,0.481254554088482
+"cond.52","cond","variable","(Intercept)","ASV0102",-0.0280113182799961,0.491731508700835
+"cond.53","cond","variable","(Intercept)","ASV0105",0.0010264581539291,0.470289241411304
+"cond.54","cond","variable","(Intercept)","ASV0111",-0.0254258587869476,0.487565447095494
+"cond.55","cond","variable","(Intercept)","ASV0112",-0.0380855543572729,0.510910743198972
+"cond.56","cond","variable","(Intercept)","ASV0115",-0.0184665037674271,0.479367425070314
+"cond.57","cond","variable","(Intercept)","ASV0116",0.0200115426252895,0.480614133295785
+"cond.58","cond","variable","(Intercept)","ASV0119",-0.0554778607277868,0.552107404819008
+"cond.59","cond","variable","(Intercept)","ASV0123",-0.0552852506721189,0.551797176111362
+"cond.60","cond","variable","(Intercept)","ASV0128",-0.0145543812555696,0.476197470078786
+"cond.61","cond","variable","(Intercept)","ASV0139",-0.0336520562334011,0.502516260415837
+"cond.62","cond","variable","(Intercept)","ASV0145",-0.123562350818263,0.800152389276003
+"cond.63","cond","variable","(Intercept)","ASV0146",-0.0320709555249513,0.499210755641961
+"cond.64","cond","variable","(Intercept)","ASV0152",-0.0474247898570488,0.533090042461299
+"cond.65","cond","variable","(Intercept)","ASV0155",-0.0998215603277425,0.701988917889197
+"cond.66","cond","variable","(Intercept)","ASV0167",-0.0523374313234625,0.5434728322109
+"cond.67","cond","variable","(Intercept)","ASV0175",-0.0492383996913581,0.537600116532408
+"cond.68","cond","variable","(Intercept)","ASV0180",-0.0820869677107279,0.636179540509466
+"cond.69","cond","variable","(Intercept)","ASV0184",-0.0206479757769392,0.482628316671402
+"cond.70","cond","variable:Microbe_treatment","(Intercept)","ASV0001:ALL",2.56529535250904,1.13047300083868
+"cond.71","cond","variable:Microbe_treatment","(Intercept)","ASV0001:ECO",12.9293988557134,1.29977135779301
+"cond.72","cond","variable:Microbe_treatment","(Intercept)","ASV0001:EMO",-5.04224801587067,1.28677999941463
+"cond.73","cond","variable:Microbe_treatment","(Intercept)","ASV0001:MEM",-5.20348275462355,1.28725312213615
+"cond.74","cond","variable:Microbe_treatment","(Intercept)","ASV0001:MMO",-1.12974905999709,1.36982189200299
+"cond.75","cond","variable:Microbe_treatment","(Intercept)","ASV0002:ALL",-1.07825804729642,1.14518943057183
+"cond.76","cond","variable:Microbe_treatment","(Intercept)","ASV0002:ECO",8.54618952551864,1.31060543803359
+"cond.77","cond","variable:Microbe_treatment","(Intercept)","ASV0002:EMO",-0.86472877000338,1.1426003072059
+"cond.78","cond","variable:Microbe_treatment","(Intercept)","ASV0002:MEM",-1.30413592985995,1.14251896818614
+"cond.79","cond","variable:Microbe_treatment","(Intercept)","ASV0002:MMO",3.07714600755944,1.20387577367863
+"cond.80","cond","variable:Microbe_treatment","(Intercept)","ASV0003:ALL",-0.715869794663477,1.17791544746115
+"cond.81","cond","variable:Microbe_treatment","(Intercept)","ASV0003:ECO",-0.249488607822364,2.27285402293712
+"cond.82","cond","variable:Microbe_treatment","(Intercept)","ASV0003:EMO",-4.89118364794385,1.42769504691613
+"cond.83","cond","variable:Microbe_treatment","(Intercept)","ASV0003:MEM",1.15656707006602,1.15926007653391
+"cond.84","cond","variable:Microbe_treatment","(Intercept)","ASV0003:MMO",6.90636188136367,1.20491404201515
+"cond.85","cond","variable:Microbe_treatment","(Intercept)","ASV0004:ALL",2.06946349461099,1.22946787311848
+"cond.86","cond","variable:Microbe_treatment","(Intercept)","ASV0004:ECO",-0.15817368528158,2.35284314196095
+"cond.87","cond","variable:Microbe_treatment","(Intercept)","ASV0004:EMO",1.98621054931719,1.2267015263423
+"cond.88","cond","variable:Microbe_treatment","(Intercept)","ASV0004:MEM",2.0126468314806,1.22481869482593
+"cond.89","cond","variable:Microbe_treatment","(Intercept)","ASV0004:MMO",-0.989623123581173,1.90085617664969
+"cond.90","cond","variable:Microbe_treatment","(Intercept)","ASV0005:ALL",2.35817261640395,1.22664038136328
+"cond.91","cond","variable:Microbe_treatment","(Intercept)","ASV0005:ECO",-0.128682560086005,2.38067249010359
+"cond.92","cond","variable:Microbe_treatment","(Intercept)","ASV0005:EMO",1.86229158653796,1.22588661154524
+"cond.93","cond","variable:Microbe_treatment","(Intercept)","ASV0005:MEM",2.32564714401318,1.22346135141681
+"cond.94","cond","variable:Microbe_treatment","(Intercept)","ASV0005:MMO",-1.17277096732774,1.84599087041216
+"cond.95","cond","variable:Microbe_treatment","(Intercept)","ASV0007:ALL",-0.0882755320720554,1.17817877576078
+"cond.96","cond","variable:Microbe_treatment","(Intercept)","ASV0007:ECO",-0.252966917062746,2.27028300584973
+"cond.97","cond","variable:Microbe_treatment","(Intercept)","ASV0007:EMO",0.202036737949541,1.17186260938441
+"cond.98","cond","variable:Microbe_treatment","(Intercept)","ASV0007:MEM",-0.0314010538870029,1.17199385452464
+"cond.99","cond","variable:Microbe_treatment","(Intercept)","ASV0007:MMO",5.1961937645006,1.22633795632054
+"cond.100","cond","variable:Microbe_treatment","(Intercept)","ASV0008:ALL",1.31423882701078,1.16322310387045
+"cond.101","cond","variable:Microbe_treatment","(Intercept)","ASV0008:ECO",-0.475082782792999,2.1209398639627
+"cond.102","cond","variable:Microbe_treatment","(Intercept)","ASV0008:EMO",1.30209438772783,1.16059287601909
+"cond.103","cond","variable:Microbe_treatment","(Intercept)","ASV0008:MEM",1.39572373531129,1.15840832844085
+"cond.104","cond","variable:Microbe_treatment","(Intercept)","ASV0008:MMO",0.66258050541573,1.33664209618721
+"cond.105","cond","variable:Microbe_treatment","(Intercept)","ASV0009:ALL",0.86382076566578,1.15896896308932
+"cond.106","cond","variable:Microbe_treatment","(Intercept)","ASV0009:ECO",-0.479374902064,2.11588122292345
+"cond.107","cond","variable:Microbe_treatment","(Intercept)","ASV0009:EMO",0.413227725394713,1.15841920239559
+"cond.108","cond","variable:Microbe_treatment","(Intercept)","ASV0009:MEM",0.489967343415736,1.15698732309591
+"cond.109","cond","variable:Microbe_treatment","(Intercept)","ASV0009:MMO",4.05881891911383,1.21758245916669
+"cond.110","cond","variable:Microbe_treatment","(Intercept)","ASV0010:ALL",1.9475642124995,1.21202041122754
+"cond.111","cond","variable:Microbe_treatment","(Intercept)","ASV0010:ECO",-0.150785740415559,2.3593807161144
+"cond.112","cond","variable:Microbe_treatment","(Intercept)","ASV0010:EMO",1.85138817509227,1.20954586807513
+"cond.113","cond","variable:Microbe_treatment","(Intercept)","ASV0010:MEM",1.75001079191324,1.20845616850898
+"cond.114","cond","variable:Microbe_treatment","(Intercept)","ASV0010:MMO",-1.18943737677188,1.83721609967345
+"cond.115","cond","variable:Microbe_treatment","(Intercept)","ASV0011:ALL",1.25095259554459,1.22536195050673
+"cond.116","cond","variable:Microbe_treatment","(Intercept)","ASV0011:ECO",-0.0739733721557179,2.43715903709199
+"cond.117","cond","variable:Microbe_treatment","(Intercept)","ASV0011:EMO",2.15021049030585,1.21693175245549
+"cond.118","cond","variable:Microbe_treatment","(Intercept)","ASV0011:MEM",1.92037664499632,1.21617925758885
+"cond.119","cond","variable:Microbe_treatment","(Intercept)","ASV0011:MMO",-1.23361432327577,1.83660042426367
+"cond.120","cond","variable:Microbe_treatment","(Intercept)","ASV0012:ALL",0.386011885649867,1.18501037888159
+"cond.121","cond","variable:Microbe_treatment","(Intercept)","ASV0012:ECO",-0.185317208891422,2.32704100642842
+"cond.122","cond","variable:Microbe_treatment","(Intercept)","ASV0012:EMO",1.04382792319711,1.17617498676067
+"cond.123","cond","variable:Microbe_treatment","(Intercept)","ASV0012:MEM",0.869991212391101,1.17551026601738
+"cond.124","cond","variable:Microbe_treatment","(Intercept)","ASV0012:MMO",2.99870992749858,1.25672256780986
+"cond.125","cond","variable:Microbe_treatment","(Intercept)","ASV0015:ALL",1.23374713169802,1.26030734966346
+"cond.126","cond","variable:Microbe_treatment","(Intercept)","ASV0015:ECO",-0.0252287981834432,2.49276736515482
+"cond.127","cond","variable:Microbe_treatment","(Intercept)","ASV0015:EMO",1.637901185181,1.24717811661502
+"cond.128","cond","variable:Microbe_treatment","(Intercept)","ASV0015:MEM",0.5839712205491,1.25750267438067
+"cond.129","cond","variable:Microbe_treatment","(Intercept)","ASV0015:MMO",-0.470890162128535,2.12225991570533
+"cond.130","cond","variable:Microbe_treatment","(Intercept)","ASV0016:ALL",0.951463861679808,1.19088723802012
+"cond.131","cond","variable:Microbe_treatment","(Intercept)","ASV0016:ECO",-0.240483077616197,2.28072309354552
+"cond.132","cond","variable:Microbe_treatment","(Intercept)","ASV0016:EMO",2.03945098570405,1.18604418964024
+"cond.133","cond","variable:Microbe_treatment","(Intercept)","ASV0016:MEM",2.16444277862751,1.1847359725447
+"cond.134","cond","variable:Microbe_treatment","(Intercept)","ASV0016:MMO",-1.55326894321543,1.74863230568619
+"cond.135","cond","variable:Microbe_treatment","(Intercept)","ASV0017:ALL",-0.222094653800016,1.20639636854123
+"cond.136","cond","variable:Microbe_treatment","(Intercept)","ASV0017:ECO",-0.397609853799495,2.16815641270662
+"cond.137","cond","variable:Microbe_treatment","(Intercept)","ASV0017:EMO",-0.439738511240217,1.20054944943261
+"cond.138","cond","variable:Microbe_treatment","(Intercept)","ASV0017:MEM",-0.0643512538162102,1.19152988770283
+"cond.139","cond","variable:Microbe_treatment","(Intercept)","ASV0017:MMO",0.687337311138315,1.3445341382689
+"cond.140","cond","variable:Microbe_treatment","(Intercept)","ASV0018:ALL",-3.62281230362873,1.51777297221396
+"cond.141","cond","variable:Microbe_treatment","(Intercept)","ASV0018:ECO",7.83821342054016,1.27608926912731
+"cond.142","cond","variable:Microbe_treatment","(Intercept)","ASV0018:EMO",-3.76763345420466,1.4983312153568
+"cond.143","cond","variable:Microbe_treatment","(Intercept)","ASV0018:MEM",-3.79898451745554,1.49469530378755
+"cond.144","cond","variable:Microbe_treatment","(Intercept)","ASV0018:MMO",3.64916630963895,1.22391969268783
+"cond.145","cond","variable:Microbe_treatment","(Intercept)","ASV0020:ALL",0.330297705465828,1.25406269428023
+"cond.146","cond","variable:Microbe_treatment","(Intercept)","ASV0020:ECO",-0.0880011748056443,2.42219560949139
+"cond.147","cond","variable:Microbe_treatment","(Intercept)","ASV0020:EMO",1.79631211074897,1.2249461214867
+"cond.148","cond","variable:Microbe_treatment","(Intercept)","ASV0020:MEM",1.61976398045913,1.22455451212713
+"cond.149","cond","variable:Microbe_treatment","(Intercept)","ASV0020:MMO",-0.709283306741212,2.00299645052659
+"cond.150","cond","variable:Microbe_treatment","(Intercept)","ASV0021:ALL",-0.0768129760079791,1.34687625298814
+"cond.151","cond","variable:Microbe_treatment","(Intercept)","ASV0021:ECO",-0.0537776839632511,2.45965355410746
+"cond.152","cond","variable:Microbe_treatment","(Intercept)","ASV0021:EMO",-0.0555020530119979,1.32343860593721
+"cond.153","cond","variable:Microbe_treatment","(Intercept)","ASV0021:MEM",-0.138700717340458,1.32305332608818
+"cond.154","cond","variable:Microbe_treatment","(Intercept)","ASV0021:MMO",-0.457172229235921,2.13490221290344
+"cond.155","cond","variable:Microbe_treatment","(Intercept)","ASV0022:ALL",1.01812352197369,1.22334276522372
+"cond.156","cond","variable:Microbe_treatment","(Intercept)","ASV0022:ECO",-0.0996679316760299,2.40990938759505
+"cond.157","cond","variable:Microbe_treatment","(Intercept)","ASV0022:EMO",1.54907463997001,1.21217884400655
+"cond.158","cond","variable:Microbe_treatment","(Intercept)","ASV0022:MEM",1.0991226084349,1.21335098303749
+"cond.159","cond","variable:Microbe_treatment","(Intercept)","ASV0022:MMO",-0.871167430618454,1.93573719746073
+"cond.160","cond","variable:Microbe_treatment","(Intercept)","ASV0023:ALL",1.2981039941637,1.25242849851736
+"cond.161","cond","variable:Microbe_treatment","(Intercept)","ASV0023:ECO",-0.171356556547297,2.34094224149833
+"cond.162","cond","variable:Microbe_treatment","(Intercept)","ASV0023:EMO",-0.914832490826265,1.29481582607448
+"cond.163","cond","variable:Microbe_treatment","(Intercept)","ASV0023:MEM",0.64096007086178,1.24793604413111
+"cond.164","cond","variable:Microbe_treatment","(Intercept)","ASV0023:MMO",-0.966129715075373,1.91546172128701
+"cond.165","cond","variable:Microbe_treatment","(Intercept)","ASV0024:ALL",1.62945963966869,1.22321314110028
+"cond.166","cond","variable:Microbe_treatment","(Intercept)","ASV0024:ECO",-0.0599018748448712,2.45261329144985
+"cond.167","cond","variable:Microbe_treatment","(Intercept)","ASV0024:EMO",1.42891910667341,1.21929904995715
+"cond.168","cond","variable:Microbe_treatment","(Intercept)","ASV0024:MEM",0.948699141973063,1.22031910857583
+"cond.169","cond","variable:Microbe_treatment","(Intercept)","ASV0024:MMO",-0.90113063288192,1.92881825460433
+"cond.170","cond","variable:Microbe_treatment","(Intercept)","ASV0025:ALL",0.214276369996831,1.22335818850386
+"cond.171","cond","variable:Microbe_treatment","(Intercept)","ASV0025:ECO",-0.40016666408858,2.16812625035439
+"cond.172","cond","variable:Microbe_treatment","(Intercept)","ASV0025:EMO",0.466906373788302,1.21109397591128
+"cond.173","cond","variable:Microbe_treatment","(Intercept)","ASV0025:MEM",0.254545300941098,1.21209322463678
+"cond.174","cond","variable:Microbe_treatment","(Intercept)","ASV0025:MMO",-1.61051015885049,1.75535821593367
+"cond.175","cond","variable:Microbe_treatment","(Intercept)","ASV0027:ALL",0.028539534357128,1.19326375135946
+"cond.176","cond","variable:Microbe_treatment","(Intercept)","ASV0027:ECO",-0.306007228401717,2.23051344928821
+"cond.177","cond","variable:Microbe_treatment","(Intercept)","ASV0027:EMO",-4.62019689455974,1.47438392447258
+"cond.178","cond","variable:Microbe_treatment","(Intercept)","ASV0027:MEM",0.0306586526353838,1.17821895973852
+"cond.179","cond","variable:Microbe_treatment","(Intercept)","ASV0027:MMO",4.73038869110605,1.20889866962974
+"cond.180","cond","variable:Microbe_treatment","(Intercept)","ASV0033:ALL",0.285908953711346,1.36359448932577
+"cond.181","cond","variable:Microbe_treatment","(Intercept)","ASV0033:ECO",-0.0199782473166788,2.49910971272451
+"cond.182","cond","variable:Microbe_treatment","(Intercept)","ASV0033:EMO",0.562107209996593,1.32276739604175
+"cond.183","cond","variable:Microbe_treatment","(Intercept)","ASV0033:MEM",-1.20006396426471,1.44001512570715
+"cond.184","cond","variable:Microbe_treatment","(Intercept)","ASV0033:MMO",-0.228881128183449,2.29115261156147
+"cond.185","cond","variable:Microbe_treatment","(Intercept)","ASV0036:ALL",1.61252625595187,1.29630217777996
+"cond.186","cond","variable:Microbe_treatment","(Intercept)","ASV0036:ECO",-0.0166822925088845,2.50310277715932
+"cond.187","cond","variable:Microbe_treatment","(Intercept)","ASV0036:EMO",0.811432726672497,1.30352212945163
+"cond.188","cond","variable:Microbe_treatment","(Intercept)","ASV0036:MEM",0.994493698180373,1.29305252594499
+"cond.189","cond","variable:Microbe_treatment","(Intercept)","ASV0036:MMO",-0.218514096968934,2.29875657751124
+"cond.190","cond","variable:Microbe_treatment","(Intercept)","ASV0037:ALL",0.510216724857428,1.27739597654643
+"cond.191","cond","variable:Microbe_treatment","(Intercept)","ASV0037:ECO",-0.01620547672764,2.50367452944436
+"cond.192","cond","variable:Microbe_treatment","(Intercept)","ASV0037:EMO",-1.23778724980054,1.37018221837637
+"cond.193","cond","variable:Microbe_treatment","(Intercept)","ASV0037:MEM",-0.689859702570101,1.30165345160359
+"cond.194","cond","variable:Microbe_treatment","(Intercept)","ASV0037:MMO",4.51433520330001,1.30739687906295
+"cond.195","cond","variable:Microbe_treatment","(Intercept)","ASV0039:ALL",0.495388935945661,1.22486227372422
+"cond.196","cond","variable:Microbe_treatment","(Intercept)","ASV0039:ECO",-0.277093623134467,2.25302459091589
+"cond.197","cond","variable:Microbe_treatment","(Intercept)","ASV0039:EMO",0.607783591817705,1.21204538013902
+"cond.198","cond","variable:Microbe_treatment","(Intercept)","ASV0039:MEM",0.825779542468684,1.20575180963145
+"cond.199","cond","variable:Microbe_treatment","(Intercept)","ASV0039:MMO",-1.29154909562683,1.82143266579038
+"cond.200","cond","variable:Microbe_treatment","(Intercept)","ASV0040:ALL",-0.919648136580411,1.34202310916807
+"cond.201","cond","variable:Microbe_treatment","(Intercept)","ASV0040:ECO",-0.0856133199651907,2.42484475716431
+"cond.202","cond","variable:Microbe_treatment","(Intercept)","ASV0040:EMO",0.461582840371969,1.2782284525784
+"cond.203","cond","variable:Microbe_treatment","(Intercept)","ASV0040:MEM",-0.385594025657242,1.30457988728789
+"cond.204","cond","variable:Microbe_treatment","(Intercept)","ASV0040:MMO",-0.648712657897438,2.03667972809178
+"cond.205","cond","variable:Microbe_treatment","(Intercept)","ASV0042:ALL",1.13795681193028,1.2503476423149
+"cond.206","cond","variable:Microbe_treatment","(Intercept)","ASV0042:ECO",-0.0550253915293638,2.45817326254949
+"cond.207","cond","variable:Microbe_treatment","(Intercept)","ASV0042:EMO",1.46132670392824,1.23841943656067
+"cond.208","cond","variable:Microbe_treatment","(Intercept)","ASV0042:MEM",0.850155372956247,1.24205730088751
+"cond.209","cond","variable:Microbe_treatment","(Intercept)","ASV0042:MMO",-0.556187396166652,2.07473559685114
+"cond.210","cond","variable:Microbe_treatment","(Intercept)","ASV0044:ALL",0.368700763157066,1.25722299591447
+"cond.211","cond","variable:Microbe_treatment","(Intercept)","ASV0044:ECO",-0.207619050584724,2.30908583218036
+"cond.212","cond","variable:Microbe_treatment","(Intercept)","ASV0044:EMO",0.340847975694324,1.24690940851005
+"cond.213","cond","variable:Microbe_treatment","(Intercept)","ASV0044:MEM",0.443180754026136,1.24213765922533
+"cond.214","cond","variable:Microbe_treatment","(Intercept)","ASV0044:MMO",-1.08444099920043,1.87847140896325
+"cond.215","cond","variable:Microbe_treatment","(Intercept)","ASV0051:ALL",0.0433367702027315,1.16808905349194
+"cond.216","cond","variable:Microbe_treatment","(Intercept)","ASV0051:ECO",-0.174569551590584,2.33647991103236
+"cond.217","cond","variable:Microbe_treatment","(Intercept)","ASV0051:EMO",0.805843718638011,1.15710655029902
+"cond.218","cond","variable:Microbe_treatment","(Intercept)","ASV0051:MEM",0.767032634393824,1.1563956175587
+"cond.219","cond","variable:Microbe_treatment","(Intercept)","ASV0051:MMO",1.10511246313004,1.28375108802911
+"cond.220","cond","variable:Microbe_treatment","(Intercept)","ASV0054:ALL",-1.89223212770029,1.37297335006683
+"cond.221","cond","variable:Microbe_treatment","(Intercept)","ASV0054:ECO",-0.0603405978353645,2.4521518676953
+"cond.222","cond","variable:Microbe_treatment","(Intercept)","ASV0054:EMO",-2.13583778736889,1.35691923504385
+"cond.223","cond","variable:Microbe_treatment","(Intercept)","ASV0054:MEM",-0.867015163469609,1.25300210524334
+"cond.224","cond","variable:Microbe_treatment","(Intercept)","ASV0054:MMO",5.04813116461834,1.23630917239103
+"cond.225","cond","variable:Microbe_treatment","(Intercept)","ASV0057:ALL",-0.987049559865143,1.24675316977779
+"cond.226","cond","variable:Microbe_treatment","(Intercept)","ASV0057:ECO",-0.25569906767519,2.26892094359829
+"cond.227","cond","variable:Microbe_treatment","(Intercept)","ASV0057:EMO",-3.40663484308944,1.35904255209911
+"cond.228","cond","variable:Microbe_treatment","(Intercept)","ASV0057:MEM",-0.192588481511904,1.21046004014804
+"cond.229","cond","variable:Microbe_treatment","(Intercept)","ASV0057:MMO",4.06777943603762,1.24702386260282
+"cond.230","cond","variable:Microbe_treatment","(Intercept)","ASV0059:ALL",0.867591123268584,1.24349075219368
+"cond.231","cond","variable:Microbe_treatment","(Intercept)","ASV0059:ECO",-0.0313987901555424,2.48541489210325
+"cond.232","cond","variable:Microbe_treatment","(Intercept)","ASV0059:EMO",0.921608710968063,1.22690682308771
+"cond.233","cond","variable:Microbe_treatment","(Intercept)","ASV0059:MEM",0.145895835440643,1.23506616303162
+"cond.234","cond","variable:Microbe_treatment","(Intercept)","ASV0059:MMO",-0.757154972643744,1.98610724134006
+"cond.235","cond","variable:Microbe_treatment","(Intercept)","ASV0063:ALL",0.701752632968172,1.21836983422881
+"cond.236","cond","variable:Microbe_treatment","(Intercept)","ASV0063:ECO",-0.15080259086741,2.35953480186882
+"cond.237","cond","variable:Microbe_treatment","(Intercept)","ASV0063:EMO",1.21153491589804,1.20474027884158
+"cond.238","cond","variable:Microbe_treatment","(Intercept)","ASV0063:MEM",0.228317657499479,1.21224937016425
+"cond.239","cond","variable:Microbe_treatment","(Intercept)","ASV0063:MMO",-0.961044048224207,1.90924775290988
+"cond.240","cond","variable:Microbe_treatment","(Intercept)","ASV0065:ALL",-0.121914726323779,1.23026560941519
+"cond.241","cond","variable:Microbe_treatment","(Intercept)","ASV0065:ECO",-0.222111144935415,2.29623093318366
+"cond.242","cond","variable:Microbe_treatment","(Intercept)","ASV0065:EMO",-0.397273703106115,1.22263379836693
+"cond.243","cond","variable:Microbe_treatment","(Intercept)","ASV0065:MEM",-1.13498215975172,1.24547269423722
+"cond.244","cond","variable:Microbe_treatment","(Intercept)","ASV0065:MMO",0.639647665451979,1.44959806104011
+"cond.245","cond","variable:Microbe_treatment","(Intercept)","ASV0066:ALL",-0.197209148557603,1.33625240700292
+"cond.246","cond","variable:Microbe_treatment","(Intercept)","ASV0066:ECO",-0.0376362551673507,2.47813507896378
+"cond.247","cond","variable:Microbe_treatment","(Intercept)","ASV0066:EMO",0.776812469619649,1.2747329946225
+"cond.248","cond","variable:Microbe_treatment","(Intercept)","ASV0066:MEM",0.094961755086894,1.29303617568016
+"cond.249","cond","variable:Microbe_treatment","(Intercept)","ASV0066:MMO",-0.367304177935219,2.18843023550545
+"cond.250","cond","variable:Microbe_treatment","(Intercept)","ASV0069:ALL",0.207719177860982,1.2047321817401
+"cond.251","cond","variable:Microbe_treatment","(Intercept)","ASV0069:ECO",-0.618400490703413,2.04864109543817
+"cond.252","cond","variable:Microbe_treatment","(Intercept)","ASV0069:EMO",-0.0477991692597273,1.19956427534792
+"cond.253","cond","variable:Microbe_treatment","(Intercept)","ASV0069:MEM",0.493193482620289,1.19181711541859
+"cond.254","cond","variable:Microbe_treatment","(Intercept)","ASV0069:MMO",-2.11771542370083,1.67392258536689
+"cond.255","cond","variable:Microbe_treatment","(Intercept)","ASV0072:ALL",0.516898011874012,1.22847842042437
+"cond.256","cond","variable:Microbe_treatment","(Intercept)","ASV0072:ECO",-0.318062547828584,2.22306955777567
+"cond.257","cond","variable:Microbe_treatment","(Intercept)","ASV0072:EMO",-0.0285314592268941,1.22610227649441
+"cond.258","cond","variable:Microbe_treatment","(Intercept)","ASV0072:MEM",-0.112726364989042,1.2255843051812
+"cond.259","cond","variable:Microbe_treatment","(Intercept)","ASV0072:MMO",-1.43492456231122,1.79084226708106
+"cond.260","cond","variable:Microbe_treatment","(Intercept)","ASV0073:ALL",0.970884131406171,1.27820524083406
+"cond.261","cond","variable:Microbe_treatment","(Intercept)","ASV0073:ECO",-0.0468861913125173,2.46744776961817
+"cond.262","cond","variable:Microbe_treatment","(Intercept)","ASV0073:EMO",0.356895519457518,1.28223956896937
+"cond.263","cond","variable:Microbe_treatment","(Intercept)","ASV0073:MEM",-0.0460498057351252,1.28744474863593
+"cond.264","cond","variable:Microbe_treatment","(Intercept)","ASV0073:MMO",-0.428046005912918,2.14976014342051
+"cond.265","cond","variable:Microbe_treatment","(Intercept)","ASV0079:ALL",-1.42364710937618,1.40086366283532
+"cond.266","cond","variable:Microbe_treatment","(Intercept)","ASV0079:ECO",-0.018780319521724,2.50055030699871
+"cond.267","cond","variable:Microbe_treatment","(Intercept)","ASV0079:EMO",-3.48253396761257,1.56377375428861
+"cond.268","cond","variable:Microbe_treatment","(Intercept)","ASV0079:MEM",-1.22903891656229,1.3009751917981
+"cond.269","cond","variable:Microbe_treatment","(Intercept)","ASV0079:MMO",4.29567545420338,1.28865367640462
+"cond.270","cond","variable:Microbe_treatment","(Intercept)","ASV0080:ALL",-0.508846950762615,1.36131644971031
+"cond.271","cond","variable:Microbe_treatment","(Intercept)","ASV0080:ECO",-0.0314391268933067,2.48540530126829
+"cond.272","cond","variable:Microbe_treatment","(Intercept)","ASV0080:EMO",0.982587414135171,1.26897770595468
+"cond.273","cond","variable:Microbe_treatment","(Intercept)","ASV0080:MEM",0.698616737867238,1.27417368166117
+"cond.274","cond","variable:Microbe_treatment","(Intercept)","ASV0080:MMO",-0.336664034989933,2.20859552187013
+"cond.275","cond","variable:Microbe_treatment","(Intercept)","ASV0082:ALL",-0.855513584322114,1.35362833858557
+"cond.276","cond","variable:Microbe_treatment","(Intercept)","ASV0082:ECO",-0.0385402926815029,2.47707140206731
+"cond.277","cond","variable:Microbe_treatment","(Intercept)","ASV0082:EMO",1.38381566822826,1.25026958887723
+"cond.278","cond","variable:Microbe_treatment","(Intercept)","ASV0082:MEM",0.440685065581036,1.26504131867399
+"cond.279","cond","variable:Microbe_treatment","(Intercept)","ASV0082:MMO",-0.404820889464299,2.16284209182318
+"cond.280","cond","variable:Microbe_treatment","(Intercept)","ASV0083:ALL",-0.118715334448459,1.30415296236883
+"cond.281","cond","variable:Microbe_treatment","(Intercept)","ASV0083:ECO",-0.0188665544479981,2.50044999528135
+"cond.282","cond","variable:Microbe_treatment","(Intercept)","ASV0083:EMO",-3.51801216301365,1.57248262522954
+"cond.283","cond","variable:Microbe_treatment","(Intercept)","ASV0083:MEM",-3.64926543528364,1.56585291145506
+"cond.284","cond","variable:Microbe_treatment","(Intercept)","ASV0083:MMO",4.44555841898652,1.29517870975839
+"cond.285","cond","variable:Microbe_treatment","(Intercept)","ASV0084:ALL",-1.07356736781889,1.25625137052525
+"cond.286","cond","variable:Microbe_treatment","(Intercept)","ASV0084:ECO",-0.207092029263812,2.30877564528576
+"cond.287","cond","variable:Microbe_treatment","(Intercept)","ASV0084:EMO",-0.162703470974745,1.21625195118163
+"cond.288","cond","variable:Microbe_treatment","(Intercept)","ASV0084:MEM",-1.9045341719604,1.27463723516132
+"cond.289","cond","variable:Microbe_treatment","(Intercept)","ASV0084:MMO",2.89587678306803,1.28844412274247
+"cond.290","cond","variable:Microbe_treatment","(Intercept)","ASV0085:ALL",-0.51725396776519,1.24650874634582
+"cond.291","cond","variable:Microbe_treatment","(Intercept)","ASV0085:ECO",-0.074740646745979,2.43625378574988
+"cond.292","cond","variable:Microbe_treatment","(Intercept)","ASV0085:EMO",1.41048274392243,1.20557420426378
+"cond.293","cond","variable:Microbe_treatment","(Intercept)","ASV0085:MEM",1.205451314203,1.2056025997513
+"cond.294","cond","variable:Microbe_treatment","(Intercept)","ASV0085:MMO",-0.905037417125447,1.92309299525618
+"cond.295","cond","variable:Microbe_treatment","(Intercept)","ASV0089:ALL",-0.162691240454867,1.30891276489827
+"cond.296","cond","variable:Microbe_treatment","(Intercept)","ASV0089:ECO",-0.100391091872175,2.40940833406688
+"cond.297","cond","variable:Microbe_treatment","(Intercept)","ASV0089:EMO",0.407820832473748,1.2748176493819
+"cond.298","cond","variable:Microbe_treatment","(Intercept)","ASV0089:MEM",-0.324877397525202,1.29725283516291
+"cond.299","cond","variable:Microbe_treatment","(Intercept)","ASV0089:MMO",-0.7059011113442,2.01144042295318
+"cond.300","cond","variable:Microbe_treatment","(Intercept)","ASV0091:ALL",-0.915469168887384,1.39492260257888
+"cond.301","cond","variable:Microbe_treatment","(Intercept)","ASV0091:ECO",-0.046228590412947,2.46823805847579
+"cond.302","cond","variable:Microbe_treatment","(Intercept)","ASV0091:EMO",0.897006374378138,1.29905873464427
+"cond.303","cond","variable:Microbe_treatment","(Intercept)","ASV0091:MEM",-1.05409896415752,1.38533372307588
+"cond.304","cond","variable:Microbe_treatment","(Intercept)","ASV0091:MMO",-0.416130232529916,2.1597832061475
+"cond.305","cond","variable:Microbe_treatment","(Intercept)","ASV0093:ALL",-0.140334057411319,1.2318509769071
+"cond.306","cond","variable:Microbe_treatment","(Intercept)","ASV0093:ECO",-0.350991313268202,2.20009694182802
+"cond.307","cond","variable:Microbe_treatment","(Intercept)","ASV0093:EMO",-0.091226114993151,1.22128693113327
+"cond.308","cond","variable:Microbe_treatment","(Intercept)","ASV0093:MEM",-0.0780256899459819,1.21915111572623
+"cond.309","cond","variable:Microbe_treatment","(Intercept)","ASV0093:MMO",-1.56523012314967,1.76430413716281
+"cond.310","cond","variable:Microbe_treatment","(Intercept)","ASV0094:ALL",0.388731399827814,1.23745817828007
+"cond.311","cond","variable:Microbe_treatment","(Intercept)","ASV0094:ECO",-0.0970396332001488,2.41303355541091
+"cond.312","cond","variable:Microbe_treatment","(Intercept)","ASV0094:EMO",0.201118942730748,1.22832381352246
+"cond.313","cond","variable:Microbe_treatment","(Intercept)","ASV0094:MEM",0.161164410211223,1.22775251496303
+"cond.314","cond","variable:Microbe_treatment","(Intercept)","ASV0094:MMO",-1.66867638856672,1.75146533575325
+"cond.315","cond","variable:Microbe_treatment","(Intercept)","ASV0095:ALL",-0.0584309521985697,1.28014529566233
+"cond.316","cond","variable:Microbe_treatment","(Intercept)","ASV0095:ECO",-0.147370351507186,2.36305533773155
+"cond.317","cond","variable:Microbe_treatment","(Intercept)","ASV0095:EMO",0.750313457157849,1.24870109531913
+"cond.318","cond","variable:Microbe_treatment","(Intercept)","ASV0095:MEM",-0.798816595709611,1.29043866998017
+"cond.319","cond","variable:Microbe_treatment","(Intercept)","ASV0095:MMO",-0.90656360580924,1.93474576357868
+"cond.320","cond","variable:Microbe_treatment","(Intercept)","ASV0101:ALL",0.239072828560841,1.33078128923001
+"cond.321","cond","variable:Microbe_treatment","(Intercept)","ASV0101:ECO",-0.0203661347718762,2.49863300352685
+"cond.322","cond","variable:Microbe_treatment","(Intercept)","ASV0101:EMO",0.104417565319598,1.30440624560398
+"cond.323","cond","variable:Microbe_treatment","(Intercept)","ASV0101:MEM",0.498445293957138,1.28748947610824
+"cond.324","cond","variable:Microbe_treatment","(Intercept)","ASV0101:MMO",-0.263846025169924,2.2619257579083
+"cond.325","cond","variable:Microbe_treatment","(Intercept)","ASV0102:ALL",-2.8736955357529,1.59850352293543
+"cond.326","cond","variable:Microbe_treatment","(Intercept)","ASV0102:ECO",-0.0243639325598058,2.49382196655446
+"cond.327","cond","variable:Microbe_treatment","(Intercept)","ASV0102:EMO",-0.486232460022134,1.26351380648954
+"cond.328","cond","variable:Microbe_treatment","(Intercept)","ASV0102:MEM",-1.55744172754197,1.30247764828603
+"cond.329","cond","variable:Microbe_treatment","(Intercept)","ASV0102:MMO",4.16109635233644,1.29172272511083
+"cond.330","cond","variable:Microbe_treatment","(Intercept)","ASV0105:ALL",-2.16279966238458,1.67961009198293
+"cond.331","cond","variable:Microbe_treatment","(Intercept)","ASV0105:ECO",-0.0173668800855544,2.50226840699369
+"cond.332","cond","variable:Microbe_treatment","(Intercept)","ASV0105:EMO",-0.47111705263472,1.34276818864195
+"cond.333","cond","variable:Microbe_treatment","(Intercept)","ASV0105:MEM",-2.4015123172342,1.6399264279444
+"cond.334","cond","variable:Microbe_treatment","(Intercept)","ASV0105:MMO",5.08140190358412,1.32055085980969
+"cond.335","cond","variable:Microbe_treatment","(Intercept)","ASV0111:ALL",0.342493481439321,1.2199768181039
+"cond.336","cond","variable:Microbe_treatment","(Intercept)","ASV0111:ECO",-0.200505983612413,2.31476179762072
+"cond.337","cond","variable:Microbe_treatment","(Intercept)","ASV0111:EMO",0.321414652563804,1.21127003949524
+"cond.338","cond","variable:Microbe_treatment","(Intercept)","ASV0111:MEM",-0.0191004736747759,1.21019364896856
+"cond.339","cond","variable:Microbe_treatment","(Intercept)","ASV0111:MMO",-1.15288574424322,1.8542084897435
+"cond.340","cond","variable:Microbe_treatment","(Intercept)","ASV0112:ALL",-0.511566077234214,1.35484708628122
+"cond.341","cond","variable:Microbe_treatment","(Intercept)","ASV0112:ECO",-0.0564238665374146,2.45667553336411
+"cond.342","cond","variable:Microbe_treatment","(Intercept)","ASV0112:EMO",0.0118491459251587,1.31728163631935
+"cond.343","cond","variable:Microbe_treatment","(Intercept)","ASV0112:MEM",-0.028101844931512,1.31536501435969
+"cond.344","cond","variable:Microbe_treatment","(Intercept)","ASV0112:MMO",-0.477149904338723,2.12347026089481
+"cond.345","cond","variable:Microbe_treatment","(Intercept)","ASV0115:ALL",-0.0674636347722369,1.28899760673634
+"cond.346","cond","variable:Microbe_treatment","(Intercept)","ASV0115:ECO",-0.0899362318628832,2.42021893349714
+"cond.347","cond","variable:Microbe_treatment","(Intercept)","ASV0115:EMO",0.419494672602249,1.25301142435063
+"cond.348","cond","variable:Microbe_treatment","(Intercept)","ASV0115:MEM",-0.102342922482257,1.26924200862141
+"cond.349","cond","variable:Microbe_treatment","(Intercept)","ASV0115:MMO",-0.674388201659054,2.0229198513247
+"cond.350","cond","variable:Microbe_treatment","(Intercept)","ASV0116:ALL",0.334208541618428,1.23592590592887
+"cond.351","cond","variable:Microbe_treatment","(Intercept)","ASV0116:ECO",-0.0390831717071816,2.47640304695477
+"cond.352","cond","variable:Microbe_treatment","(Intercept)","ASV0116:EMO",0.731042854142901,1.22289967327937
+"cond.353","cond","variable:Microbe_treatment","(Intercept)","ASV0116:MEM",0.495041626608824,1.21976507980959
+"cond.354","cond","variable:Microbe_treatment","(Intercept)","ASV0116:MMO",-0.963515403063722,1.91217363001509
+"cond.355","cond","variable:Microbe_treatment","(Intercept)","ASV0119:ALL",-0.0393471104827701,1.27253457296434
+"cond.356","cond","variable:Microbe_treatment","(Intercept)","ASV0119:ECO",-0.161515214117472,2.34985120892133
+"cond.357","cond","variable:Microbe_treatment","(Intercept)","ASV0119:EMO",0.392199967809879,1.24881955884237
+"cond.358","cond","variable:Microbe_treatment","(Intercept)","ASV0119:MEM",-0.763697553618349,1.28108609837896
+"cond.359","cond","variable:Microbe_treatment","(Intercept)","ASV0119:MMO",-0.973732535931297,1.91252465936592
+"cond.360","cond","variable:Microbe_treatment","(Intercept)","ASV0123:ALL",-0.185380252567316,1.29778209534085
+"cond.361","cond","variable:Microbe_treatment","(Intercept)","ASV0123:ECO",-0.116264180388884,2.39328906638653
+"cond.362","cond","variable:Microbe_treatment","(Intercept)","ASV0123:EMO",-0.62259204630258,1.29696390739199
+"cond.363","cond","variable:Microbe_treatment","(Intercept)","ASV0123:MEM",0.177585836355486,1.26647125316884
+"cond.364","cond","variable:Microbe_treatment","(Intercept)","ASV0123:MMO",-0.794074023420494,1.97577827073823
+"cond.365","cond","variable:Microbe_treatment","(Intercept)","ASV0128:ALL",-0.0839282985175169,1.35322501497068
+"cond.366","cond","variable:Microbe_treatment","(Intercept)","ASV0128:ECO",-0.0313507707932839,2.48551802278305
+"cond.367","cond","variable:Microbe_treatment","(Intercept)","ASV0128:EMO",0.240911961732502,1.30551394820555
+"cond.368","cond","variable:Microbe_treatment","(Intercept)","ASV0128:MEM",-0.210119796666094,1.32393485171473
+"cond.369","cond","variable:Microbe_treatment","(Intercept)","ASV0128:MMO",-0.321123885811147,2.22063089792461
+"cond.370","cond","variable:Microbe_treatment","(Intercept)","ASV0139:ALL",-0.392231087904983,1.36597696417505
+"cond.371","cond","variable:Microbe_treatment","(Intercept)","ASV0139:ECO",-0.0443991601740555,2.47033294274876
+"cond.372","cond","variable:Microbe_treatment","(Intercept)","ASV0139:EMO",0.249546199244173,1.32244760258254
+"cond.373","cond","variable:Microbe_treatment","(Intercept)","ASV0139:MEM",-0.35279370232628,1.34680832849438
+"cond.374","cond","variable:Microbe_treatment","(Intercept)","ASV0139:MMO",-0.39795923937391,2.17075790762588
+"cond.375","cond","variable:Microbe_treatment","(Intercept)","ASV0145:ALL",-3.01323339598306,1.62210733934334
+"cond.376","cond","variable:Microbe_treatment","(Intercept)","ASV0145:ECO",-0.0503167700537272,2.46356537378788
+"cond.377","cond","variable:Microbe_treatment","(Intercept)","ASV0145:EMO",-3.10320900636038,1.60524862195221
+"cond.378","cond","variable:Microbe_treatment","(Intercept)","ASV0145:MEM",-3.12403463973945,1.60220286370631
+"cond.379","cond","variable:Microbe_treatment","(Intercept)","ASV0145:MMO",5.84727932282528,1.28417607809277
+"cond.380","cond","variable:Microbe_treatment","(Intercept)","ASV0146:ALL",-1.93676043799005,1.71194270603046
+"cond.381","cond","variable:Microbe_treatment","(Intercept)","ASV0146:ECO",-0.00898128374358672,2.51255713549221
+"cond.382","cond","variable:Microbe_treatment","(Intercept)","ASV0146:EMO",1.05748398516592,1.31302281925379
+"cond.383","cond","variable:Microbe_treatment","(Intercept)","ASV0146:MEM",0.255290484210321,1.33126585002536
+"cond.384","cond","variable:Microbe_treatment","(Intercept)","ASV0146:MMO",-0.260806614074313,2.26578369923653
+"cond.385","cond","variable:Microbe_treatment","(Intercept)","ASV0152:ALL",0.178035204921545,1.38133318186493
+"cond.386","cond","variable:Microbe_treatment","(Intercept)","ASV0152:ECO",-0.0263105003116167,2.49151532798573
+"cond.387","cond","variable:Microbe_treatment","(Intercept)","ASV0152:EMO",-0.610004770178487,1.40351290250352
+"cond.388","cond","variable:Microbe_treatment","(Intercept)","ASV0152:MEM",-0.593930159321097,1.39866872802893
+"cond.389","cond","variable:Microbe_treatment","(Intercept)","ASV0152:MMO",-0.269454100398946,2.26017533133648
+"cond.390","cond","variable:Microbe_treatment","(Intercept)","ASV0155:ALL",-3.2189887698261,1.6080735380387
+"cond.391","cond","variable:Microbe_treatment","(Intercept)","ASV0155:ECO",-0.0350803636256839,2.48117158339339
+"cond.392","cond","variable:Microbe_treatment","(Intercept)","ASV0155:EMO",0.866399631210488,1.26829938426647
+"cond.393","cond","variable:Microbe_treatment","(Intercept)","ASV0155:MEM",0.698830396667852,1.26999270582868
+"cond.394","cond","variable:Microbe_treatment","(Intercept)","ASV0155:MMO",-1.09305187544083,1.88831067168563
+"cond.395","cond","variable:Microbe_treatment","(Intercept)","ASV0167:ALL",0.563032440830795,1.29877879924423
+"cond.396","cond","variable:Microbe_treatment","(Intercept)","ASV0167:ECO",-0.0189911340133618,2.50030644020225
+"cond.397","cond","variable:Microbe_treatment","(Intercept)","ASV0167:EMO",-1.7550649649738,1.36818934547818
+"cond.398","cond","variable:Microbe_treatment","(Intercept)","ASV0167:MEM",0.483365078046843,1.27361104067346
+"cond.399","cond","variable:Microbe_treatment","(Intercept)","ASV0167:MMO",-0.730914374372027,2.00323035676651
+"cond.400","cond","variable:Microbe_treatment","(Intercept)","ASV0175:ALL",-0.468024368581281,1.41770686760547
+"cond.401","cond","variable:Microbe_treatment","(Intercept)","ASV0175:ECO",-0.0264501703019692,2.4913487154869
+"cond.402","cond","variable:Microbe_treatment","(Intercept)","ASV0175:EMO",-0.601610737572296,1.40472408430703
+"cond.403","cond","variable:Microbe_treatment","(Intercept)","ASV0175:MEM",-0.00647203726185207,1.3628386154855
+"cond.404","cond","variable:Microbe_treatment","(Intercept)","ASV0175:MMO",-0.269649848455128,2.26006350831898
+"cond.405","cond","variable:Microbe_treatment","(Intercept)","ASV0180:ALL",-0.694480302287564,1.26889190355552
+"cond.406","cond","variable:Microbe_treatment","(Intercept)","ASV0180:ECO",-0.230997458336985,2.28956518844856
+"cond.407","cond","variable:Microbe_treatment","(Intercept)","ASV0180:EMO",-0.15438106243063,1.24249047742819
+"cond.408","cond","variable:Microbe_treatment","(Intercept)","ASV0180:MEM",0.0295160047449569,1.23641834705262
+"cond.409","cond","variable:Microbe_treatment","(Intercept)","ASV0180:MMO",-1.23730921180755,1.83854249401676
+"cond.410","cond","variable:Microbe_treatment","(Intercept)","ASV0184:ALL",-0.189389240072465,1.3854151178718
+"cond.411","cond","variable:Microbe_treatment","(Intercept)","ASV0184:ECO",-0.0172109858193742,2.50246237393491
+"cond.412","cond","variable:Microbe_treatment","(Intercept)","ASV0184:EMO",0.427564108994587,1.31593616477043
+"cond.413","cond","variable:Microbe_treatment","(Intercept)","ASV0184:MEM",-0.570521384872068,1.36573718940895
+"cond.414","cond","variable:Microbe_treatment","(Intercept)","ASV0184:MMO",-0.225873471273729,2.29307799926435
+"cond.415","cond","variable:Food_type","(Intercept)","ASV0001:Bamboo",0.0844659378437799,1.34757678725919
+"cond.416","cond","variable:Food_type","(Intercept)","ASV0001:Larval food",4.96500415650189,1.33563628692772
+"cond.417","cond","variable:Food_type","(Intercept)","ASV0002:Bamboo",3.85047359954215,1.73056881294357
+"cond.418","cond","variable:Food_type","(Intercept)","ASV0002:Larval food",6.41736683989313,1.75743376348763
+"cond.419","cond","variable:Food_type","(Intercept)","ASV0003:Bamboo",0.320608029318096,1.23275578703617
+"cond.420","cond","variable:Food_type","(Intercept)","ASV0003:Larval food",2.38405447462573,1.25497371722919
+"cond.421","cond","variable:Food_type","(Intercept)","ASV0004:Bamboo",2.73054696736833,1.42638269301242
+"cond.422","cond","variable:Food_type","(Intercept)","ASV0004:Larval food",3.30119521552283,1.45868676066637
+"cond.423","cond","variable:Food_type","(Intercept)","ASV0005:Bamboo",1.94593147254977,1.4543157536774
+"cond.424","cond","variable:Food_type","(Intercept)","ASV0005:Larval food",4.48314465371809,1.47515692553822
+"cond.425","cond","variable:Food_type","(Intercept)","ASV0007:Bamboo",0.875458673395066,1.41061377139642
+"cond.426","cond","variable:Food_type","(Intercept)","ASV0007:Larval food",5.2850731496958,1.42523803338519
+"cond.427","cond","variable:Food_type","(Intercept)","ASV0008:Bamboo",3.09006440347096,1.33232342947281
+"cond.428","cond","variable:Food_type","(Intercept)","ASV0008:Larval food",2.05788949858119,1.37769127175491
+"cond.429","cond","variable:Food_type","(Intercept)","ASV0009:Bamboo",1.7787826859611,1.42479471476434
+"cond.430","cond","variable:Food_type","(Intercept)","ASV0009:Larval food",4.77508575964547,1.44771353742052
+"cond.431","cond","variable:Food_type","(Intercept)","ASV0010:Bamboo",1.54658164633523,1.37089594114012
+"cond.432","cond","variable:Food_type","(Intercept)","ASV0010:Larval food",3.61263201208401,1.39289049522934
+"cond.433","cond","variable:Food_type","(Intercept)","ASV0011:Bamboo",0.220772790068834,1.37543322757503
+"cond.434","cond","variable:Food_type","(Intercept)","ASV0011:Larval food",4.6996632213561,1.37925889861915
+"cond.435","cond","variable:Food_type","(Intercept)","ASV0012:Bamboo",1.53552601383561,1.41868187849288
+"cond.436","cond","variable:Food_type","(Intercept)","ASV0012:Larval food",4.73243384269128,1.43835169707377
+"cond.437","cond","variable:Food_type","(Intercept)","ASV0015:Bamboo",0.408152161950152,1.34321116355581
+"cond.438","cond","variable:Food_type","(Intercept)","ASV0015:Larval food",3.21970215394443,1.35271641285124
+"cond.439","cond","variable:Food_type","(Intercept)","ASV0016:Bamboo",1.01882469630446,1.30436428946121
+"cond.440","cond","variable:Food_type","(Intercept)","ASV0016:Larval food",3.10194334725864,1.32641197073123
+"cond.441","cond","variable:Food_type","(Intercept)","ASV0017:Bamboo",1.99513219027936,1.19049207422747
+"cond.442","cond","variable:Food_type","(Intercept)","ASV0017:Larval food",-2.5301556613972,1.74841833768781
+"cond.443","cond","variable:Food_type","(Intercept)","ASV0018:Bamboo",0.263352631094193,1.2258616356124
+"cond.444","cond","variable:Food_type","(Intercept)","ASV0018:Larval food",0.101883728107693,1.4194463027405
+"cond.445","cond","variable:Food_type","(Intercept)","ASV0020:Bamboo",1.48969396795424,1.31002385528346
+"cond.446","cond","variable:Food_type","(Intercept)","ASV0020:Larval food",2.12539787645004,1.34643685478354
+"cond.447","cond","variable:Food_type","(Intercept)","ASV0021:Bamboo",0.830025005089117,1.31933351505007
+"cond.448","cond","variable:Food_type","(Intercept)","ASV0021:Larval food",-1.78858453869766,1.89436517367593
+"cond.449","cond","variable:Food_type","(Intercept)","ASV0022:Bamboo",0.899703910539338,1.29125533504005
+"cond.450","cond","variable:Food_type","(Intercept)","ASV0022:Larval food",2.40451182327805,1.3167719369948
+"cond.451","cond","variable:Food_type","(Intercept)","ASV0023:Bamboo",2.03817950744074,1.24532566451068
+"cond.452","cond","variable:Food_type","(Intercept)","ASV0023:Larval food",-2.17701088528199,1.81673738523998
+"cond.453","cond","variable:Food_type","(Intercept)","ASV0024:Bamboo",0.28479607251207,1.3208535389013
+"cond.454","cond","variable:Food_type","(Intercept)","ASV0024:Larval food",3.4491477441661,1.32786858977528
+"cond.455","cond","variable:Food_type","(Intercept)","ASV0025:Bamboo",1.78007335712267,1.21709264548485
+"cond.456","cond","variable:Food_type","(Intercept)","ASV0025:Larval food",-3.09778134966684,1.70318464550651
+"cond.457","cond","variable:Food_type","(Intercept)","ASV0027:Bamboo",0.971291480208369,1.18107816769859
+"cond.458","cond","variable:Food_type","(Intercept)","ASV0027:Larval food",-1.13876144633503,1.31472471115306
+"cond.459","cond","variable:Food_type","(Intercept)","ASV0033:Bamboo",-0.325706643961973,1.36419032779881
+"cond.460","cond","variable:Food_type","(Intercept)","ASV0033:Larval food",-0.410905373946235,1.54118891432936
+"cond.461","cond","variable:Food_type","(Intercept)","ASV0036:Bamboo",1.348292311033,1.38047308704284
+"cond.462","cond","variable:Food_type","(Intercept)","ASV0036:Larval food",2.55384920716267,1.42288035311527
+"cond.463","cond","variable:Food_type","(Intercept)","ASV0037:Bamboo",1.11080880109792,1.37944089070995
+"cond.464","cond","variable:Food_type","(Intercept)","ASV0037:Larval food",2.6656151874815,1.42593296386561
+"cond.465","cond","variable:Food_type","(Intercept)","ASV0039:Bamboo",1.99959656306922,1.20763941027586
+"cond.466","cond","variable:Food_type","(Intercept)","ASV0039:Larval food",-1.55791736695834,1.44128553971707
+"cond.467","cond","variable:Food_type","(Intercept)","ASV0040:Bamboo",0.488024822305518,1.29811098476297
+"cond.468","cond","variable:Food_type","(Intercept)","ASV0040:Larval food",-2.42237172674706,1.80869433658039
+"cond.469","cond","variable:Food_type","(Intercept)","ASV0042:Bamboo",1.14841877338213,1.31717228143108
+"cond.470","cond","variable:Food_type","(Intercept)","ASV0042:Larval food",2.3307732531529,1.35072778531598
+"cond.471","cond","variable:Food_type","(Intercept)","ASV0044:Bamboo",2.10256448964459,1.23617868669615
+"cond.472","cond","variable:Food_type","(Intercept)","ASV0044:Larval food",-2.27336052398965,1.794372896131
+"cond.473","cond","variable:Food_type","(Intercept)","ASV0051:Bamboo",-0.213579447069963,1.24971052073916
+"cond.474","cond","variable:Food_type","(Intercept)","ASV0051:Larval food",3.33547776455184,1.25740911052906
+"cond.475","cond","variable:Food_type","(Intercept)","ASV0054:Bamboo",0.0439934171991121,1.23750465454803
+"cond.476","cond","variable:Food_type","(Intercept)","ASV0054:Larval food",0.0696480560394269,1.35186741926475
+"cond.477","cond","variable:Food_type","(Intercept)","ASV0057:Bamboo",1.45969390602286,1.20966022183899
+"cond.478","cond","variable:Food_type","(Intercept)","ASV0057:Larval food",-2.4087248616506,1.77481365802708
+"cond.479","cond","variable:Food_type","(Intercept)","ASV0059:Bamboo",-1.30012426865501,1.28911246391884
+"cond.480","cond","variable:Food_type","(Intercept)","ASV0059:Larval food",2.70559350133026,1.26235208587569
+"cond.481","cond","variable:Food_type","(Intercept)","ASV0063:Bamboo",0.83771817336002,1.22652794470153
+"cond.482","cond","variable:Food_type","(Intercept)","ASV0063:Larval food",0.424594154436513,1.28552855289143
+"cond.483","cond","variable:Food_type","(Intercept)","ASV0065:Bamboo",0.940576863011821,1.22505123475698
+"cond.484","cond","variable:Food_type","(Intercept)","ASV0065:Larval food",-2.45648406636855,1.76843421010592
+"cond.485","cond","variable:Food_type","(Intercept)","ASV0066:Bamboo",0.401522285184599,1.28739536449774
+"cond.486","cond","variable:Food_type","(Intercept)","ASV0066:Larval food",-0.0710074231464694,1.41904338432585
+"cond.487","cond","variable:Food_type","(Intercept)","ASV0069:Bamboo",1.35363600215474,1.23031065688123
+"cond.488","cond","variable:Food_type","(Intercept)","ASV0069:Larval food",-3.9070497062757,1.65801413793362
+"cond.489","cond","variable:Food_type","(Intercept)","ASV0072:Bamboo",1.30322130096082,1.23209011688144
+"cond.490","cond","variable:Food_type","(Intercept)","ASV0072:Larval food",-2.99161900422417,1.71538438021224
+"cond.491","cond","variable:Food_type","(Intercept)","ASV0073:Bamboo",0.773326463062718,1.27670891504205
+"cond.492","cond","variable:Food_type","(Intercept)","ASV0073:Larval food",0.215672948402542,1.40141383001697
+"cond.493","cond","variable:Food_type","(Intercept)","ASV0079:Bamboo",-4.12197760141483,1.67204601413331
+"cond.494","cond","variable:Food_type","(Intercept)","ASV0079:Larval food",1.8439811341349,1.29540142588071
+"cond.495","cond","variable:Food_type","(Intercept)","ASV0080:Bamboo",0.33385369771346,1.28994685445262
+"cond.496","cond","variable:Food_type","(Intercept)","ASV0080:Larval food",0.652027673730119,1.3713810112292
+"cond.497","cond","variable:Food_type","(Intercept)","ASV0082:Bamboo",0.0936118637818902,1.27408156537751
+"cond.498","cond","variable:Food_type","(Intercept)","ASV0082:Larval food",0.550717942709941,1.34255860080769
+"cond.499","cond","variable:Food_type","(Intercept)","ASV0083:Bamboo",-4.83341832989297,1.69055394565789
+"cond.500","cond","variable:Food_type","(Intercept)","ASV0083:Larval food",1.32839190721,1.33391447312589
+"cond.501","cond","variable:Food_type","(Intercept)","ASV0084:Bamboo",1.46326492294965,1.21640827988516
+"cond.502","cond","variable:Food_type","(Intercept)","ASV0084:Larval food",-2.0173663996404,1.82946718484033
+"cond.503","cond","variable:Food_type","(Intercept)","ASV0085:Bamboo",-0.511092696068026,1.24608792840845
+"cond.504","cond","variable:Food_type","(Intercept)","ASV0085:Larval food",1.88268004335487,1.2565654095218
+"cond.505","cond","variable:Food_type","(Intercept)","ASV0089:Bamboo",1.07829636553621,1.27557221940098
+"cond.506","cond","variable:Food_type","(Intercept)","ASV0089:Larval food",-2.16443370051594,1.8264395830994
+"cond.507","cond","variable:Food_type","(Intercept)","ASV0091:Bamboo",0.311980014494358,1.33804233480549
+"cond.508","cond","variable:Food_type","(Intercept)","ASV0091:Larval food",-2.1935367540352,1.86514950926873
+"cond.509","cond","variable:Food_type","(Intercept)","ASV0093:Bamboo",0.725278475660821,1.25518097247132
+"cond.510","cond","variable:Food_type","(Intercept)","ASV0093:Larval food",-3.45374714960676,1.69429061816205
+"cond.511","cond","variable:Food_type","(Intercept)","ASV0094:Bamboo",-4.93496731651821,1.58492713331677
+"cond.512","cond","variable:Food_type","(Intercept)","ASV0094:Larval food",3.69111272613936,1.23380237857073
+"cond.513","cond","variable:Food_type","(Intercept)","ASV0095:Bamboo",1.10209853151672,1.26019140349391
+"cond.514","cond","variable:Food_type","(Intercept)","ASV0095:Larval food",-2.52512922491396,1.78501062471638
+"cond.515","cond","variable:Food_type","(Intercept)","ASV0101:Bamboo",-0.178284567762216,1.32039361104993
+"cond.516","cond","variable:Food_type","(Intercept)","ASV0101:Larval food",0.861960632365072,1.3771386412423
+"cond.517","cond","variable:Food_type","(Intercept)","ASV0102:Bamboo",-3.72828620964635,1.65648286552327
+"cond.518","cond","variable:Food_type","(Intercept)","ASV0102:Larval food",2.77135501906118,1.25757289789011
+"cond.519","cond","variable:Food_type","(Intercept)","ASV0105:Bamboo",-0.345353507737029,1.37017902168942
+"cond.520","cond","variable:Food_type","(Intercept)","ASV0105:Larval food",0.380419683970037,1.47807175527366
+"cond.521","cond","variable:Food_type","(Intercept)","ASV0111:Bamboo",0.284698102921628,1.21500341533829
+"cond.522","cond","variable:Food_type","(Intercept)","ASV0111:Larval food",-1.15330403847375,1.32181973635945
+"cond.523","cond","variable:Food_type","(Intercept)","ASV0112:Bamboo",0.656291055951129,1.3183929187113
+"cond.524","cond","variable:Food_type","(Intercept)","ASV0112:Larval food",-1.95738136919169,1.87025994517765
+"cond.525","cond","variable:Food_type","(Intercept)","ASV0115:Bamboo",0.54386596119144,1.25148659561303
+"cond.526","cond","variable:Food_type","(Intercept)","ASV0115:Larval food",-1.17472428993811,1.4652601823536
+"cond.527","cond","variable:Food_type","(Intercept)","ASV0116:Bamboo",-1.99547033675765,1.28107249506931
+"cond.528","cond","variable:Food_type","(Intercept)","ASV0116:Larval food",2.67911075376507,1.24162584991286
+"cond.529","cond","variable:Food_type","(Intercept)","ASV0119:Bamboo",0.780930123891136,1.26453147167606
+"cond.530","cond","variable:Food_type","(Intercept)","ASV0119:Larval food",-2.67618170707962,1.76522304810373
+"cond.531","cond","variable:Food_type","(Intercept)","ASV0123:Bamboo",0.605678786869458,1.28061531303264
+"cond.532","cond","variable:Food_type","(Intercept)","ASV0123:Larval food",-2.4943503666448,1.79047332449567
+"cond.533","cond","variable:Food_type","(Intercept)","ASV0128:Bamboo",0.0220119962870204,1.31741973291279
+"cond.534","cond","variable:Food_type","(Intercept)","ASV0128:Larval food",-0.519223203696308,1.51116537036321
+"cond.535","cond","variable:Food_type","(Intercept)","ASV0139:Bamboo",0.643328880516729,1.33805904340333
+"cond.536","cond","variable:Food_type","(Intercept)","ASV0139:Larval food",-1.79296067989065,1.90330521913931
+"cond.537","cond","variable:Food_type","(Intercept)","ASV0145:Bamboo",-1.82761309506147,1.37878486085638
+"cond.538","cond","variable:Food_type","(Intercept)","ASV0145:Larval food",-2.39356158504855,1.60154462515115
+"cond.539","cond","variable:Food_type","(Intercept)","ASV0146:Bamboo",-2.15027381025598,1.40180661787837
+"cond.540","cond","variable:Food_type","(Intercept)","ASV0146:Larval food",1.0546560550712,1.35861234232593
+"cond.541","cond","variable:Food_type","(Intercept)","ASV0152:Bamboo",-0.00201555058075066,1.42767675451017
+"cond.542","cond","variable:Food_type","(Intercept)","ASV0152:Larval food",-1.61812457162,1.95346933856787
+"cond.543","cond","variable:Food_type","(Intercept)","ASV0155:Bamboo",-5.50395071791713,1.66866430270864
+"cond.544","cond","variable:Food_type","(Intercept)","ASV0155:Larval food",2.09381615674899,1.32210985739803
+"cond.545","cond","variable:Food_type","(Intercept)","ASV0167:Bamboo",-4.32943390596933,1.65844314413255
+"cond.546","cond","variable:Food_type","(Intercept)","ASV0167:Larval food",2.54146662903125,1.29170387305853
+"cond.547","cond","variable:Food_type","(Intercept)","ASV0175:Bamboo",0.0359378373273864,1.4259534647074
+"cond.548","cond","variable:Food_type","(Intercept)","ASV0175:Larval food",-1.71803505132421,1.94338257174544
+"cond.549","cond","variable:Food_type","(Intercept)","ASV0180:Bamboo",0.431494677223318,1.27338403542927
+"cond.550","cond","variable:Food_type","(Intercept)","ASV0180:Larval food",-3.23577468139041,1.72276784576924
+"cond.551","cond","variable:Food_type","(Intercept)","ASV0184:Bamboo",-0.756842997291326,1.36825986892729
+"cond.552","cond","variable:Food_type","(Intercept)","ASV0184:Larval food",0.0514605570257238,1.45738423314038
+"cond.553","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0001:ALL:Bamboo",-0.757982459209666,0.453448747642753
+"cond.554","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0001:ALL:Larval food",0.857108039524921,0.459851565615288
+"cond.555","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0001:ECO:Bamboo",0.601537424554319,0.453373912822709
+"cond.556","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0001:ECO:Larval food",-0.101932510271658,0.459006694643728
+"cond.557","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0001:EMO:Bamboo",-0.0349561784010362,0.489096080964085
+"cond.558","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0001:EMO:Larval food",-0.159881332288628,0.485674596590614
+"cond.559","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0001:MEM:Bamboo",-0.0305170542180125,0.489817679087394
+"cond.560","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0001:MEM:Larval food",-0.170550728175152,0.486665963697102
+"cond.561","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0001:MMO:Bamboo",0.224580822149023,0.495959863609331
+"cond.562","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0001:MMO:Larval food",-0.268235456720942,0.492587786156259
+"cond.563","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0002:ALL:Bamboo",-0.210661743377862,0.410652827777908
+"cond.564","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0002:ALL:Larval food",0.168996773079876,0.409616887615905
+"cond.565","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0002:ECO:Bamboo",-0.124993224660952,0.449569979736009
+"cond.566","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0002:ECO:Larval food",0.455226542774839,0.441643901630068
+"cond.567","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0002:EMO:Bamboo",0.038899855964975,0.403002564320097
+"cond.568","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0002:EMO:Larval food",-0.0723138412427502,0.402422668333377
+"cond.569","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0002:MEM:Bamboo",-0.00456300112217722,0.404787869781151
+"cond.570","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0002:MEM:Larval food",-0.0458301166647883,0.403771999627398
+"cond.571","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0002:MMO:Bamboo",0.422693634664126,0.418669589555577
+"cond.572","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0002:MMO:Larval food",-0.303789632668501,0.415417841896527
+"cond.573","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0003:ALL:Bamboo",0.419106408731745,0.442555454355483
+"cond.574","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0003:ALL:Larval food",-0.446768334192598,0.44472372033509
+"cond.575","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0003:ECO:Bamboo",-0.00822253411524475,0.494504317586991
+"cond.576","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0003:ECO:Larval food",-0.00141795543238128,0.495769813675446
+"cond.577","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0003:EMO:Bamboo",-0.0957118887418002,0.485419477506548
+"cond.578","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0003:EMO:Larval food",-0.0932883435537571,0.48499130937677
+"cond.579","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0003:MEM:Bamboo",-0.722778372475451,0.427082230066597
+"cond.580","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0003:MEM:Larval food",0.767469281801614,0.429617165828429
+"cond.581","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0003:MMO:Bamboo",0.417712667228146,0.428768493585544
+"cond.582","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0003:MMO:Larval food",-0.150843930773394,0.424882041472674
+"cond.583","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0004:ALL:Bamboo",-0.038128304088063,0.431250597470656
+"cond.584","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0004:ALL:Larval food",0.118094445079942,0.433561150980855
+"cond.585","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0004:ECO:Bamboo",-0.00587669279416643,0.494897071221663
+"cond.586","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0004:ECO:Larval food",-0.000235296739048138,0.496049898144858
+"cond.587","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0004:EMO:Bamboo",-0.0583716130234541,0.426505695393053
+"cond.588","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0004:EMO:Larval food",0.135120776871891,0.427896849082936
+"cond.589","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0004:MEM:Bamboo",0.219094121956352,0.426212955728097
+"cond.590","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0004:MEM:Larval food",-0.141323433702056,0.426531018169419
+"cond.591","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0004:MMO:Bamboo",-0.030644577516875,0.492106010671404
+"cond.592","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0004:MMO:Larval food",-0.00759545060403268,0.494465228506356
+"cond.593","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0005:ALL:Bamboo",-0.144506593303419,0.420525592808964
+"cond.594","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0005:ALL:Larval food",0.235628743762998,0.422012219866679
+"cond.595","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0005:ECO:Bamboo",-0.00387044592683509,0.495258628213349
+"cond.596","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0005:ECO:Larval food",-0.00110197700781918,0.495843936372236
+"cond.597","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0005:EMO:Bamboo",0.0144529204689108,0.419143814545702
+"cond.598","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0005:EMO:Larval food",0.0575078906132286,0.419134729102983
+"cond.599","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0005:MEM:Bamboo",0.211995293326023,0.416948696610975
+"cond.600","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0005:MEM:Larval food",-0.122129959678048,0.416604674339999
+"cond.601","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0005:MMO:Bamboo",-0.0167310715576061,0.492974334353507
+"cond.602","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0005:MMO:Larval food",-0.0285859725790636,0.491968704612472
+"cond.603","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0007:ALL:Bamboo",-0.276228930469558,0.432180287977938
+"cond.604","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0007:ALL:Larval food",0.272817875545328,0.43103505213763
+"cond.605","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0007:ECO:Bamboo",-0.00346022056137199,0.495327229858829
+"cond.606","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0007:ECO:Larval food",-0.00631467433713557,0.494808844924862
+"cond.607","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0007:EMO:Bamboo",-0.0738968416096571,0.422726433556045
+"cond.608","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0007:EMO:Larval food",0.0817037434054529,0.42161220792419
+"cond.609","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0007:MEM:Bamboo",-0.296480914097473,0.426426308577455
+"cond.610","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0007:MEM:Larval food",0.295267545942413,0.424879904063579
+"cond.611","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0007:MMO:Bamboo",0.677663318000233,0.44202080453148
+"cond.612","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0007:MMO:Larval food",-0.476877189481794,0.429803724105351
+"cond.613","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0008:ALL:Bamboo",-0.0121564220412371,0.434023246894446
+"cond.614","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0008:ALL:Larval food",0.0629399258872429,0.437036242374439
+"cond.615","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0008:ECO:Bamboo",-0.0182102734035343,0.493342816814627
+"cond.616","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0008:ECO:Larval food",-0.000147400887686123,0.496071407714067
+"cond.617","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0008:EMO:Bamboo",-0.14880807011882,0.42825661257855
+"cond.618","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0008:EMO:Larval food",0.19912230067419,0.430974373211652
+"cond.619","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0008:MEM:Bamboo",0.215904953941711,0.427203502867965
+"cond.620","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0008:MEM:Larval food",-0.161972791671511,0.428706931680985
+"cond.621","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0008:MMO:Bamboo",0.0606755381241798,0.483721273451086
+"cond.622","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0008:MMO:Larval food",-0.0350727641431366,0.488894789991034
+"cond.623","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0009:ALL:Bamboo",-0.136328365243098,0.408340365182477
+"cond.624","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0009:ALL:Larval food",0.169707264324344,0.409272113869618
+"cond.625","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0009:ECO:Bamboo",-0.0128170083932233,0.493803000828481
+"cond.626","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0009:ECO:Larval food",-0.00570651768309633,0.494877076272157
+"cond.627","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0009:EMO:Bamboo",-0.154812091302102,0.407043395959429
+"cond.628","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0009:EMO:Larval food",0.170779624257729,0.40716363871352
+"cond.629","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0009:MEM:Bamboo",0.200219261681596,0.405089138398031
+"cond.630","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0009:MEM:Larval food",-0.181286433068272,0.405223269601924
+"cond.631","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0009:MMO:Bamboo",0.159809403462602,0.426101134183649
+"cond.632","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0009:MMO:Larval food",-0.00297257749705067,0.421308655247322
+"cond.633","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0010:ALL:Bamboo",-0.014872570359658,0.423039058484653
+"cond.634","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0010:ALL:Larval food",0.0901284010679685,0.424309984578601
+"cond.635","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0010:ECO:Bamboo",-0.00495022381333101,0.495055993187674
+"cond.636","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0010:ECO:Larval food",-0.000876288134830769,0.495896298912809
+"cond.637","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0010:EMO:Bamboo",-0.124979623879232,0.419101674481767
+"cond.638","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0010:EMO:Larval food",0.196519116228653,0.419630419226696
+"cond.639","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0010:MEM:Bamboo",0.215708612179731,0.419097220999966
+"cond.640","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0010:MEM:Larval food",-0.148086443396439,0.418963056519993
+"cond.641","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0010:MMO:Bamboo",-0.0221544889244754,0.492352720225829
+"cond.642","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0010:MMO:Larval food",-0.0238065619564104,0.492254100070367
+"cond.643","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0011:ALL:Bamboo",-0.172105556036296,0.437837599664689
+"cond.644","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0011:ALL:Larval food",0.2204436165481,0.437780565047625
+"cond.645","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0011:ECO:Bamboo",-0.000961521370284483,0.495876594231286
+"cond.646","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0011:ECO:Larval food",-0.00189688377812856,0.495666569881501
+"cond.647","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0011:EMO:Bamboo",0.159151258422292,0.429330432941764
+"cond.648","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0011:EMO:Larval food",-0.0760649726879615,0.427707793160849
+"cond.649","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0011:MEM:Bamboo",0.0246690260960991,0.429503632243908
+"cond.650","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0011:MEM:Larval food",0.0495362497887771,0.428340662944085
+"cond.651","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0011:MMO:Bamboo",-0.00379395604104433,0.495220013281788
+"cond.652","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0011:MMO:Larval food",-0.0438741362744548,0.491776915197417
+"cond.653","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0012:ALL:Bamboo",-0.0085780102408314,0.429200564747042
+"cond.654","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0012:ALL:Larval food",0.0234938959053045,0.429310267087905
+"cond.655","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0012:ECO:Bamboo",-0.00462696048746153,0.495107447777829
+"cond.656","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0012:ECO:Larval food",-0.00253388196906058,0.495525725078229
+"cond.657","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0012:EMO:Bamboo",0.302575015216376,0.419303518633333
+"cond.658","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0012:EMO:Larval food",-0.262240459378593,0.418552653176151
+"cond.659","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0012:MEM:Bamboo",-0.0413107164525527,0.419321522565996
+"cond.660","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0012:MEM:Larval food",0.0749280477719632,0.418942731262728
+"cond.661","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0012:MMO:Bamboo",-0.1996561210432,0.449555260240428
+"cond.662","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0012:MMO:Larval food",0.315529274389727,0.450429247651026
+"cond.663","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0015:ALL:Bamboo",-0.257266983780045,0.451596268840769
+"cond.664","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0015:ALL:Larval food",0.304940207945923,0.453059816380733
+"cond.665","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0015:ECO:Bamboo",-0.000709424737546885,0.495936065345989
+"cond.666","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0015:ECO:Larval food",-0.00026544127861936,0.496042610183161
+"cond.667","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0015:EMO:Bamboo",0.312723151921484,0.447847440096779
+"cond.668","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0015:EMO:Larval food",-0.249433010565513,0.445681418988648
+"cond.669","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0015:MEM:Bamboo",-0.036299692872661,0.450125387356488
+"cond.670","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0015:MEM:Larval food",0.0588649253975321,0.44932213325774
+"cond.671","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0015:MMO:Bamboo",-0.00558118345946973,0.494894400639579
+"cond.672","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0015:MMO:Larval food",-0.0126144837724075,0.493849589608161
+"cond.673","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0016:ALL:Bamboo",0.360200560242532,0.424432369956698
+"cond.674","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0016:ALL:Larval food",-0.323435044199415,0.424966190687077
+"cond.675","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0016:ECO:Bamboo",-0.00788648213598708,0.4945583383835
+"cond.676","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0016:ECO:Larval food",-0.00140602470981875,0.495772800034875
+"cond.677","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0016:EMO:Bamboo",-0.147696640152207,0.414197410356081
+"cond.678","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0016:EMO:Larval food",0.226503067757008,0.415229435426739
+"cond.679","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0016:MEM:Bamboo",-0.143727201557745,0.413690769485564
+"cond.680","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0016:MEM:Larval food",0.227363437159532,0.414675539968944
+"cond.681","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0016:MMO:Bamboo",-0.0287746081234257,0.491482646797648
+"cond.682","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0016:MMO:Larval food",-0.0312452586850105,0.491371539387277
+"cond.683","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0017:ALL:Bamboo",0.00178928857508986,0.4868221832452
+"cond.684","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0017:ALL:Larval food",-0.010371248317585,0.493857742760891
+"cond.685","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0017:ECO:Bamboo",-0.0153603152085474,0.493618179338425
+"cond.686","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0017:ECO:Larval food",-3.727554945676e-06,0.49610691832245
+"cond.687","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0017:EMO:Bamboo",0.00824624459617374,0.485068434792884
+"cond.688","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0017:EMO:Larval food",-0.0252381808545151,0.491655766227534
+"cond.689","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0017:MEM:Bamboo",0.0407193771666238,0.484265282523962
+"cond.690","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0017:MEM:Larval food",-0.0432059740305316,0.490364255272251
+"cond.691","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0017:MMO:Bamboo",0.0274964243083107,0.48910956197154
+"cond.692","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0017:MMO:Larval food",-0.000937022572259444,0.495878578544602
+"cond.693","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0018:ALL:Bamboo",-0.134088270372177,0.491314770754892
+"cond.694","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0018:ALL:Larval food",-0.00590082352268714,0.494732575882334
+"cond.695","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0018:ECO:Bamboo",0.497687044786147,0.495427333887673
+"cond.696","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0018:ECO:Larval food",-0.194810632061999,0.480849153826604
+"cond.697","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0018:EMO:Bamboo",-0.13011488620398,0.490134193532051
+"cond.698","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0018:EMO:Larval food",-0.0154702419170096,0.492839864510402
+"cond.699","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0018:MEM:Bamboo",-0.128896368196531,0.489855874794489
+"cond.700","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0018:MEM:Larval food",-0.0179001963912983,0.49241693372212
+"cond.701","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0018:MMO:Bamboo",-0.0962860573225175,0.473252681814687
+"cond.702","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0018:MMO:Larval food",0.237293496390322,0.479489947859238
+"cond.703","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0020:ALL:Bamboo",0.347516002114041,0.461532871914236
+"cond.704","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0020:ALL:Larval food",-0.334752968142504,0.464013174293596
+"cond.705","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0020:ECO:Bamboo",-0.00326202248322335,0.495380622544648
+"cond.706","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0020:ECO:Larval food",-0.000138431001597353,0.496073659782507
+"cond.707","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0020:EMO:Bamboo",-0.159118273487392,0.439847431329555
+"cond.708","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0020:EMO:Larval food",0.228529571578724,0.442813044887147
+"cond.709","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0020:MEM:Bamboo",-0.116460763106611,0.439718712026102
+"cond.710","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0020:MEM:Larval food",0.179050064716548,0.442232444049438
+"cond.711","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0020:MMO:Bamboo",-0.0217164644200954,0.492854277670501
+"cond.712","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0020:MMO:Larval food",-0.00569095255428128,0.494852443297622
+"cond.713","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0021:ALL:Bamboo",0.00440916851985498,0.48805782545803
+"cond.714","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0021:ALL:Larval food",-0.00737729880360011,0.494488107848708
+"cond.715","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0021:ECO:Bamboo",-0.00207463629800084,0.49562792846067
+"cond.716","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0021:ECO:Larval food",-3.38724250643224e-06,0.496107002747437
+"cond.717","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0021:EMO:Bamboo",0.0210783263369403,0.486492417902563
+"cond.718","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0021:EMO:Larval food",-0.0232229812236072,0.492258517487098
+"cond.719","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0021:MEM:Bamboo",0.0202400280067237,0.486375087897421
+"cond.720","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0021:MEM:Larval food",-0.0255995625659969,0.492055451659354
+"cond.721","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0021:MMO:Bamboo",-0.0174886459286676,0.493419884489342
+"cond.722","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0021:MMO:Larval food",-0.000176946644408225,0.496064204365204
+"cond.723","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0022:ALL:Bamboo",-0.0597143990873049,0.44039100285018
+"cond.724","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0022:ALL:Larval food",0.0990557111313723,0.442130864524029
+"cond.725","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0022:ECO:Bamboo",-0.00349919199507311,0.495332527210979
+"cond.726","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0022:ECO:Larval food",-0.000352076653795996,0.496021496701547
+"cond.727","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0022:EMO:Bamboo",0.0236355268893506,0.431488825326951
+"cond.728","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0022:EMO:Larval food",0.0362222678431299,0.432098759139392
+"cond.729","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0022:MEM:Bamboo",0.0887425143901543,0.433252936486019
+"cond.730","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0022:MEM:Larval food",-0.0462713165640776,0.433573933599035
+"cond.731","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0022:MMO:Bamboo",-0.0208037749488681,0.492732245869199
+"cond.732","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0022:MMO:Larval food",-0.0128590066202572,0.493631537197782
+"cond.733","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0023:ALL:Bamboo",0.071204061705215,0.486441527249443
+"cond.734","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0023:ALL:Larval food",-0.0210440239515995,0.492286050296967
+"cond.735","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0023:ECO:Bamboo",-0.00661919044817319,0.494773211695569
+"cond.736","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0023:ECO:Larval food",-2.19842697576758e-06,0.496107297562121
+"cond.737","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0023:EMO:Bamboo",-0.0280488835634654,0.487854189210851
+"cond.738","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0023:EMO:Larval food",-0.00730115964138803,0.49447852200805
+"cond.739","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0023:MEM:Bamboo",0.0649663212200489,0.485456664543236
+"cond.740","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0023:MEM:Larval food",-0.040198982472509,0.490903022579669
+"cond.741","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0023:MMO:Bamboo",-0.0372543419646641,0.492180393202762
+"cond.742","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0023:MMO:Larval food",-7.78773343693442e-05,0.496088564765281
+"cond.743","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0024:ALL:Bamboo",-0.0919233219505836,0.436077390253055
+"cond.744","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0024:ALL:Larval food",0.154887273537861,0.436880890344074
+"cond.745","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0024:ECO:Bamboo",-0.00151384366887395,0.495750539229536
+"cond.746","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0024:ECO:Larval food",-0.000800824737694544,0.495914509501686
+"cond.747","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0024:EMO:Bamboo",0.146815405807285,0.43372090197063
+"cond.748","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0024:EMO:Larval food",-0.0916005411586503,0.432698282397707
+"cond.749","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0024:MEM:Bamboo",-0.0360500503160991,0.435208901733874
+"cond.750","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0024:MEM:Larval food",0.0727087348222269,0.434617532796055
+"cond.751","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0024:MMO:Bamboo",-0.00835078204913426,0.494329675457578
+"cond.752","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0024:MMO:Larval food",-0.0264698076490101,0.49241171249011
+"cond.753","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0025:ALL:Bamboo",0.0197662776292277,0.48668833258197
+"cond.754","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0025:ALL:Larval food",-0.0114864241990924,0.493609610299042
+"cond.755","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0025:ECO:Bamboo",-0.0154602129094525,0.4936180253654
+"cond.756","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0025:ECO:Larval food",-2.62756301145394e-06,0.496107191121612
+"cond.757","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0025:EMO:Bamboo",0.0617675669080874,0.483910129440468
+"cond.758","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0025:EMO:Larval food",-0.0437258372455011,0.489800900043899
+"cond.759","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0025:MEM:Bamboo",0.0522018131497706,0.483891051099986
+"cond.760","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0025:MEM:Larval food",-0.0423659279182205,0.489889980222767
+"cond.761","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0025:MMO:Bamboo",-0.0621635597362864,0.491552742451804
+"cond.762","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0025:MMO:Larval food",-6.81649434963342e-05,0.496090958416081
+"cond.763","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0027:ALL:Bamboo",0.0993837665642447,0.474050863322275
+"cond.764","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0027:ALL:Larval food",-0.0982809703882369,0.479786982896643
+"cond.765","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0027:ECO:Bamboo",-0.0117928589631474,0.494026727860603
+"cond.766","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0027:ECO:Larval food",-3.15666595455755e-05,0.496100019378953
+"cond.767","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0027:EMO:Bamboo",-0.175401962796564,0.492779961323349
+"cond.768","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0027:EMO:Larval food",-0.00312707008693557,0.495353398966082
+"cond.769","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0027:MEM:Bamboo",0.29390550440438,0.466375364169205
+"cond.770","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0027:MEM:Larval food",-0.292720823376835,0.470830592826836
+"cond.771","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0027:MMO:Bamboo",-0.175477173993251,0.463296351216553
+"cond.772","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0027:MMO:Larval food",0.358264128198735,0.471217322414666
+"cond.773","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0033:ALL:Bamboo",0.0564302791052002,0.483343479103017
+"cond.774","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0033:ALL:Larval food",-0.0453824709351799,0.488258336867613
+"cond.775","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0033:ECO:Bamboo",-0.000756456869283398,0.495925052677754
+"cond.776","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0033:ECO:Larval food",-1.55226055207627e-05,0.496103994655799
+"cond.777","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0033:EMO:Bamboo",-0.0505149451490206,0.479859897249399
+"cond.778","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0033:EMO:Larval food",0.0722353304199813,0.483507659259009
+"cond.779","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0033:MEM:Bamboo",-0.00757181355202527,0.485086929335078
+"cond.780","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0033:MEM:Larval food",-0.0387998593069368,0.489407359662207
+"cond.781","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0033:MMO:Bamboo",-0.00785406387509217,0.494570520059592
+"cond.782","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0033:MMO:Larval food",-0.000990132030928663,0.495869548146657
+"cond.783","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0036:ALL:Bamboo",0.207619929343241,0.463499107346238
+"cond.784","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0036:ALL:Larval food",-0.145310300653321,0.464137751971292
+"cond.785","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0036:ECO:Bamboo",-0.000599340694717513,0.495962229553723
+"cond.786","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0036:ECO:Larval food",-4.5279787019468e-05,0.496096629283995
+"cond.787","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0036:EMO:Bamboo",-0.300220906207816,0.466388075241236
+"cond.788","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0036:EMO:Larval food",0.331575479021248,0.469050828097005
+"cond.789","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0036:MEM:Bamboo",0.141485722635991,0.460725448217458
+"cond.790","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0036:MEM:Larval food",-0.103057490637062,0.461146607373806
+"cond.791","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0036:MMO:Bamboo",-0.00578422227089257,0.494898529161594
+"cond.792","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0036:MMO:Larval food",-0.00265938117146516,0.495497394303115
+"cond.793","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0037:ALL:Bamboo",0.20311162600315,0.47481741375378
+"cond.794","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0037:ALL:Larval food",-0.183396341021024,0.476749757666372
+"cond.795","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0037:ECO:Bamboo",-0.000565651895824567,0.495970205210192
+"cond.796","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0037:ECO:Larval food",-6.05439468262732e-05,0.496092856701969
+"cond.797","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0037:EMO:Bamboo",0.0617166647578158,0.480847019347806
+"cond.798","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0037:EMO:Larval food",-0.109546003131386,0.482950922069704
+"cond.799","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0037:MEM:Bamboo",-0.273868803497103,0.480262596815096
+"cond.800","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0037:MEM:Larval food",0.247211934031181,0.479559243805166
+"cond.801","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0037:MMO:Bamboo",0.0446213371812956,0.471407189428566
+"cond.802","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0037:MMO:Larval food",0.129817093982986,0.472072754356436
+"cond.803","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0039:ALL:Bamboo",0.0521502199654526,0.483073647646345
+"cond.804","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0039:ALL:Larval food",-0.0330078955896875,0.489455394182825
+"cond.805","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0039:ECO:Bamboo",-0.0107003277729648,0.494172864985783
+"cond.806","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0039:ECO:Larval food",-6.84719930342151e-06,0.496106144716739
+"cond.807","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0039:EMO:Bamboo",-0.112278024020823,0.476768484032467
+"cond.808","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0039:EMO:Larval food",0.135763390408009,0.482684441433591
+"cond.809","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0039:MEM:Bamboo",0.18356416222424,0.477441258556011
+"cond.810","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0039:MEM:Larval food",-0.151655214087093,0.4816648496596
+"cond.811","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0039:MMO:Bamboo",-0.0497042839641866,0.49176582404039
+"cond.812","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0039:MMO:Larval food",-0.000202465948424987,0.496057803568604
+"cond.813","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0040:ALL:Bamboo",-0.0315187446568059,0.488581974850915
+"cond.814","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0040:ALL:Larval food",-0.00401737992051225,0.495165773624009
+"cond.815","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0040:ECO:Bamboo",-0.00330418524186849,0.495372502260752
+"cond.816","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0040:ECO:Larval food",-3.99914164306701e-06,0.496106851000304
+"cond.817","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0040:EMO:Bamboo",0.0651349455287028,0.485361590262048
+"cond.818","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0040:EMO:Larval food",-0.0472989225262504,0.490522981058713
+"cond.819","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0040:MEM:Bamboo",0.00994991506307945,0.485846643959932
+"cond.820","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0040:MEM:Larval food",-0.0248496541991542,0.49180749232434
+"cond.821","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0040:MMO:Bamboo",-0.0248782991045789,0.492822843827828
+"cond.822","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0040:MMO:Larval food",-0.000188607366460158,0.49606130939805
+"cond.823","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0042:ALL:Bamboo",-0.067251608130505,0.449730972220785
+"cond.824","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0042:ALL:Larval food",0.11122339845319,0.451933306772094
+"cond.825","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0042:ECO:Bamboo",-0.00198100126607929,0.495647903873571
+"cond.826","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0042:ECO:Larval food",-0.000145234943754215,0.496071994096564
+"cond.827","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0042:EMO:Bamboo",0.0521699351358901,0.443957113321684
+"cond.828","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0042:EMO:Larval food",0.00429719151110142,0.444792428767246
+"cond.829","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0042:MEM:Bamboo",0.0680906736900699,0.445689707811211
+"cond.830","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0042:MEM:Larval food",-0.0352398190623575,0.446316545064231
+"cond.831","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0042:MMO:Bamboo",-0.0148272766145,0.493539473497486
+"cond.832","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0042:MMO:Larval food",-0.00666436112426055,0.494689226111266
+"cond.833","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0044:ALL:Bamboo",0.0232935282490964,0.487346239124075
+"cond.834","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0044:ALL:Larval food",-0.00904656168640587,0.494127430896037
+"cond.835","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0044:ECO:Bamboo",-0.00802033984367702,0.494552126110325
+"cond.836","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0044:ECO:Larval food",-2.26810031045259e-06,0.496107280280837
+"cond.837","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0044:EMO:Bamboo",0.0401465574871264,0.485508069353311
+"cond.838","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0044:EMO:Larval food",-0.0269758505130019,0.491602996722972
+"cond.839","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0044:MEM:Bamboo",0.0526869209588685,0.485206727655608
+"cond.840","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0044:MEM:Larval food",-0.035561972993549,0.490973279218167
+"cond.841","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0044:MMO:Bamboo",-0.0418291415669183,0.492007627894818
+"cond.842","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0044:MMO:Larval food",-7.47441818552447e-05,0.496089337308635
+"cond.843","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0051:ALL:Bamboo",-0.112248976540286,0.43375102209121
+"cond.844","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0051:ALL:Larval food",0.113923552721595,0.433185872827166
+"cond.845","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0051:ECO:Bamboo",-0.00382788500137163,0.495259695491333
+"cond.846","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0051:ECO:Larval food",-0.00291765721850016,0.495445432262714
+"cond.847","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0051:EMO:Bamboo",0.0575496652170558,0.421886672198861
+"cond.848","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0051:EMO:Larval food",-0.0264110572687475,0.421297067306412
+"cond.849","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0051:MEM:Bamboo",-0.0181576191836274,0.42174969532731
+"cond.850","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0051:MEM:Larval food",0.0477965279863357,0.421194940067207
+"cond.851","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0051:MMO:Bamboo",0.0699523146631203,0.472792216249834
+"cond.852","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0051:MMO:Larval food",-0.0272496628557,0.469659720809185
+"cond.853","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0054:ALL:Bamboo",-0.0541778907591402,0.486774221060568
+"cond.854","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0054:ALL:Larval food",-0.0189398528043861,0.491994994871417
+"cond.855","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0054:ECO:Bamboo",-0.00227968228512856,0.495583033797506
+"cond.856","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0054:ECO:Larval food",-5.19388169600644e-05,0.49609498181549
+"cond.857","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0054:EMO:Bamboo",-0.0378275180113982,0.483655170830368
+"cond.858","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0054:EMO:Larval food",-0.0447033920941844,0.487927635788764
+"cond.859","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0054:MEM:Bamboo",0.134890789947352,0.473684779538679
+"cond.860","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0054:MEM:Larval food",-0.168393123757372,0.477710657925371
+"cond.861","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0054:MMO:Bamboo",-0.0392189281956484,0.469118896050442
+"cond.862","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0054:MMO:Larval food",0.234283769642032,0.474031627629276
+"cond.863","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0057:ALL:Bamboo",-0.0329573171908471,0.487984082624056
+"cond.864","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0057:ALL:Larval food",-0.00518326585190221,0.494908846652518
+"cond.865","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0057:ECO:Bamboo",-0.00987586808675018,0.49427814235077
+"cond.866","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0057:ECO:Larval food",-4.59984634084855e-06,0.496106702020402
+"cond.867","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0057:EMO:Bamboo",-0.130213447135137,0.490934191999721
+"cond.868","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0057:EMO:Larval food",-0.00142233328801399,0.495762432751859
+"cond.869","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0057:MEM:Bamboo",0.0333037844370719,0.484586757892038
+"cond.870","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0057:MEM:Larval food",-0.0407455961462887,0.490611946825753
+"cond.871","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0057:MMO:Bamboo",0.185755657685204,0.489122616981918
+"cond.872","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0057:MMO:Larval food",-0.0285725883761226,0.491449856484177
+"cond.873","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0059:ALL:Bamboo",0.491629568443772,0.466520228620323
+"cond.874","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0059:ALL:Larval food",-0.458104978970576,0.463300992601029
+"cond.875","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0059:ECO:Bamboo",-0.000546849784925493,0.495974662867323
+"cond.876","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0059:ECO:Larval food",-0.000666430897285582,0.495946324618723
+"cond.877","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0059:EMO:Bamboo",-0.0204873835208547,0.451183242597313
+"cond.878","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0059:EMO:Larval food",0.0560992666550724,0.449633575605888
+"cond.879","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0059:MEM:Bamboo",-0.508053664023215,0.467396242668628
+"cond.880","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0059:MEM:Larval food",0.513691225148287,0.465262924970932
+"cond.881","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0059:MMO:Bamboo",-0.00352448972184624,0.495291403304963
+"cond.882","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0059:MMO:Larval food",-0.02573273634317,0.492657665382766
+"cond.883","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0063:ALL:Bamboo",0.132466764557777,0.456335991953633
+"cond.884","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0063:ALL:Larval food",-0.105350340356293,0.459482012110257
+"cond.885","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0063:ECO:Bamboo",-0.00574270881947715,0.494918417962116
+"cond.886","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0063:ECO:Larval food",-8.44542470116462e-05,0.496086948003321
+"cond.887","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0063:EMO:Bamboo",-0.199098469976532,0.446918737306456
+"cond.888","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0063:EMO:Larval food",0.245913391889179,0.450295291318288
+"cond.889","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0063:MEM:Bamboo",0.132770147285261,0.450259334146217
+"cond.890","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0063:MEM:Larval food",-0.123947724450511,0.452668805582379
+"cond.891","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0063:MMO:Bamboo",-0.0339889865764197,0.492117425195526
+"cond.892","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0063:MMO:Larval food",-0.00314671746466545,0.495370243584447
+"cond.893","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0065:ALL:Bamboo",0.0118929954036901,0.486144848226468
+"cond.894","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0065:ALL:Larval food",-0.0166039024670816,0.492815025652747
+"cond.895","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0065:ECO:Bamboo",-0.00857624015002625,0.494463734909792
+"cond.896","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0065:ECO:Larval food",-6.35682644849063e-06,0.49610626636898
+"cond.897","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0065:EMO:Bamboo",0.0222841741767232,0.484588828959529
+"cond.898","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0065:EMO:Larval food",-0.0376352277409328,0.49068941332211
+"cond.899","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0065:MEM:Bamboo",-0.0219859745831197,0.48575188957359
+"cond.900","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0065:MEM:Larval food",-0.0218708722017203,0.49210322267118
+"cond.901","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0065:MMO:Bamboo",0.0260341270844909,0.489521741756202
+"cond.902","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0065:MMO:Larval food",-0.00131750099572073,0.495788005652853
+"cond.903","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0066:ALL:Bamboo",0.0293002435508991,0.483206645076245
+"cond.904","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0066:ALL:Larval food",-0.0369206024601101,0.488793136061364
+"cond.905","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0066:ECO:Bamboo",-0.00143429155293507,0.495768932149285
+"cond.906","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0066:ECO:Larval food",-2.00110211165932e-05,0.496102882575145
+"cond.907","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0066:EMO:Bamboo",-0.169556635754129,0.473521966689981
+"cond.908","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0066:EMO:Larval food",0.199573447179706,0.477625158399246
+"cond.909","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0066:MEM:Bamboo",0.167415961183656,0.475576324160261
+"cond.910","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0066:MEM:Larval food",-0.163746543909136,0.479187955804127
+"cond.911","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0066:MMO:Bamboo",-0.0130683988681519,0.493858414063309
+"cond.912","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0066:MMO:Larval food",-0.00112460224356633,0.49583700174633
+"cond.913","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0069:ALL:Bamboo",0.0241169339189132,0.485809874357333
+"cond.914","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0069:ALL:Larval food",-0.0160904569567424,0.4927117178335
+"cond.915","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0069:ECO:Bamboo",-0.0238928916300053,0.49289092782394
+"cond.916","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0069:ECO:Larval food",-2.72235777955648e-06,0.496107167604032
+"cond.917","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0069:EMO:Bamboo",0.0341340858696394,0.483500573174974
+"cond.918","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0069:EMO:Larval food",-0.0359810936174309,0.489968135611236
+"cond.919","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0069:MEM:Bamboo",0.0900804124053904,0.48270722973659
+"cond.920","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0069:MEM:Larval food",-0.0710229225437953,0.48821022749624
+"cond.921","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0069:MMO:Bamboo",-0.0817689126877529,0.491426867954592
+"cond.922","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0069:MMO:Larval food",-6.17311449721668e-05,0.496092547439396
+"cond.923","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0072:ALL:Bamboo",0.04027946642311,0.485661565164273
+"cond.924","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0072:ALL:Larval food",-0.0203060098226063,0.492148024139644
+"cond.925","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0072:ECO:Bamboo",-0.01228653704782,0.49397240275369
+"cond.926","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0072:ECO:Larval food",-3.71818506004783e-06,0.496106920647793
+"cond.927","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0072:EMO:Bamboo",0.034156073798602,0.484253190883434
+"cond.928","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0072:EMO:Larval food",-0.0352585579434943,0.490451011973142
+"cond.929","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0072:MEM:Bamboo",0.0342705313374104,0.484069658590829
+"cond.930","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0072:MEM:Larval food",-0.0386263909211574,0.490197936967532
+"cond.931","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0072:MMO:Bamboo",-0.055339090533898,0.491647781446095
+"cond.932","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0072:MMO:Larval food",-0.000107830932121608,0.496081157734439
+"cond.933","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0073:ALL:Bamboo",0.162739514552897,0.476083791658767
+"cond.934","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0073:ALL:Larval food",-0.125223579847608,0.479711873381844
+"cond.935","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0073:ECO:Bamboo",-0.00178877100768951,0.495690053151507
+"cond.936","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0073:ECO:Larval food",-2.29583583188374e-05,0.496102152537334
+"cond.937","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0073:EMO:Bamboo",-0.283618286635103,0.476795629411708
+"cond.938","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0073:EMO:Larval food",0.29740908676404,0.481085764697082
+"cond.939","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0073:MEM:Bamboo",0.162369993673089,0.474841481191054
+"cond.940","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0073:MEM:Larval food",-0.164149404263154,0.478634515614204
+"cond.941","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0073:MMO:Bamboo",-0.0153254745326399,0.493602870173615
+"cond.942","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0073:MMO:Larval food",-0.00121465161550339,0.495815596642975
+"cond.943","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0079:ALL:Bamboo",-0.0214163069470927,0.492052060917013
+"cond.944","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0079:ALL:Larval food",-0.0335948424486386,0.486768758833556
+"cond.945","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0079:ECO:Bamboo",-7.6114307557796e-05,0.496089017145272
+"cond.946","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0079:ECO:Larval food",-0.000649576038107871,0.495950322069375
+"cond.947","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0079:EMO:Bamboo",-0.00308881338575265,0.495376997341679
+"cond.948","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0079:EMO:Larval food",-0.131479785184992,0.491518621086689
+"cond.949","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0079:MEM:Bamboo",-0.0292217769211558,0.49090228922065
+"cond.950","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0079:MEM:Larval food",-0.0182695170988923,0.484967414524819
+"cond.951","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0079:MMO:Bamboo",-0.0761309219969201,0.488142219839422
+"cond.952","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0079:MMO:Larval food",0.242120121574831,0.48787866988493
+"cond.953","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0080:ALL:Bamboo",0.0282946344657451,0.482084724470329
+"cond.954","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0080:ALL:Larval food",-0.0479569900056867,0.487043843364997
+"cond.955","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0080:ECO:Bamboo",-0.00117854758896367,0.495826998155642
+"cond.956","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0080:ECO:Larval food",-3.62917451722263e-05,0.496098852078319
+"cond.957","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0080:EMO:Bamboo",0.0476553904581523,0.464886198916518
+"cond.958","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0080:EMO:Larval food",-0.00968722919307554,0.46692099817643
+"cond.959","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0080:MEM:Bamboo",-0.0533091317825135,0.465250663363925
+"cond.960","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0080:MEM:Larval food",0.0803043818582245,0.467694435510062
+"cond.961","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0080:MMO:Bamboo",-0.0109385318950962,0.494110812029237
+"cond.962","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0080:MMO:Larval food",-0.00207050342203111,0.495621593745678
+"cond.963","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0082:ALL:Bamboo",0.0153772090721126,0.481817575092783
+"cond.964","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0082:ALL:Larval food",-0.0484351103506419,0.486866517118848
+"cond.965","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0082:ECO:Bamboo",-0.00143852508508304,0.495767925694121
+"cond.966","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0082:ECO:Larval food",-5.07104034688799e-05,0.496095286157556
+"cond.967","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0082:EMO:Bamboo",-0.0193846259443923,0.460519093244123
+"cond.968","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0082:EMO:Larval food",0.0728566485823729,0.462919434760378
+"cond.969","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0082:MEM:Bamboo",0.0212468408127884,0.462085091600496
+"cond.970","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0082:MEM:Larval food",-0.00421832874720446,0.46403423585677
+"cond.971","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0082:MMO:Bamboo",-0.0128500439830589,0.493851202921612
+"cond.972","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0082:MMO:Larval food",-0.00279264041686347,0.49546200810067
+"cond.973","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0083:ALL:Bamboo",-0.0670016909139244,0.488135305932547
+"cond.974","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0083:ALL:Larval food",0.0624144115552285,0.483304448958711
+"cond.975","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0083:ECO:Bamboo",-6.48016958854827e-05,0.496091807883973
+"cond.976","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0083:ECO:Larval food",-0.00066422085365371,0.495946867253891
+"cond.977","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0083:EMO:Bamboo",-0.00260597007316283,0.49548570856373
+"cond.978","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0083:EMO:Larval food",-0.133333541482018,0.491632390516406
+"cond.979","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0083:MEM:Bamboo",-0.00232615259167272,0.495550017067565
+"cond.980","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0083:MEM:Larval food",-0.138685116790269,0.491770180227309
+"cond.981","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0083:MMO:Bamboo",-0.0803615178617124,0.487448749010682
+"cond.982","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0083:MMO:Larval food",0.252142345233657,0.487625961513569
+"cond.983","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0084:ALL:Bamboo",-0.0361450368152416,0.488056463827276
+"cond.984","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0084:ALL:Larval food",-0.00533868093230137,0.494885161379022
+"cond.985","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0084:ECO:Bamboo",-0.00799674495787544,0.494550064321984
+"cond.986","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0084:ECO:Larval food",-5.49835471673442e-06,0.496106479237053
+"cond.987","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0084:EMO:Bamboo",0.03334202205069,0.485196360832484
+"cond.988","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0084:EMO:Larval food",-0.0396290470374634,0.491106355573922
+"cond.989","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0084:MEM:Bamboo",-0.065009316176191,0.488002932933395
+"cond.990","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0084:MEM:Larval food",-0.00858379069205366,0.494241446498534
+"cond.991","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0084:MMO:Bamboo",0.121934452031602,0.489089042420294
+"cond.992","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0084:MMO:Larval food",-0.0100348743231976,0.493982426776041
+"cond.993","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0085:ALL:Bamboo",-0.027870510167905,0.455249545351992
+"cond.994","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0085:ALL:Larval food",0.00788329907544957,0.456129814560042
+"cond.995","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0085:ECO:Bamboo",-0.00232663661709294,0.495572731758389
+"cond.996","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0085:ECO:Larval food",-0.000561416789539723,0.495971141490894
+"cond.997","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0085:EMO:Bamboo",0.0432020169140572,0.43393276720834
+"cond.998","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0085:EMO:Larval food",0.0113004482228386,0.433947869764378
+"cond.999","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0085:MEM:Bamboo",-0.0149750059341355,0.43433215866109
+"cond.1000","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0085:MEM:Larval food",0.061554851387521,0.434394721900124
+"cond.1001","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0085:MMO:Bamboo",-0.0141406466480679,0.493422399858039
+"cond.1002","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0085:MMO:Larval food",-0.0208309051039886,0.492732558883772
+"cond.1003","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0089:ALL:Bamboo",0.000907554467464774,0.487838929899062
+"cond.1004","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0089:ALL:Larval food",-0.00719410685470715,0.494500944895294
+"cond.1005","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0089:ECO:Bamboo",-0.00387582936904089,0.49526041775191
+"cond.1006","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0089:ECO:Larval food",-3.38291370009669e-06,0.496107003813362
+"cond.1007","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0089:EMO:Bamboo",0.0541489698962356,0.485553861507062
+"cond.1008","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0089:EMO:Larval food",-0.0383903646954458,0.490994646303796
+"cond.1009","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0089:MEM:Bamboo",0.00993814866958196,0.486108090030555
+"cond.1010","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0089:MEM:Larval food",-0.0224917365164933,0.492151011599643
+"cond.1011","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0089:MMO:Bamboo",-0.0271285356461094,0.492680280213335
+"cond.1012","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0089:MMO:Larval food",-0.000148189912504809,0.496071239124823
+"cond.1013","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0091:ALL:Bamboo",-0.0322854601829422,0.488998078741409
+"cond.1014","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0091:ALL:Larval food",-0.00308918489951588,0.495377209076697
+"cond.1015","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0091:ECO:Bamboo",-0.00178307158298979,0.495691469775091
+"cond.1016","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0091:ECO:Larval food",-3.24742599203662e-06,0.49610703741795
+"cond.1017","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0091:EMO:Bamboo",0.0905552400897172,0.486791239545436
+"cond.1018","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0091:EMO:Larval food",-0.0558940158685959,0.491186032545514
+"cond.1019","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0091:MEM:Bamboo",-0.030752252998384,0.48798786527644
+"cond.1020","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0091:MEM:Larval food",-0.009979186143556,0.493990197707164
+"cond.1021","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0091:MMO:Bamboo",-0.0159001489815314,0.493576116684305
+"cond.1022","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0091:MMO:Larval food",-0.000179539755247232,0.496063565343381
+"cond.1023","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0093:ALL:Bamboo",0.00876845035324332,0.486225351207755
+"cond.1024","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0093:ALL:Larval food",-0.0141910988078494,0.493088191866322
+"cond.1025","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0093:ECO:Bamboo",-0.013558117727173,0.493821839939262
+"cond.1026","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0093:ECO:Larval food",-4.53796442017148e-06,0.49610671734748
+"cond.1027","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0093:EMO:Bamboo",0.0395014878305421,0.483451396636669
+"cond.1028","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0093:EMO:Larval food",-0.0430265562324155,0.489590672301636
+"cond.1029","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0093:MEM:Bamboo",0.0485007976601032,0.48317434149766
+"cond.1030","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0093:MEM:Larval food",-0.0515157884243554,0.489132388030288
+"cond.1031","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0093:MMO:Bamboo",-0.0603502218641106,0.491557973388451
+"cond.1032","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0093:MMO:Larval food",-0.000131836910282773,0.496075228588338
+"cond.1033","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0094:ALL:Bamboo",-0.0548807354539081,0.487933788836583
+"cond.1034","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0094:ALL:Larval food",0.0699017058684865,0.482376950434695
+"cond.1035","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0094:ECO:Bamboo",-3.05461515775732e-05,0.49610027376737
+"cond.1036","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0094:ECO:Larval food",-0.00371916241322223,0.495293204646282
+"cond.1037","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0094:EMO:Bamboo",-0.050758410700388,0.488172656669834
+"cond.1038","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0094:EMO:Larval food",0.0585298479702046,0.482272336311175
+"cond.1039","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0094:MEM:Bamboo",-0.0498003943584842,0.488258220359737
+"cond.1040","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0094:MEM:Larval food",0.056027948496735,0.482326913833097
+"cond.1041","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0094:MMO:Bamboo",-9.10971707145544e-05,0.496085282413488
+"cond.1042","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0094:MMO:Larval food",-0.0643882288504626,0.491670113727393
+"cond.1043","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0095:ALL:Bamboo",0.00622210369048239,0.487464396954415
+"cond.1044","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0095:ALL:Larval food",-0.00847993417358493,0.494228699069009
+"cond.1045","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0095:ECO:Bamboo",-0.00569116552760899,0.494928695713529
+"cond.1046","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0095:ECO:Larval food",-3.37237428414766e-06,0.496107006421186
+"cond.1047","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0095:EMO:Bamboo",0.0850919168551999,0.485408505368089
+"cond.1048","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0095:EMO:Larval food",-0.0560990537970054,0.490378331792429
+"cond.1049","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0095:MEM:Bamboo",-0.0159822441540598,0.486691211708065
+"cond.1050","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0095:MEM:Larval food",-0.0148848287300529,0.493098040795456
+"cond.1051","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0095:MMO:Bamboo",-0.0349000054517378,0.492267870852774
+"cond.1052","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0095:MMO:Larval food",-0.000130519758795344,0.496075576725253
+"cond.1053","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0101:ALL:Bamboo",0.129775478364075,0.476189832570804
+"cond.1054","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0101:ALL:Larval food",-0.120537464953446,0.479513830010206
+"cond.1055","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0101:ECO:Bamboo",-0.000740087934066526,0.495928873534989
+"cond.1056","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0101:ECO:Larval food",-4.6879900286894e-05,0.496096233571713
+"cond.1057","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0101:EMO:Bamboo",-0.157001382113941,0.469652141693326
+"cond.1058","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0101:EMO:Larval food",0.161036181361244,0.471335372220664
+"cond.1059","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0101:MEM:Bamboo",0.0296918366942344,0.466355002878461
+"cond.1060","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0101:MEM:Larval food",-0.0104314115854514,0.467680922196754
+"cond.1061","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0101:MMO:Bamboo",-0.00734577248738563,0.494632668753035
+"cond.1062","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0101:MMO:Larval food",-0.00284950203851326,0.49545551430956
+"cond.1063","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0102:ALL:Bamboo",-0.00391347142348309,0.495197447791738
+"cond.1064","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0102:ALL:Larval food",-0.107129000684945,0.491045014184014
+"cond.1065","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0102:ECO:Bamboo",-5.99771679259277e-05,0.496092999313733
+"cond.1066","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0102:ECO:Larval food",-0.000881469574801132,0.495895783805967
+"cond.1067","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0102:EMO:Bamboo",-0.0459480717153,0.489473262753753
+"cond.1068","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0102:EMO:Larval food",0.0271595627349726,0.48376023705598
+"cond.1069","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0102:MEM:Bamboo",-0.0165668976904627,0.49271108988463
+"cond.1070","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0102:MEM:Larval food",-0.0436142096813631,0.486551859256085
+"cond.1071","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0102:MMO:Bamboo",-0.0510354842396832,0.488997674773592
+"cond.1072","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0102:MMO:Larval food",0.211824412606008,0.487354728753284
+"cond.1073","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0105:ALL:Bamboo",-0.0758575370740229,0.490809330987122
+"cond.1074","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0105:ALL:Larval food",-0.00771520687135678,0.494382959312545
+"cond.1075","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0105:ECO:Bamboo",-0.000641418817876774,0.495952211593845
+"cond.1076","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0105:ECO:Larval food",-2.9654813103877e-05,0.496100494792053
+"cond.1077","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0105:EMO:Bamboo",0.099376029969647,0.479323868930944
+"cond.1078","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0105:EMO:Larval food",-0.117580464477804,0.4825969329009
+"cond.1079","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0105:MEM:Bamboo",-0.0702655387065414,0.489773088707022
+"cond.1080","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0105:MEM:Larval food",-0.0225313011767271,0.491933303547551
+"cond.1081","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0105:MMO:Bamboo",0.0365021512938822,0.477320747480206
+"cond.1082","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0105:MMO:Larval food",0.159848304810585,0.48024948691749
+"cond.1083","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0111:ALL:Bamboo",0.161484050551001,0.470895273531286
+"cond.1084","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0111:ALL:Larval food",-0.148249759587717,0.475643350966601
+"cond.1085","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0111:ECO:Bamboo",-0.00770766135743085,0.494596993796107
+"cond.1086","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0111:ECO:Larval food",-4.00905584731592e-05,0.496097910142735
+"cond.1087","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0111:EMO:Bamboo",-0.19345886112796,0.464558503992646
+"cond.1088","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0111:EMO:Larval food",0.20587864504331,0.468983630345371
+"cond.1089","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0111:MEM:Bamboo",0.0917676511327723,0.462512024350582
+"cond.1090","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0111:MEM:Larval food",-0.0925057125553904,0.46636423571097
+"cond.1091","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0111:MMO:Bamboo",-0.0431108595959306,0.491841908860197
+"cond.1092","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0111:MMO:Larval food",-0.00143779961538409,0.495759848836753
+"cond.1093","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0112:ALL:Bamboo",-0.0146757889812112,0.488418834022766
+"cond.1094","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0112:ALL:Larval food",-0.00509163632747422,0.494941677763182
+"cond.1095","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0112:ECO:Bamboo",-0.00217671020752252,0.495605949369633
+"cond.1096","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0112:ECO:Larval food",-3.56447651390373e-06,0.496106958794937
+"cond.1097","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0112:EMO:Bamboo",0.0267148498850907,0.486214211607957
+"cond.1098","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0112:EMO:Larval food",-0.026256987025392,0.49190389192263
+"cond.1099","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0112:MEM:Bamboo",0.0290774244171934,0.486069251324834
+"cond.1100","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0112:MEM:Larval food",-0.0301633078356625,0.491622612622721
+"cond.1101","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0112:MMO:Bamboo",-0.018252016298532,0.493348436508282
+"cond.1102","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0112:MMO:Larval food",-0.000185533638431059,0.496062092375444
+"cond.1103","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0115:ALL:Bamboo",0.0290972785506972,0.483724361859912
+"cond.1104","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0115:ALL:Larval food",-0.03170414093028,0.489800662600961
+"cond.1105","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0115:ECO:Bamboo",-0.00346142090205992,0.495340934211222
+"cond.1106","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0115:ECO:Larval food",-1.38051244700062e-05,0.496104420069613
+"cond.1107","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0115:EMO:Bamboo",0.158953138051511,0.478360939588401
+"cond.1108","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0115:EMO:Larval food",-0.142743443982488,0.48255555774876
+"cond.1109","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0115:MEM:Bamboo",-0.142021020518243,0.478898578273301
+"cond.1110","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0115:MEM:Larval food",0.13806638754692,0.483571500686732
+"cond.1111","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0115:MMO:Bamboo",-0.0254241062676461,0.492759573153291
+"cond.1112","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0115:MMO:Larval food",-0.000634928915898049,0.495952612643788
+"cond.1113","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0116:ALL:Bamboo",-0.261465262789555,0.460587916385456
+"cond.1114","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0116:ALL:Larval food",0.274379415384827,0.459024389525141
+"cond.1115","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0116:ECO:Bamboo",-0.00044923379272057,0.495998056790863
+"cond.1116","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0116:ECO:Larval food",-0.0010609790848126,0.49585412182683
+"cond.1117","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0116:EMO:Bamboo",0.281046440420239,0.458217563170724
+"cond.1118","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0116:EMO:Larval food",-0.252798212752669,0.454616857015384
+"cond.1119","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0116:MEM:Bamboo",-0.0795624191356819,0.454591458942265
+"cond.1120","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0116:MEM:Larval food",0.0986913231310104,0.452275863566691
+"cond.1121","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0116:MMO:Bamboo",-0.0024712032716139,0.495520689851672
+"cond.1122","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0116:MMO:Larval food",-0.0347599963943287,0.492185231020528
+"cond.1123","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0119:ALL:Bamboo",0.0100282315670853,0.486957409574381
+"cond.1124","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0119:ALL:Larval food",-0.0115486433031134,0.493637540425958
+"cond.1125","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0119:ECO:Bamboo",-0.00623675196078978,0.494835578139258
+"cond.1126","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0119:ECO:Larval food",-4.3575915578624e-06,0.496106762102138
+"cond.1127","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0119:EMO:Bamboo",0.0674503269033199,0.484722709138217
+"cond.1128","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0119:EMO:Larval food",-0.0522953275498325,0.490065029209987
+"cond.1129","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0119:MEM:Bamboo",-0.00916519918354855,0.485964351292221
+"cond.1130","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0119:MEM:Larval food",-0.0203448387595358,0.492258124601653
+"cond.1131","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0119:MMO:Bamboo",-0.037459946916108,0.492154154889199
+"cond.1132","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0119:MMO:Larval food",-0.000166052991321736,0.496066824115991
+"cond.1133","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0123:ALL:Bamboo",0.00256924679948763,0.487374890347834
+"cond.1134","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0123:ALL:Larval food",-0.00973252532675384,0.493991997944719
+"cond.1135","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0123:ECO:Bamboo",-0.0044880778519152,0.495144387552968
+"cond.1136","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0123:ECO:Larval food",-4.48646028131622e-06,0.496106730154286
+"cond.1137","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0123:EMO:Bamboo",-0.00490234502904988,0.486241858564428
+"cond.1138","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0123:EMO:Larval food",-0.019155234862889,0.492467426359891
+"cond.1139","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0123:MEM:Bamboo",0.0564052729302768,0.485034259265521
+"cond.1140","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0123:MEM:Larval food",-0.0495431784477486,0.490370550370112
+"cond.1141","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0123:MMO:Bamboo",-0.0304917497133214,0.492481699184425
+"cond.1142","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0123:MMO:Larval food",-0.00019206543016266,0.49606044609533
+"cond.1143","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0128:ALL:Bamboo",-0.21445750942146,0.487821987042182
+"cond.1144","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0128:ALL:Larval food",0.211214435953415,0.493333803523223
+"cond.1145","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0128:ECO:Bamboo",-0.00119588137222558,0.495823057171488
+"cond.1146","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0128:ECO:Larval food",-1.55437937598121e-05,0.496103989369499
+"cond.1147","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0128:EMO:Bamboo",0.136234993778553,0.480057627327231
+"cond.1148","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0128:EMO:Larval food",-0.126925914421174,0.483893114855267
+"cond.1149","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0128:MEM:Bamboo",0.0916000117732523,0.480272705701589
+"cond.1150","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0128:MEM:Larval food",-0.0997192510491036,0.484523579799318
+"cond.1151","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0128:MMO:Bamboo",-0.0114877475080725,0.494058534410301
+"cond.1152","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0128:MMO:Larval food",-0.000920800888893294,0.495885325438586
+"cond.1153","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0139:ALL:Bamboo",-0.00986806466645793,0.488441945672687
+"cond.1154","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0139:ALL:Larval food",-0.00528813719865594,0.494905567015692
+"cond.1155","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0139:ECO:Bamboo",-0.00171227420854219,0.495707074737459
+"cond.1156","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0139:ECO:Larval food",-3.35378472519157e-06,0.496107011045481
+"cond.1157","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0139:EMO:Bamboo",0.0403117786323448,0.486371360511272
+"cond.1158","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0139:EMO:Larval food",-0.0306690636945303,0.491748261960829
+"cond.1159","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0139:MEM:Bamboo",0.00674121323921314,0.486796921905075
+"cond.1160","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0139:MEM:Larval food",-0.0203735150482255,0.492561968402174
+"cond.1161","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0139:MMO:Bamboo",-0.0151934908806307,0.493648597465898
+"cond.1162","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0139:MMO:Larval food",-0.000184052491197229,0.496062470410091
+"cond.1163","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0145:ALL:Bamboo",-0.113229342501352,0.491422431766967
+"cond.1164","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0145:ALL:Larval food",-0.00320501220559816,0.495343722842361
+"cond.1165","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0145:ECO:Bamboo",-0.00192096552191581,0.495661201806477
+"cond.1166","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0145:ECO:Larval food",-2.33248407072195e-05,0.496102061845134
+"cond.1167","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0145:EMO:Bamboo",-0.111377165647083,0.490753881106435
+"cond.1168","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0145:EMO:Larval food",-0.00853393671161327,0.494200979022989
+"cond.1169","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0145:MEM:Bamboo",-0.110790722402173,0.490582277053671
+"cond.1170","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0145:MEM:Larval food",-0.00992510327702268,0.493926410587047
+"cond.1171","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0145:MMO:Bamboo",0.279707752390634,0.492574411303503
+"cond.1172","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0145:MMO:Larval food",-0.0537630261533429,0.487793695382539
+"cond.1173","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0146:ALL:Bamboo",-0.0352527356140186,0.490830295653153
+"cond.1174","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0146:ALL:Larval food",-0.0395856264325268,0.490552961981065
+"cond.1175","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0146:ECO:Bamboo",-0.000224303340951531,0.496052643167551
+"cond.1176","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0146:ECO:Larval food",-0.000122742453283527,0.496077531675943
+"cond.1177","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0146:EMO:Bamboo",0.254320029336298,0.473898669691656
+"cond.1178","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0146:EMO:Larval food",-0.213457789594143,0.471518514593961
+"cond.1179","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0146:MEM:Bamboo",-0.284298766254656,0.476872105206547
+"cond.1180","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0146:MEM:Larval food",0.294163446113667,0.475351470809413
+"cond.1181","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0146:MMO:Bamboo",-0.00232565367603157,0.495567225561711
+"cond.1182","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0146:MMO:Larval food",-0.00775217496264253,0.494582769848625
+"cond.1183","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0152:ALL:Bamboo",0.0191505500315664,0.487735659079584
+"cond.1184","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0152:ALL:Larval food",-0.0122710914978218,0.493671938670546
+"cond.1185","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0152:ECO:Bamboo",-0.00101216954420842,0.495865417258186
+"cond.1186","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0152:ECO:Larval food",-4.49452498846921e-06,0.496106728183839
+"cond.1187","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0152:EMO:Bamboo",-0.00621423273554454,0.487448470368086
+"cond.1188","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0152:EMO:Larval food",-0.0173569622069308,0.492996228496967
+"cond.1189","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0152:MEM:Bamboo",-0.00185293971771336,0.487202658056019
+"cond.1190","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0152:MEM:Larval food",-0.021097116170336,0.492602098972944
+"cond.1191","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0152:MMO:Bamboo",-0.0101347426867758,0.494252945208029
+"cond.1192","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0152:MMO:Larval food",-0.000277233479729426,0.496039775553906
+"cond.1193","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0155:ALL:Bamboo",-0.00154415322352011,0.495733203595747
+"cond.1194","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0155:ALL:Larval food",-0.122840795092554,0.49166332356404
+"cond.1195","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0155:ECO:Bamboo",-3.07200415871584e-05,0.496100231240749
+"cond.1196","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0155:ECO:Larval food",-0.00132482032481353,0.495794144895034
+"cond.1197","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0155:EMO:Bamboo",-0.0917977916424513,0.486506173673685
+"cond.1198","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0155:EMO:Larval food",0.125276340669823,0.482155910493343
+"cond.1199","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0155:MEM:Bamboo",-0.0799605901501495,0.486646400251333
+"cond.1200","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0155:MEM:Larval food",0.106964096215791,0.481951793613286
+"cond.1201","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0155:MMO:Bamboo",-0.000163555464872275,0.496067408172592
+"cond.1202","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0155:MMO:Larval food",-0.0420730631614302,0.492098223204829
+"cond.1203","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0167:ALL:Bamboo",-0.0626494649191243,0.48824722636099
+"cond.1204","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0167:ALL:Larval food",0.0844056020356868,0.483610649996034
+"cond.1205","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0167:ECO:Bamboo",-3.2905001417793e-05,0.496099690844724
+"cond.1206","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0167:ECO:Larval food",-0.000700931427232832,0.4959382258368
+"cond.1207","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0167:EMO:Bamboo",-0.00733083838139365,0.494430045922587
+"cond.1208","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0167:EMO:Larval food",-0.0604866287082517,0.488410049054417
+"cond.1209","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0167:MEM:Bamboo",-0.0662399475851877,0.488138295211467
+"cond.1210","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0167:MEM:Larval food",0.0849176580557029,0.483261059022449
+"cond.1211","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0167:MMO:Bamboo",-0.000220263398551328,0.496053496070211
+"cond.1212","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0167:MMO:Larval food",-0.0280229996820626,0.492666107254474
+"cond.1213","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0175:ALL:Bamboo",-0.0124150008571412,0.488659810134238
+"cond.1214","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0175:ALL:Larval food",-0.00566992924337324,0.494834681293704
+"cond.1215","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0175:ECO:Bamboo",-0.00101812126464196,0.495864038159257
+"cond.1216","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0175:ECO:Larval food",-3.93979279364301e-06,0.496106865734516
+"cond.1217","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0175:EMO:Bamboo",-0.00788060616719091,0.487562601254411
+"cond.1218","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0175:EMO:Larval food",-0.0153662349528444,0.493221201668231
+"cond.1219","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0175:MEM:Bamboo",0.0326235222408711,0.486667557824381
+"cond.1220","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0175:MEM:Larval food",-0.0328736082392633,0.491793398724447
+"cond.1221","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0175:MMO:Bamboo",-0.0101769531121193,0.494247530167364
+"cond.1222","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0175:MMO:Larval food",-0.000242586955223175,0.496048201109976
+"cond.1223","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0180:ALL:Bamboo",-0.0190174803658593,0.487478555480659
+"cond.1224","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0180:ALL:Larval food",-0.00781793369842681,0.494335001984116
+"cond.1225","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0180:ECO:Bamboo",-0.00892098365982267,0.494417450124448
+"cond.1226","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0180:ECO:Larval food",-4.98936180506204e-06,0.496106605427396
+"cond.1227","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0180:EMO:Bamboo",0.0330188178174499,0.483990019245472
+"cond.1228","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0180:EMO:Larval food",-0.0389842566072385,0.490062808896425
+"cond.1229","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0180:MEM:Bamboo",0.0561603618666496,0.483626126977613
+"cond.1230","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0180:MEM:Larval food",-0.0550198338973964,0.489300021939775
+"cond.1231","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0180:MMO:Bamboo",-0.0476390404086714,0.491814063303381
+"cond.1232","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0180:MMO:Larval food",-0.000171826098327641,0.49606538469255
+"cond.1233","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0184:ALL:Bamboo",0.049939970859193,0.48208664271933
+"cond.1234","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0184:ALL:Larval food",-0.0572581606767072,0.486438300386115
+"cond.1235","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0184:ECO:Bamboo",-0.000633367261058157,0.49595414435653
+"cond.1236","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0184:ECO:Larval food",-3.16824594250886e-05,0.496099993005056
+"cond.1237","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0184:EMO:Bamboo",0.0460613334862608,0.474536585408319
+"cond.1238","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0184:EMO:Larval food",-0.029539828317427,0.476769633422626
+"cond.1239","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0184:MEM:Bamboo",-0.112547593258923,0.478401339620521
+"cond.1240","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0184:MEM:Larval food",0.0905020758480747,0.480227271171603
+"cond.1241","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0184:MMO:Bamboo",-0.00667772424658307,0.494750063948348
+"cond.1242","cond","variable:Microbe_treatment:Food_type","(Intercept)","ASV0184:MMO:Larval food",-0.00205025278574215,0.495629275331092

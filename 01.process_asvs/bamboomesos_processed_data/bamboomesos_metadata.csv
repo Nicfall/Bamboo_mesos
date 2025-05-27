@@ -1,0 +1,170 @@
+"","Short_label","Longer_name","Sample_type","Num_larvae","Date_collected","Exp_day","Mesocosm_id","Mesocosm_treatment","Microbe_treatment","Food_type","Mesocosm_type","Treatment_notes","Notes","Raw_reads","Num_larvae_d00","Num_larvae_d08","Num_larvae_d34","Num_larvae_d40","Total_pupae","Proportion_pupated","Biomass_day30","Biomass_day40","lib_size_clean","is.neg"
+"LB1","LB1","L_D8_B_larvae","Larvae",5,"6/30/23",8,"B_larvae","B_larvae","None_larvae","Bamboo","Additional control","Larvae & food only","",57253,20,12,11,2,1,0.05,0.197,0.197,49856,FALSE
+"LB10","LB10","L_D8_B_EMO.3","Larvae",5,"6/30/23",8,"B_EMO.3","B_EMO","EMO","Bamboo","Experiment","Environmental microbes only","",76367,20,15,12,8,4,0.2,0.621,0.621,65973,FALSE
+"LB11","LB11","L_D8_B_EMO.4","Larvae",5,"6/30/23",8,"B_EMO.4","B_EMO","EMO","Bamboo","Experiment","Environmental microbes only","",22627,20,16,11,9,3,0.15,0.308,0.308,19680,FALSE
+"LB12","LB12","L_D8_B_EMO.5","Larvae",5,"6/30/23",8,"B_EMO.5","B_EMO","EMO","Bamboo","Experiment","Environmental microbes only","",15378,20,15,0,0,18,0.9,3.16,4.085,13682,FALSE
+"LB13","LB13","L_D8_B_ECO.1","Larvae",5,"6/30/23",8,"B_ECO.1","B_ECO","ECO","Bamboo","Experiment","E. coli only","",3440,20,14,7,7,0,0,0,0,3154,FALSE
+"LB14","LB14","L_D8_B_ECO.2","Larvae",5,"6/30/23",8,"B_ECO.2","B_ECO","ECO","Bamboo","Experiment","E. coli only","",4158,20,15,9,7,0,0,0,0,3743,FALSE
+"LB15","LB15","L_D8_B_ECO.3","Larvae",5,"6/30/23",8,"B_ECO.3","B_ECO","ECO","Bamboo","Experiment","E. coli only","",12836,20,18,5,4,0,0,0,0,11442,FALSE
+"LB16","LB16","L_D8_B_ECO.4","Larvae",5,"6/30/23",8,"B_ECO.4","B_ECO","ECO","Bamboo","Experiment","E. coli only","",13301,20,17,7,6,0,0,0,0,11700,FALSE
+"LB17","LB17","L_D8_B_ECO.5","Larvae",5,"6/30/23",8,"B_ECO.5","B_ECO","ECO","Bamboo","Experiment","E. coli only","",8468,20,18,6,4,0,0,0,0,7563,FALSE
+"LB18","LB18","L_D8_B_MEM.1","Larvae",5,"6/30/23",8,"B_MEM.1","B_MEM","MEM","Bamboo","Experiment","Mosquito & environmental microbes","",64329,20,16,2,1,1,0.05,0,0.227,53786,FALSE
+"LB19","LB19","L_D8_B_MEM.2","Larvae",5,"6/30/23",8,"B_MEM.2","B_MEM","MEM","Bamboo","Experiment","Mosquito & environmental microbes","",46890,20,12,1,1,14,0.7,4.007,4.007,40867,FALSE
+"LB2","LB2","L_D8_B_AHK.1","Larvae",5,"6/30/23",8,"B_AHK.1","B_AHK","AHK","Bamboo","Experiment","All heat-killed microbes","",33655,20,14,11,4,0,0,0,0,30219,FALSE
+"LB20","LB20","L_D8_B_MEM.3","Larvae",5,"6/30/23",8,"B_MEM.3","B_MEM","MEM","Bamboo","Experiment","Mosquito & environmental microbes","",46052,20,15,0,0,17,0.85,4.53,5.122,40429,FALSE
+"LB21","LB21","L_D8_B_MEM.4","Larvae",5,"6/30/23",8,"B_MEM.4","B_MEM","MEM","Bamboo","Experiment","Mosquito & environmental microbes","",54131,20,14,10,3,2,0.1,0.315,0.315,46305,FALSE
+"LB22","LB22","L_D8_B_MEM.5","Larvae",5,"6/30/23",8,"B_MEM.5","B_MEM","MEM","Bamboo","Experiment","Mosquito & environmental microbes","",69479,20,17,0,0,0,0,0,0,59227,FALSE
+"LB23","LB23","L_D8_B_ALL.1","Larvae",5,"6/30/23",8,"B_ALL.1","B_ALL","ALL","Bamboo","Experiment","All live microbes","",73665,20,11,0,0,12,0.6,4.096,4.096,63008,FALSE
+"LB24","LB24","L_D8_B_ALL.2","Larvae",5,"6/30/23",8,"B_ALL.2","B_ALL","ALL","Bamboo","Experiment","All live microbes","",36399,20,18,4,4,0,0,0,0,30215,FALSE
+"LB25","LB25","L_D8_B_ALL.3","Larvae",5,"6/30/23",8,"B_ALL.3","B_ALL","ALL","Bamboo","Experiment","All live microbes","",66744,20,10,0,0,9,0.45,3.642,3.642,56308,FALSE
+"LB26","LB26","L_D8_B_ALL.4","Larvae",5,"6/30/23",8,"B_ALL.4","B_ALL","ALL","Bamboo","Experiment","All live microbes","",60546,20,16,2,2,2,0.1,0.13,0.299,51564,FALSE
+"LB27","LB27","L_D8_B_ALL.5","Larvae",5,"6/30/23",8,"B_ALL.5","B_ALL","ALL","Bamboo","Experiment","All live microbes","",66531,20,13,0,0,13,0.65,3.369,3.369,55470,FALSE
+"LB3","LB3","L_D8_B_MMO.1","Larvae",5,"6/30/23",8,"B_MMO.1","B_MMO","MMO","Bamboo","Experiment","Mosquito microbes only","",69866,20,16,8,5,4,0.2,0.288,0.538,59465,FALSE
+"LB4","LB4","L_D8_B_MMO.2","Larvae",5,"6/30/23",8,"B_MMO.2","B_MMO","MMO","Bamboo","Experiment","Mosquito microbes only","",55250,20,17,4,4,0,0,0,0,47236,FALSE
+"LB5","LB5","L_D8_B_MMO.3","Larvae",5,"6/30/23",8,"B_MMO.3","B_MMO","MMO","Bamboo","Experiment","Mosquito microbes only","",62607,20,10,0,0,11,0.55,3.737,3.737,53884,FALSE
+"LB6","LB6","L_D8_B_MMO.4","Larvae",5,"6/30/23",8,"B_MMO.4","B_MMO","MMO","Bamboo","Experiment","Mosquito microbes only","",79263,20,10,2,2,10,0.5,1.06,2.612,66920,FALSE
+"LB7","LB7","L_D8_B_MMO.5","Larvae",5,"6/30/23",8,"B_MMO.5","B_MMO","MMO","Bamboo","Experiment","Mosquito microbes only","",83117,20,14,6,5,3,0.15,0.304,0.468,70787,FALSE
+"LB8","LB8","L_D8_B_EMO.1","Larvae",5,"6/30/23",8,"B_EMO.1","B_EMO","EMO","Bamboo","Experiment","Environmental microbes only","",43588,20,20,12,1,15,0.75,0.401,3.949,38545,FALSE
+"LB9","LB9","L_D8_B_EMO.2","Larvae",5,"6/30/23",8,"B_EMO.2","B_EMO","EMO","Bamboo","Experiment","Environmental microbes only","",40579,20,18,5,5,0,0,0,0,36196,FALSE
+"LH1","LH1","L_D6_Hatch_flask","Larvae",10,"6/28/23",6,"Hatch_flask","Hatch_flask","None_hatch","Hatching flask","Hatching flask","Hatching flask","This sample tube contains extra L1 larvae prepared a day after in case the first tube (the one with issues with L1s sticking to the tube walls) was not enough.",70837,NA,NA,NA,NA,NA,NA,NA,NA,62492,FALSE
+"LL1","LL1","L_D8_L_larvae","Larvae",5,"6/30/23",8,"L_larvae","L_larvae","None_larvae","Larval food","Additional control","Larvae & food only","",29615,20,4,0,0,9,0.45,7.414,7.414,26934,FALSE
+"LL10","LL10","L_D8_L_EMO.3","Larvae",5,"6/30/23",8,"L_EMO.3","L_EMO","EMO","Larval food","Experiment","Environmental microbes only","",55881,20,12,0,0,12,0.6,10.172,10.172,49216,FALSE
+"LL11","LL11","L_D8_L_EMO.4","Larvae",5,"6/30/23",8,"L_EMO.4","L_EMO","EMO","Larval food","Experiment","Environmental microbes only","",59663,20,11,0,0,11,0.55,8.412,8.412,51397,FALSE
+"LL12","LL12","L_D8_L_EMO.5","Larvae",5,"6/30/23",8,"L_EMO.5","L_EMO","EMO","Larval food","Experiment","Environmental microbes only","",39221,20,7,0,0,15,0.75,11.365,11.365,33785,FALSE
+"LL13","LL13","L_D8_L_ECO.1","Larvae",5,"6/30/23",8,"L_ECO.1","L_ECO","ECO","Larval food","Experiment","E. coli only","",51457,20,10,0,0,7,0.35,3.736,3.736,47223,FALSE
+"LL14","LL14","L_D8_L_ECO.2","Larvae",5,"6/30/23",8,"L_ECO.2","L_ECO","ECO","Larval food","Experiment","E. coli only","",90315,20,12,0,0,18,0.9,10.588,10.588,80370,FALSE
+"LL15","LL15","L_D8_L_ECO.3","Larvae",5,"6/30/23",8,"L_ECO.3","L_ECO","ECO","Larval food","Experiment","E. coli only","",83512,20,12,0,0,14,0.7,7.747,7.747,74653,FALSE
+"LL16","LL16","L_D8_L_ECO.4","Larvae",5,"6/30/23",8,"L_ECO.4","L_ECO","ECO","Larval food","Experiment","E. coli only","",60309,20,7,0,0,9,0.45,5.967,5.967,55705,FALSE
+"LL17","LL17","L_D8_L_ECO.5","Larvae",5,"6/30/23",8,"L_ECO.5","L_ECO","ECO","Larval food","Experiment","E. coli only","",54799,20,6,0,0,7,0.35,3.053,3.053,49886,FALSE
+"LL18","LL18","L_D8_L_MEM.1","Larvae",5,"6/30/23",8,"L_MEM.1","L_MEM","MEM","Larval food","Experiment","Mosquito & environmental microbes","",87019,20,6,0,0,6,0.3,4.731,4.731,74105,FALSE
+"LL19","LL19","L_D8_L_MEM.2","Larvae",4,"6/30/23",8,"L_MEM.2","L_MEM","MEM","Larval food","Experiment","Mosquito & environmental microbes","",91113,20,0,0,0,0,0,0,0,77778,FALSE
+"LL2","LL2","L_D8_L_AHK.1","Larvae",5,"6/30/23",8,"L_AHK.1","L_AHK","AHK","Larval food","Experiment","All heat-killed microbes","",51522,20,7,0,0,19,0.95,15.548,15.548,46758,FALSE
+"LL20","LL20","L_D8_L_MEM.3","Larvae",5,"6/30/23",8,"L_MEM.3","L_MEM","MEM","Larval food","Experiment","Mosquito & environmental microbes","",54597,20,7,0,0,8,0.4,6.392,6.392,45323,FALSE
+"LL21","LL21","L_D8_L_MEM.4","Larvae",2,"6/30/23",8,"L_MEM.4","L_MEM","MEM","Larval food","Experiment","Mosquito & environmental microbes","",54577,20,1,0,0,1,0.05,1.039,1.039,43276,FALSE
+"LL22","LL22","L_D8_L_MEM.5","Larvae",5,"6/30/23",8,"L_MEM.5","L_MEM","MEM","Larval food","Experiment","Mosquito & environmental microbes","",50438,20,8,0,0,7,0.35,4.84,4.84,43132,FALSE
+"LL23","LL23","L_D8_L_ALL.1","Larvae",5,"6/30/23",8,"L_ALL.1","L_ALL","ALL","Larval food","Experiment","All live microbes","",55042,20,7,0,0,6,0.3,4.235,4.235,51181,FALSE
+"LL24","LL24","L_D8_L_ALL.2","Larvae",5,"6/30/23",8,"L_ALL.2","L_ALL","ALL","Larval food","Experiment","All live microbes","",52771,20,2,0,0,7,0.35,5.262,5.262,45218,FALSE
+"LL25","LL25","L_D8_L_ALL.3","Larvae",5,"6/30/23",8,"L_ALL.3","L_ALL","ALL","Larval food","Experiment","All live microbes","",66477,20,6,0,0,7,0.35,5.604,5.604,58885,FALSE
+"LL26","LL26","L_D8_L_ALL.4","Larvae",5,"6/30/23",8,"L_ALL.4","L_ALL","ALL","Larval food","Experiment","All live microbes","",97749,20,1,0,0,1,0.05,0.571,0.571,81650,FALSE
+"LL27","LL27","L_D8_L_ALL.5","Larvae",5,"6/30/23",8,"L_ALL.5","L_ALL","ALL","Larval food","Experiment","All live microbes","",99386,20,2,0,0,0,0,0,0,78324,FALSE
+"LL3","LL3","L_D8_L_MMO.1","Larvae",5,"6/30/23",8,"L_MMO.1","L_MMO","MMO","Larval food","Experiment","Mosquito microbes only","",101981,20,5,0,0,18,0.9,13.798,13.798,85741,FALSE
+"LL4","LL4","L_D8_L_MMO.2","Larvae",5,"6/30/23",8,"L_MMO.2","L_MMO","MMO","Larval food","Experiment","Mosquito microbes only","",83175,20,1,0,0,18,0.9,12.621,12.621,68897,FALSE
+"LL5","LL5","L_D8_L_MMO.3","Larvae",5,"6/30/23",8,"L_MMO.3","L_MMO","MMO","Larval food","Experiment","Mosquito microbes only","",44031,20,5,0,0,17,0.85,13.026,13.026,37962,FALSE
+"LL6","LL6","L_D8_L_MMO.4","Larvae",5,"6/30/23",8,"L_MMO.4","L_MMO","MMO","Larval food","Experiment","Mosquito microbes only","",90456,20,6,0,0,22,1.1,18.46,18.46,75795,FALSE
+"LL7","LL7","L_D8_L_MMO.5","Larvae",5,"6/30/23",8,"L_MMO.5","L_MMO","MMO","Larval food","Experiment","Mosquito microbes only","",47330,20,5,0,0,10,0.5,7.375,7.375,40971,FALSE
+"LL8","LL8","L_D8_L_EMO.1","Larvae",5,"6/30/23",8,"L_EMO.1","L_EMO","EMO","Larval food","Experiment","Environmental microbes only","",101732,20,7,0,0,5,0.25,2.51,2.51,86282,FALSE
+"LL9","LL9","L_D8_L_EMO.2","Larvae",5,"6/30/23",8,"L_EMO.2","L_EMO","EMO","Larval food","Experiment","Environmental microbes only","",111660,20,7,0,0,7,0.35,6.057,6.057,95539,FALSE
+"M1","M1","M_D0_Microbe_stock_ecoli","Microbe Stock",NA,"6/22/23",0,"Microbe_stock_ecoli","Microbe_stock_ecoli","E. coli","Microbe stock","Microbe stock","E. coli stock","",63554,NA,NA,NA,NA,NA,NA,NA,NA,55311,FALSE
+"M2","M2","M_D0_Microbe_stock_mosq","Microbe Stock",NA,"6/22/23",0,"Microbe_stock_mosq","Microbe_stock_mosq","Mosquito microbes","Microbe stock","Microbe stock","Mosquito microbes stock","",31740,NA,NA,NA,NA,NA,NA,NA,NA,22771,FALSE
+"M3","M3","M_D0_Microbe_stock_brom","Microbe Stock",NA,"6/22/23",0,"Microbe_stock_brom","Microbe_stock_brom","Env. microbes","Microbe stock","Microbe stock","Environmental microbes stock","",62671,NA,NA,NA,NA,NA,NA,NA,NA,38106,FALSE
+"N1","N1","N_Negative1","Negative",NA,"",NA,"Negative","Negative","Negative","Negative","Negative","Negative","",481,NA,NA,NA,NA,NA,NA,NA,NA,274,TRUE
+"N2","N2","N_Negative2","Negative",NA,"",NA,"Negative","Negative","Negative","Negative","Negative","Negative","",1292,NA,NA,NA,NA,NA,NA,NA,NA,931,TRUE
+"N3","N3","N_Negative3","Negative",NA,"",NA,"Negative","Negative","Negative","Negative","Negative","Negative","",1244,NA,NA,NA,NA,NA,NA,NA,NA,1009,TRUE
+"N4","N4","N_Negative4","Negative",NA,"",NA,"Negative","Negative","Negative","Negative","Negative","Negative","",3175,NA,NA,NA,NA,NA,NA,NA,NA,2570,TRUE
+"N6","N6","N_Negative6","Negative",NA,"",NA,"Negative","Negative","Negative","Negative","Negative","Negative","",1270,NA,NA,NA,NA,NA,NA,NA,NA,1135,TRUE
+"PCR-NEG-2","PCR-NEG-2","N_PCR_Negative2","Negative",NA,"",NA,"Negative","Negative","Negative","Negative","Negative","Negative","",2368,NA,NA,NA,NA,NA,NA,NA,NA,694,TRUE
+"PCR-POS-1","PCR-POS-1","P_PCR_Positive1","Positive",NA,"",NA,"Positive","Positive","Positive","Positive","Positive","Positive","",267070,NA,NA,NA,NA,NA,NA,NA,NA,168224,FALSE
+"PCR-POS-2","PCR-POS-2","P_PCR_Positive2","Positive",NA,"",NA,"Positive","Positive","Positive","Positive","Positive","Positive","",193237,NA,NA,NA,NA,NA,NA,NA,NA,122467,FALSE
+"WB1","WB1","W_D5_Lab_water","Water",NA,"6/27/23",5,"Lab_water","Lab_water","None_labwater","Lab water","Lab water","Lab water","Sterile/autoclaved water from 06/22/23",63140,NA,NA,NA,NA,NA,NA,NA,NA,55630,FALSE
+"WB10","WB10","W_D5_B_MMO.4","Water",NA,"6/27/23",5,"B_MMO.4","B_MMO","MMO","Bamboo","Experiment","Mosquito microbes only","",154756,20,10,2,2,10,0.5,1.06,2.612,113760,FALSE
+"WB11","WB11","W_D5_B_MMO.5","Water",NA,"6/27/23",5,"B_MMO.5","B_MMO","MMO","Bamboo","Experiment","Mosquito microbes only","",150697,20,14,6,5,3,0.15,0.304,0.468,114299,FALSE
+"WB12","WB12","W_D5_B_MMO+","Water",NA,"6/27/23",5,"B_MMO+","B_MMO+","MMO","Bamboo","Additional control","No larvae - mosquito microbes","",114495,NA,NA,NA,NA,NA,NA,NA,NA,77904,FALSE
+"WB13","WB13","W_D5_B_EMO.1","Water",NA,"6/27/23",5,"B_EMO.1","B_EMO","EMO","Bamboo","Experiment","Environmental microbes only","",193555,20,20,12,1,15,0.75,0.401,3.949,145516,FALSE
+"WB14","WB14","W_D5_B_EMO.2","Water",NA,"6/27/23",5,"B_EMO.2","B_EMO","EMO","Bamboo","Experiment","Environmental microbes only","",166592,20,18,5,5,0,0,0,0,125290,FALSE
+"WB15","WB15","W_D5_B_EMO.3","Water",NA,"6/27/23",5,"B_EMO.3","B_EMO","EMO","Bamboo","Experiment","Environmental microbes only","",121161,20,15,12,8,4,0.2,0.621,0.621,91090,FALSE
+"WB16","WB16","W_D5_B_EMO.4","Water",NA,"6/27/23",5,"B_EMO.4","B_EMO","EMO","Bamboo","Experiment","Environmental microbes only","",151569,20,16,11,9,3,0.15,0.308,0.308,112343,FALSE
+"WB17","WB17","W_D5_B_EMO.5","Water",NA,"6/27/23",5,"B_EMO.5","B_EMO","EMO","Bamboo","Experiment","Environmental microbes only","",159928,20,15,0,0,18,0.9,3.16,4.085,119719,FALSE
+"WB18","WB18","W_D5_B_EMO+","Water",NA,"6/27/23",5,"B_EMO+","B_EMO+","EMO","Bamboo","Additional control","No larvae - environmental microbes","",228989,NA,NA,NA,NA,NA,NA,NA,NA,169651,FALSE
+"WB19","WB19","W_D5_B_ECO.1","Water",NA,"6/27/23",5,"B_ECO.1","B_ECO","ECO","Bamboo","Experiment","E. coli only","",147700,20,14,7,7,0,0,0,0,127540,FALSE
+"WB2","WB2","W_D5_Hatch_flask","Water",NA,"6/27/23",5,"Hatch_flask","Hatch_flask","None_hatch","Hatching flask","Hatching flask","Hatching flask","",1870,NA,NA,NA,NA,NA,NA,NA,NA,1444,FALSE
+"WB20","WB20","W_D5_B_ECO.2","Water",NA,"6/27/23",5,"B_ECO.2","B_ECO","ECO","Bamboo","Experiment","E. coli only","",135746,20,15,9,7,0,0,0,0,117519,FALSE
+"WB21","WB21","W_D5_B_ECO.3","Water",NA,"6/27/23",5,"B_ECO.3","B_ECO","ECO","Bamboo","Experiment","E. coli only","",124189,20,18,5,4,0,0,0,0,108760,FALSE
+"WB22","WB22","W_D5_B_ECO.4","Water",NA,"6/27/23",5,"B_ECO.4","B_ECO","ECO","Bamboo","Experiment","E. coli only","",122674,20,17,7,6,0,0,0,0,105609,FALSE
+"WB23","WB23","W_D5_B_ECO.5","Water",NA,"6/27/23",5,"B_ECO.5","B_ECO","ECO","Bamboo","Experiment","E. coli only","",100709,20,18,6,4,0,0,0,0,88320,FALSE
+"WB24","WB24","W_D5_B_ECO+","Water",NA,"6/27/23",5,"B_ECO+","B_ECO+","ECO","Bamboo","Additional control","No larvae - E. coli","",75079,NA,NA,NA,NA,NA,NA,NA,NA,67284,FALSE
+"WB25","WB25","W_D5_B_MEM.1","Water",NA,"6/27/23",5,"B_MEM.1","B_MEM","MEM","Bamboo","Experiment","Mosquito & environmental microbes","",198167,20,16,2,1,1,0.05,0,0.227,150949,FALSE
+"WB26","WB26","W_D5_B_MEM.2","Water",NA,"6/27/23",5,"B_MEM.2","B_MEM","MEM","Bamboo","Experiment","Mosquito & environmental microbes","",204624,20,12,1,1,14,0.7,4.007,4.007,152315,FALSE
+"WB27","WB27","W_D5_B_MEM.3","Water",NA,"6/27/23",5,"B_MEM.3","B_MEM","MEM","Bamboo","Experiment","Mosquito & environmental microbes","",197298,20,15,0,0,17,0.85,4.53,5.122,157596,FALSE
+"WB28","WB28","W_D5_B_MEM.4","Water",NA,"6/27/23",5,"B_MEM.4","B_MEM","MEM","Bamboo","Experiment","Mosquito & environmental microbes","",147391,20,14,10,3,2,0.1,0.315,0.315,115387,FALSE
+"WB29","WB29","W_D5_B_MEM.5","Water",NA,"6/27/23",5,"B_MEM.5","B_MEM","MEM","Bamboo","Experiment","Mosquito & environmental microbes","",162113,20,17,0,0,0,0,0,0,124640,FALSE
+"WB3","WB3","W_D5_B_AHK+","Water",NA,"6/27/23",5,"B_AHK+","B_AHK+","AHK","Bamboo","Additional control","No larvae - all heat-killed microbes","",9849,NA,NA,NA,NA,NA,NA,NA,NA,7122,FALSE
+"WB30","WB30","W_D5_B_MEM+","Water",NA,"6/27/23",5,"B_MEM+","B_MEM+","MEM","Bamboo","Additional control","No larvae - mosquito & environmental microbes","",177379,NA,NA,NA,NA,NA,NA,NA,NA,129030,FALSE
+"WB31","WB31","W_D5_B_ALL.1","Water",NA,"6/27/23",5,"B_ALL.1","B_ALL","ALL","Bamboo","Experiment","All live microbes","",210029,20,11,0,0,12,0.6,4.096,4.096,164708,FALSE
+"WB32","WB32","W_D5_B_ALL.2","Water",NA,"6/27/23",5,"B_ALL.2","B_ALL","ALL","Bamboo","Experiment","All live microbes","",266325,20,18,4,4,0,0,0,0,210286,FALSE
+"WB33","WB33","W_D5_B_ALL.3","Water",NA,"6/27/23",5,"B_ALL.3","B_ALL","ALL","Bamboo","Experiment","All live microbes","",332097,20,10,0,0,9,0.45,3.642,3.642,255207,FALSE
+"WB34","WB34","W_D5_B_ALL.4","Water",NA,"6/27/23",5,"B_ALL.4","B_ALL","ALL","Bamboo","Experiment","All live microbes","",238232,20,16,2,2,2,0.1,0.13,0.299,195269,FALSE
+"WB35","WB35","W_D5_B_ALL.5","Water",NA,"6/27/23",5,"B_ALL.5","B_ALL","ALL","Bamboo","Experiment","All live microbes","",162232,20,13,0,0,13,0.65,3.369,3.369,126171,FALSE
+"WB36","WB36","W_D5_B_ALL+","Water",NA,"6/27/23",5,"B_ALL+","B_ALL+","ALL","Bamboo","Additional control","No larvae - all live microbes","",86077,NA,NA,NA,NA,NA,NA,NA,NA,65390,FALSE
+"WB37","WB37","W_D20_B_larvae","Water",NA,"7/12/23",20,"B_larvae","B_larvae","None_larvae","Bamboo","Additional control","Larvae & food only","",70004,20,12,11,2,1,0.05,0.197,0.197,58676,FALSE
+"WB38","WB38","W_D20_B_food","Water",NA,"7/12/23",20,"B_food","B_food","None_food","Bamboo","Additional control","Food only","",91154,NA,NA,NA,NA,NA,NA,NA,NA,75147,FALSE
+"WB4","WB4","W_D5_B_food","Water",NA,"6/27/23",5,"B_food","B_food","None_food","Bamboo","Additional control","Food only","",83833,NA,NA,NA,NA,NA,NA,NA,NA,76028,FALSE
+"WB40","WB40","W_D20_B_AHK.1","Water",NA,"7/12/23",20,"B_AHK.1","B_AHK","AHK","Bamboo","Experiment","All heat-killed microbes","",45843,20,14,11,4,0,0,0,0,38094,FALSE
+"WB41","WB41","W_D20_B_MMO.1","Water",NA,"7/12/23",20,"B_MMO.1","B_MMO","MMO","Bamboo","Experiment","Mosquito microbes only","",90585,20,16,8,5,4,0.2,0.288,0.538,63795,FALSE
+"WB42","WB42","W_D20_B_MMO.2","Water",NA,"7/12/23",20,"B_MMO.2","B_MMO","MMO","Bamboo","Experiment","Mosquito microbes only","",142302,20,17,4,4,0,0,0,0,101905,FALSE
+"WB43","WB43","W_D20_B_MMO.3","Water",NA,"7/12/23",20,"B_MMO.3","B_MMO","MMO","Bamboo","Experiment","Mosquito microbes only","",142075,20,10,0,0,11,0.55,3.737,3.737,115552,FALSE
+"WB44","WB44","W_D20_B_MMO.4","Water",NA,"7/12/23",20,"B_MMO.4","B_MMO","MMO","Bamboo","Experiment","Mosquito microbes only","",141822,20,10,2,2,10,0.5,1.06,2.612,99262,FALSE
+"WB45","WB45","W_D20_B_MMO.5","Water",NA,"7/12/23",20,"B_MMO.5","B_MMO","MMO","Bamboo","Experiment","Mosquito microbes only","",120582,20,14,6,5,3,0.15,0.304,0.468,91958,FALSE
+"WB46","WB46","W_D20_B_MMO+","Water",NA,"7/12/23",20,"B_MMO+","B_MMO+","MMO","Bamboo","Additional control","No larvae - mosquito microbes","",136799,NA,NA,NA,NA,NA,NA,NA,NA,93041,FALSE
+"WB47","WB47","W_D20_B_EMO.1","Water",NA,"7/12/23",20,"B_EMO.1","B_EMO","EMO","Bamboo","Experiment","Environmental microbes only","",114290,20,20,12,1,15,0.75,0.401,3.949,89773,FALSE
+"WB48","WB48","W_D20_B_EMO.2","Water",NA,"7/12/23",20,"B_EMO.2","B_EMO","EMO","Bamboo","Experiment","Environmental microbes only","",134593,20,18,5,5,0,0,0,0,99910,FALSE
+"WB49","WB49","W_D20_B_EMO.3","Water",NA,"7/12/23",20,"B_EMO.3","B_EMO","EMO","Bamboo","Experiment","Environmental microbes only","",91941,20,15,12,8,4,0.2,0.621,0.621,73241,FALSE
+"WB5","WB5","W_D5_B_AHK.1","Water",NA,"6/27/23",5,"B_AHK.1","B_AHK","AHK","Bamboo","Experiment","All heat-killed microbes","",91658,20,14,11,4,0,0,0,0,80964,FALSE
+"WB50","WB50","W_D20_B_EMO.4","Water",NA,"7/12/23",20,"B_EMO.4","B_EMO","EMO","Bamboo","Experiment","Environmental microbes only","",151644,20,16,11,9,3,0.15,0.308,0.308,109551,FALSE
+"WB51","WB51","W_D20_B_EMO.5","Water",NA,"7/12/23",20,"B_EMO.5","B_EMO","EMO","Bamboo","Experiment","Environmental microbes only","",90710,20,15,0,0,18,0.9,3.16,4.085,68817,FALSE
+"WB52","WB52","W_D20_B_EMO+","Water",NA,"7/12/23",20,"B_EMO+","B_EMO+","EMO","Bamboo","Additional control","No larvae - environmental microbes","",136381,NA,NA,NA,NA,NA,NA,NA,NA,104314,FALSE
+"WB53","WB53","W_D20_B_ECO.1","Water",NA,"7/12/23",20,"B_ECO.1","B_ECO","ECO","Bamboo","Experiment","E. coli only","",70965,20,14,7,7,0,0,0,0,60418,FALSE
+"WB54","WB54","W_D20_B_ECO.2","Water",NA,"7/12/23",20,"B_ECO.2","B_ECO","ECO","Bamboo","Experiment","E. coli only","",71826,20,15,9,7,0,0,0,0,62828,FALSE
+"WB55","WB55","W_D20_B_ECO.3","Water",NA,"7/12/23",20,"B_ECO.3","B_ECO","ECO","Bamboo","Experiment","E. coli only","",104622,20,18,5,4,0,0,0,0,84221,FALSE
+"WB56","WB56","W_D20_B_ECO.4","Water",NA,"7/12/23",20,"B_ECO.4","B_ECO","ECO","Bamboo","Experiment","E. coli only","",143682,20,17,7,6,0,0,0,0,117027,FALSE
+"WB57","WB57","W_D20_B_ECO.5","Water",NA,"7/12/23",20,"B_ECO.5","B_ECO","ECO","Bamboo","Experiment","E. coli only","",102762,20,18,6,4,0,0,0,0,86281,FALSE
+"WB58","WB58","W_D20_B_ECO+","Water",NA,"7/12/23",20,"B_ECO+","B_ECO+","ECO","Bamboo","Additional control","No larvae - E. coli","",101372,NA,NA,NA,NA,NA,NA,NA,NA,89835,FALSE
+"WB59","WB59","W_D20_B_MEM.1","Water",NA,"7/12/23",20,"B_MEM.1","B_MEM","MEM","Bamboo","Experiment","Mosquito & environmental microbes","",66999,20,16,2,1,1,0.05,0,0.227,54153,FALSE
+"WB6","WB6","W_D5_B_larvae","Water",NA,"6/27/23",5,"B_larvae","B_larvae","None_larvae","Bamboo","Additional control","Larvae & food only","",65165,20,12,11,2,1,0.05,0.197,0.197,57996,FALSE
+"WB60","WB60","W_D20_B_MEM.2","Water",NA,"7/12/23",20,"B_MEM.2","B_MEM","MEM","Bamboo","Experiment","Mosquito & environmental microbes","",128894,20,12,1,1,14,0.7,4.007,4.007,96678,FALSE
+"WB61","WB61","W_D20_B_MEM.3","Water",NA,"7/12/23",20,"B_MEM.3","B_MEM","MEM","Bamboo","Experiment","Mosquito & environmental microbes","",121032,20,15,0,0,17,0.85,4.53,5.122,91344,FALSE
+"WB62","WB62","W_D20_B_MEM.4","Water",NA,"7/12/23",20,"B_MEM.4","B_MEM","MEM","Bamboo","Experiment","Mosquito & environmental microbes","",164334,20,14,10,3,2,0.1,0.315,0.315,118881,FALSE
+"WB63","WB63","W_D20_B_MEM.5","Water",NA,"7/12/23",20,"B_MEM.5","B_MEM","MEM","Bamboo","Experiment","Mosquito & environmental microbes","",104178,20,17,0,0,0,0,0,0,81896,FALSE
+"WB64","WB64","W_D20_B_MEM+","Water",NA,"7/12/23",20,"B_MEM+","B_MEM+","MEM","Bamboo","Additional control","No larvae - mosquito & environmental microbes","",117541,NA,NA,NA,NA,NA,NA,NA,NA,82925,FALSE
+"WB65","WB65","W_D20_B_ALL.1","Water",NA,"7/12/23",20,"B_ALL.1","B_ALL","ALL","Bamboo","Experiment","All live microbes","",164239,20,11,0,0,12,0.6,4.096,4.096,116247,FALSE
+"WB66","WB66","W_D20_B_ALL.2","Water",NA,"7/12/23",20,"B_ALL.2","B_ALL","ALL","Bamboo","Experiment","All live microbes","",134307,20,18,4,4,0,0,0,0,100160,FALSE
+"WB67","WB67","W_D20_B_ALL.3","Water",NA,"7/12/23",20,"B_ALL.3","B_ALL","ALL","Bamboo","Experiment","All live microbes","",119012,20,10,0,0,9,0.45,3.642,3.642,74518,FALSE
+"WB68","WB68","W_D20_B_ALL.4","Water",NA,"7/12/23",20,"B_ALL.4","B_ALL","ALL","Bamboo","Experiment","All live microbes","",123522,20,16,2,2,2,0.1,0.13,0.299,90865,FALSE
+"WB69","WB69","W_D20_B_ALL.5","Water",NA,"7/12/23",20,"B_ALL.5","B_ALL","ALL","Bamboo","Experiment","All live microbes","",142364,20,13,0,0,13,0.65,3.369,3.369,96160,FALSE
+"WB7","WB7","W_D5_B_MMO.1","Water",NA,"6/27/23",5,"B_MMO.1","B_MMO","MMO","Bamboo","Experiment","Mosquito microbes only","",133173,20,16,8,5,4,0.2,0.288,0.538,101637,FALSE
+"WB70","WB70","W_D20_B_ALL+","Water",NA,"7/12/23",20,"B_ALL+","B_ALL+","ALL","Bamboo","Additional control","No larvae - all live microbes","",170574,NA,NA,NA,NA,NA,NA,NA,NA,108148,FALSE
+"WB8","WB8","W_D5_B_MMO.2","Water",NA,"6/27/23",5,"B_MMO.2","B_MMO","MMO","Bamboo","Experiment","Mosquito microbes only","",150363,20,17,4,4,0,0,0,0,108043,FALSE
+"WB9","WB9","W_D5_B_MMO.3","Water",NA,"6/27/23",5,"B_MMO.3","B_MMO","MMO","Bamboo","Experiment","Mosquito microbes only","",149261,20,10,0,0,11,0.55,3.737,3.737,106427,FALSE
+"WL1","WL1","W_D5_L_larvae","Water",NA,"6/27/23",5,"L_larvae","L_larvae","None_larvae","Larval food","Additional control","Larvae & food only","",88708,20,4,0,0,9,0.45,7.414,7.414,80507,FALSE
+"WL10","WL10","W_D5_L_MMO+","Water",NA,"6/27/23",5,"L_MMO+","L_MMO+","MMO","Larval food","Additional control","No larvae - mosquito microbes","",213471,NA,NA,NA,NA,NA,NA,NA,NA,140176,FALSE
+"WL11","WL11","W_D5_L_EMO.1","Water",NA,"6/27/23",5,"L_EMO.1","L_EMO","EMO","Larval food","Experiment","Environmental microbes only","",156662,20,7,0,0,5,0.25,2.51,2.51,111243,FALSE
+"WL12","WL12","W_D5_L_EMO.2","Water",NA,"6/27/23",5,"L_EMO.2","L_EMO","EMO","Larval food","Experiment","Environmental microbes only","",143158,20,7,0,0,7,0.35,6.057,6.057,95779,FALSE
+"WL13","WL13","W_D5_L_EMO.3","Water",NA,"6/27/23",5,"L_EMO.3","L_EMO","EMO","Larval food","Experiment","Environmental microbes only","",99916,20,12,0,0,12,0.6,10.172,10.172,73979,FALSE
+"WL14","WL14","W_D5_L_EMO.4","Water",NA,"6/27/23",5,"L_EMO.4","L_EMO","EMO","Larval food","Experiment","Environmental microbes only","",124777,20,11,0,0,11,0.55,8.412,8.412,85675,FALSE
+"WL15","WL15","W_D5_L_EMO.5","Water",NA,"6/27/23",5,"L_EMO.5","L_EMO","EMO","Larval food","Experiment","Environmental microbes only","",143576,20,7,0,0,15,0.75,11.365,11.365,107597,FALSE
+"WL16","WL16","W_D5_L_EMO+","Water",NA,"6/27/23",5,"L_EMO+","L_EMO+","EMO","Larval food","Additional control","No larvae - environmental microbes","",113153,NA,NA,NA,NA,NA,NA,NA,NA,85181,FALSE
+"WL17","WL17","W_D5_L_ECO.1","Water",NA,"6/27/23",5,"L_ECO.1","L_ECO","ECO","Larval food","Experiment","E. coli only","",148743,20,10,0,0,7,0.35,3.736,3.736,130950,FALSE
+"WL18","WL18","W_D5_L_ECO.2","Water",NA,"6/27/23",5,"L_ECO.2","L_ECO","ECO","Larval food","Experiment","E. coli only","",105803,20,12,0,0,18,0.9,10.588,10.588,94157,FALSE
+"WL19","WL19","W_D5_L_ECO.3","Water",NA,"6/27/23",5,"L_ECO.3","L_ECO","ECO","Larval food","Experiment","E. coli only","",134358,20,12,0,0,14,0.7,7.747,7.747,117077,FALSE
+"WL2","WL2","W_D5_L_AHK+","Water",NA,"6/27/23",5,"L_AHK+","L_AHK+","AHK","Larval food","Additional control","No larvae - all heat-killed microbes","",1011,NA,NA,NA,NA,NA,NA,NA,NA,656,FALSE
+"WL20","WL20","W_D5_L_ECO.4","Water",NA,"6/27/23",5,"L_ECO.4","L_ECO","ECO","Larval food","Experiment","E. coli only","",112521,20,7,0,0,9,0.45,5.967,5.967,97532,FALSE
+"WL21","WL21","W_D5_L_ECO.5","Water",NA,"6/27/23",5,"L_ECO.5","L_ECO","ECO","Larval food","Experiment","E. coli only","",82024,20,6,0,0,7,0.35,3.053,3.053,73229,FALSE
+"WL22","WL22","W_D5_L_ECO+","Water",NA,"6/27/23",5,"L_ECO+","L_ECO+","ECO","Larval food","Additional control","No larvae - E. coli","",84065,NA,NA,NA,NA,NA,NA,NA,NA,75581,FALSE
+"WL23","WL23","W_D5_L_MEM.1","Water",NA,"6/27/23",5,"L_MEM.1","L_MEM","MEM","Larval food","Experiment","Mosquito & environmental microbes","",77744,20,6,0,0,6,0.3,4.731,4.731,54439,FALSE
+"WL24","WL24","W_D5_L_MEM.2","Water",NA,"6/27/23",5,"L_MEM.2","L_MEM","MEM","Larval food","Experiment","Mosquito & environmental microbes","",119945,20,0,0,0,0,0,0,0,86062,FALSE
+"WL25","WL25","W_D5_L_MEM.3","Water",NA,"6/27/23",5,"L_MEM.3","L_MEM","MEM","Larval food","Experiment","Mosquito & environmental microbes","",171802,20,7,0,0,8,0.4,6.392,6.392,121810,FALSE
+"WL26","WL26","W_D5_L_MEM.4","Water",NA,"6/27/23",5,"L_MEM.4","L_MEM","MEM","Larval food","Experiment","Mosquito & environmental microbes","",130957,20,1,0,0,1,0.05,1.039,1.039,92000,FALSE
+"WL27","WL27","W_D5_L_MEM.5","Water",NA,"6/27/23",5,"L_MEM.5","L_MEM","MEM","Larval food","Experiment","Mosquito & environmental microbes","",161014,20,8,0,0,7,0.35,4.84,4.84,113907,FALSE
+"WL28","WL28","W_D5_L_MEM+","Water",NA,"6/27/23",5,"L_MEM+","L_MEM+","MEM","Larval food","Additional control","No larvae - mosquito & environmental microbes","",170049,NA,NA,NA,NA,NA,NA,NA,NA,110330,FALSE
+"WL29","WL29","W_D5_L_ALL.1","Water",NA,"6/27/23",5,"L_ALL.1","L_ALL","ALL","Larval food","Experiment","All live microbes","",134586,20,7,0,0,6,0.3,4.235,4.235,93112,FALSE
+"WL3","WL3","W_D5_L_food","Water",NA,"6/27/23",5,"L_food","L_food","None_food","Larval food","Additional control","Food only","",1121,NA,NA,NA,NA,NA,NA,NA,NA,341,FALSE
+"WL30","WL30","W_D5_L_ALL.2","Water",NA,"6/27/23",5,"L_ALL.2","L_ALL","ALL","Larval food","Experiment","All live microbes","",122343,20,2,0,0,7,0.35,5.262,5.262,90987,FALSE
+"WL31","WL31","W_D5_L_ALL.3","Water",NA,"6/27/23",5,"L_ALL.3","L_ALL","ALL","Larval food","Experiment","All live microbes","",90049,20,6,0,0,7,0.35,5.604,5.604,63868,FALSE
+"WL32","WL32","W_D5_L_ALL.4","Water",NA,"6/27/23",5,"L_ALL.4","L_ALL","ALL","Larval food","Experiment","All live microbes","",174386,20,1,0,0,1,0.05,0.571,0.571,123683,FALSE
+"WL33","WL33","W_D5_L_ALL.5","Water",NA,"6/27/23",5,"L_ALL.5","L_ALL","ALL","Larval food","Experiment","All live microbes","",147990,20,2,0,0,0,0,0,0,106361,FALSE
+"WL34","WL34","W_D5_L_ALL+","Water",NA,"6/27/23",5,"L_ALL+","L_ALL+","ALL","Larval food","Additional control","No larvae - all live microbes","",153574,NA,NA,NA,NA,NA,NA,NA,NA,121264,FALSE
+"WL4","WL4","W_D5_L_AHK.1","Water",NA,"6/27/23",5,"L_AHK.1","L_AHK","AHK","Larval food","Experiment","All heat-killed microbes","",60375,20,7,0,0,19,0.95,15.548,15.548,54982,FALSE
+"WL5","WL5","W_D5_L_MMO.1","Water",NA,"6/27/23",5,"L_MMO.1","L_MMO","MMO","Larval food","Experiment","Mosquito microbes only","",128296,20,5,0,0,18,0.9,13.798,13.798,97364,FALSE
+"WL6","WL6","W_D5_L_MMO.2","Water",NA,"6/27/23",5,"L_MMO.2","L_MMO","MMO","Larval food","Experiment","Mosquito microbes only","",92704,20,1,0,0,18,0.9,12.621,12.621,65711,FALSE
+"WL7","WL7","W_D5_L_MMO.3","Water",NA,"6/27/23",5,"L_MMO.3","L_MMO","MMO","Larval food","Experiment","Mosquito microbes only","",137202,20,5,0,0,17,0.85,13.026,13.026,98159,FALSE
+"WL8","WL8","W_D5_L_MMO.4","Water",NA,"6/27/23",5,"L_MMO.4","L_MMO","MMO","Larval food","Experiment","Mosquito microbes only","",117557,20,6,0,0,22,1.1,18.46,18.46,83325,FALSE
+"WL9","WL9","W_D5_L_MMO.5","Water",NA,"6/27/23",5,"L_MMO.5","L_MMO","MMO","Larval food","Experiment","Mosquito microbes only","",77045,20,5,0,0,10,0.5,7.375,7.375,51746,FALSE

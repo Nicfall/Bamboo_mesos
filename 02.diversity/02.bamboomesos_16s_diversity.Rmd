@@ -1,0 +1,1342 @@
+---
+title: "Bamboo mesocosms diversity analysis"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+ rmarkdown::html_document:
+    theme: cerulean
+    toc: yes
+    toc_float: yes
+    highlight: haddock
+    number_sections: true
+editor_options: 
+  chunk_output_type: console
+---
+
+# Setup
+
+## Libs
+
+```{r}
+library(car) 
+library("Rmisc")
+library("ggpubr")
+library("cowplot")
+library("lme4")
+library("phyloseq")
+library("glmmTMB")
+library("emmeans")
+library(multcomp)
+#install.packages("multcompView")
+library(multcompView)
+library("bbmle")
+library("DHARMa")
+library("nlme")
+library("bestNormalize")
+library("dplyr")
+```
+
+## Data
+
+```{r}
+setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/02.diversity")
+
+#ps.clean <- readRDS("../01.process_asvs/bamboomesos_ps.lulu.clean.decontam.rare11k.rds")
+#ps.clean #500 taxa, 156 samples
+ps.clean <- readRDS("../01.process_asvs/bamboomesos_ps.lulu.clean.decontam.rare6.9k.rds")
+ps.clean #500 taxa, 157 samples
+
+#ps.clean.exp <- subset_samples(ps.clean,Mesocosm_type=="AHK")
+
+# ps.clean.exp.noahk1 <- subset_samples(ps.clean,Microbe_treatment!="AHK")
+# ps.clean.exp.noahk <- prune_taxa(taxa_sums(ps.clean.exp.noahk1) > 0, ps.clean.exp.noahk1)
+
+sample_sums(ps.clean)
+
+samdf <- data.frame(ps.clean@sam_data)
+```
+
+# Alpha diversity calculations
+
+```{r}
+##option to run rarefied stuff:
+#ps.clean <- ps.rare
+df.all <- data.frame(estimate_richness(ps.clean, split=TRUE, measures=c("Shannon","InvSimpson","Observed")))
+
+df.all$Short_label <- rownames(df.all)
+
+df.all.div <- merge(df.all,samdf,by="Short_label") #add sample data
+
+#shannon diversity divided by species richness
+df.all.div$even <- df.all.div$Shannon/(log(df.all.div$Observed))
+
+#write.csv(df.all.div,file="bamboomesos_all.div.csv")
+##get rid of ones I don't want to look at right now
+#df.all.div.nocon <- subset(df.all.div,Mesocosm_type=="Experiment")
+#df.all.div.con <- subset(df.all.div,Mesocosm_type!="Experiment")
+```
+
+# Analyzing alpha metrics
+
+## Richness
+
+### All the samples
+
+Messy plot
+
+```{r}
+ggplot(df.all.div,aes(x=Microbe_treatment,y=Observed,color=Microbe_treatment))+
+  facet_wrap(Sample_type+Food_type~Mesocosm_type*Exp_day,scales="free")+
+  #scale_color_manual(values=stock.colors)+
+  geom_boxplot()
+```
+
+### Just microbe stocks
+
+```{r}
+df.div.stocks <- subset(df.all.div,Sample_type=="Microbe Stock")
+
+df.div.stocks$Microbe_treatment <- factor(df.div.stocks$Microbe_treatment,levels=c("E. coli","Mosquito microbes","Env. microbes"))
+
+new.colors <- c("#7D0112","#C6A947","#84D1B5","#0085A6","#1F28A2")
+stock.colors <- c("#7D0112","#C6A947","#84D1B5")
+
+gg.bars.stocks.rich <- ggplot(df.div.stocks,aes(x=Microbe_treatment,y=Observed,fill=Microbe_treatment,label=Observed))+
+  geom_bar(stat="identity",color="black",width=0.75)+
+  geom_text(nudge_y=3,color="black")+
+  scale_fill_manual(values=stock.colors)+
+  scale_x_discrete(labels=c("Lab","Mosquito (Mos.)","Environment (Env.)"))+
+  theme_cowplot()+
+  ggtitle("Initial inocula")+
+  xlab("")+
+  ylab("ASV richness")+
+  guides(fill="none")+
+  theme(axis.text.x=element_text(angle=45,hjust=1))#+#+
+  #theme(axis.text.x=element_text(angle=45,hjust=1),plot.margin = unit(c(1,2,3,1), "lines"))
+  #ggtitle("Microbial source diversity")
+gg.bars.stocks.rich
+
+ps.ecol1 <- subset_samples(ps.clean,Microbe_treatment=="E. coli")
+ps.ecol <- prune_taxa(taxa_sums(ps.ecol1) > 0, ps.ecol1)
+ps.ecol@otu_table
+
+ps.larv1 <- subset_samples(ps.clean,Microbe_treatment=="None_larvae")
+ps.larv <- prune_taxa(taxa_sums(ps.larv1) > 0, ps.larv1)
+ps.larv@otu_table
+ps.larv@tax_table
+```
+
+### Samples
+
+```{r}
+df.div.exp <- subset(df.all.div,Mesocosm_type=="Experiment")
+df.div.exp.no20 <- subset(df.div.exp,Exp_day!=20)
+df.div.exp.no20.noahk <- subset(df.div.exp.no20,Microbe_treatment!="AHK")
+
+##desired order
+df.div.exp.no20.noahk$Microbe_treatment <- factor(df.div.exp.no20.noahk$Microbe_treatment,levels=c("ECO","MMO","EMO","MEM","ALL"))
+
+##calculate mean & standard error
+df.div.exp.no20.noahk.rich.se <- summarySE(df.div.exp.no20.noahk,measurevar="Observed",groupvar=c("Microbe_treatment","Food_type","Sample_type","Mesocosm_type"))
+
+##re-name variables for plotting
+df.div.exp.no20.noahk.rich.se$Food_type <- sub("Larval food","Standard diet",df.div.exp.no20.noahk.rich.se$Food_type)
+df.div.exp.no20.noahk.rich.se$Food_type <- sub("Bamboo","Bamboo diet",df.div.exp.no20.noahk.rich.se$Food_type)
+df.div.exp.no20.noahk.rich.se$Food_type <- factor(df.div.exp.no20.noahk.rich.se$Food_type,levels=c("Standard diet","Bamboo diet"))
+
+##current iteration = bar plot
+
+gg.bars.exp.rich <- ggplot(df.div.exp.no20.noahk.rich.se,aes(x=Microbe_treatment,y=Observed,fill=Microbe_treatment,alpha=Sample_type))+
+  #geom_point(data=df.all.div.nocon.noday20.noahk,alpha=0.5,position=position_jitterdodge(0.9))+
+  ggtitle("Experiment samples")+
+  geom_bar(stat="identity",position="dodge",color="black")+
+  geom_errorbar(aes(ymin=Observed-se,ymax=Observed+se),position=position_dodge(0.9),width=0.5,color="black")+
+  #geom_point(position=position_dodge(0.5),color="black",size=2)+
+  #facet_grid(Sample_type~Food_type)+
+  facet_wrap(~Food_type,scales="free_x")+
+  #ylim(0,65)+
+  scale_alpha_manual(values=c(1,0.6),name="Sample type",labels=c("Larvae","Mesocosm water"))+
+  scale_fill_manual(values=c(new.colors),name="Microbes")+
+  #scale_color_manual(values=c("black","grey"))+
+  #scale_shape_manual(values=c(24,22),name="Diet")+
+  scale_x_discrete(labels=c("Lab","Mos.","Env.","Mos.+Env.","Mos.+Env.+Lab"))+
+  #geom_text(aes(x=1,y=29),label="Mosq.",color="#D83706")+
+  #geom_text(aes(x=1,y=73),label="Env.",color="#3B9FFD")+
+  #geom_text(aes(x=5,y=5),label="E.coli",color="gray60")+
+  ylab("ASV richness")+
+  xlab("")+
+  #xlim(-1,6)+
+  guides(fill="none",color="none")+
+  theme_cowplot()+
+  #theme(axis.text.x=element_text(angle=45,hjust=1))#+
+  theme(axis.text.x=element_text(angle=45,hjust=1),plot.margin = unit(c(1,1,1.4,0), "lines"))
+gg.bars.exp.rich
+
+#library("patchwork")
+
+#gg.bars.stocks.rich + gg.bars.exp.rich
+
+ggarrange(gg.bars.stocks.rich,gg.bars.exp.rich,widths=c(0.4,1),labels=c("(a)","(b)"))
+
+#ggsave("bamboomesos.rich.pdf",width=9,height=4)
+
+#ggsave("reusum23.alpha.diversity.pdf",width=9,height=4)
+#ggsave("reusum23.alpha.diversity.png",width=9,height=4)
+
+##previous iteration
+# ggplot(df.all.div.nocon.noday20.noahk.se,aes(x=Microbe_treatment,y=Observed,color=Microbe_treatment,shape=Food_type,fill=Microbe_treatment))+
+#   geom_hline(yintercept=8,color="gray60",linetype="longdash",alpha=0.7)+
+#   geom_hline(yintercept=38,color="#D83706",linetype="longdash",alpha=0.7)+
+#   geom_hline(yintercept=151,color="#3B9FFD",linetype="longdash",alpha=0.7)+
+#   geom_point(data=df.all.div.exp.stock.noahk,alpha=0.5,position=position_jitterdodge(0.1))+
+#   geom_errorbar(aes(ymin=Observed-se,ymax=Observed+se),position=position_dodge(0.5),width=0.3,color="black")+
+#   geom_point(position=position_dodge(0.5),color="black",size=2)+
+#   facet_wrap(~Sample_type)+
+#   scale_color_manual(values=c(new.colors),name="Microbes")+
+#   scale_fill_manual(values=c(new.colors),name="Microbes")+
+#   scale_shape_manual(values=c(24,22),name="Diet")+
+#   scale_x_discrete(labels=c("E. coli","Mosquito","Environmental","Mosq.+Envir.","Mosq.+Envir.+E.coli"))+
+#   geom_text(aes(x=1,y=29),label="Mosq.",color="#D83706")+
+#   geom_text(aes(x=1,y=73),label="Env.",color="#3B9FFD")+
+#   geom_text(aes(x=5,y=5),label="E.coli",color="gray60")+
+#   ylab("ASV richness")+
+#   xlab("Microbes")+
+#   #xlim(-1,6)+
+#   guides(fill="none",color="none")+
+#   theme_cowplot()+
+#   theme(axis.text.x=element_text(angle=45,hjust=1))
+# #ggsave()
+```
+
+## Inv. Simpson
+
+### All the samples
+
+Messy plot
+
+```{r}
+ggplot(df.all.div,aes(x=Microbe_treatment,y=InvSimpson,color=Microbe_treatment))+
+  facet_wrap(Sample_type+Food_type~Mesocosm_type,scales="free")+
+  #scale_color_manual(values=stock.colors)+
+  geom_boxplot()
+```
+
+### Just microbe stocks
+
+```{r}
+stock.colors <- c("#7D0112","#C6A947","#84D1B5")
+
+df.div.stocks$invsimp.round <- round(df.div.stocks$InvSimpson,digits=1)
+df.div.stocks$invsimp.round
+
+gg.bars.stocks.simp <- ggplot(df.div.stocks,aes(x=Microbe_treatment,y=InvSimpson,fill=Microbe_treatment,label=invsimp.round))+
+  geom_bar(stat="identity",color="black",width=0.75)+
+  geom_text(nudge_y=0.6,color="black")+
+  scale_fill_manual(values=stock.colors)+
+  scale_x_discrete(labels=c("LAB","MOS","ENV"))+
+  theme_cowplot()+
+  #ggtitle("Microbial stocks")+
+  xlab("Microbes")+
+  ylab("Simpson's (inv.)")+
+  guides(fill="none")+
+  theme(axis.text.x=element_text(angle=45,hjust=1),plot.margin = unit(c(1,2,3,1), "lines"))
+  #ggtitle("Microbial source diversity")
+gg.bars.stocks.simp
+```
+
+### Samples
+
+```{r}
+##calculate mean & standard error
+df.div.exp.no20.noahk.simp.se <- summarySE(df.div.exp.no20.noahk,measurevar="InvSimpson",groupvar=c("Microbe_treatment","Food_type","Sample_type","Mesocosm_type"))
+
+##re-name variables for plotting
+df.div.exp.no20.noahk.simp.se$Food_type <- sub("Larval food","Artificial diet",df.div.exp.no20.noahk.simp.se$Food_type)
+df.div.exp.no20.noahk.simp.se$Food_type <- sub("Bamboo","Bamboo leaves",df.div.exp.no20.noahk.simp.se$Food_type)
+
+##current iteration = bar plot
+gg.bars.exp.simp <- ggplot(df.div.exp.no20.noahk.simp.se,aes(x=Microbe_treatment,y=InvSimpson,fill=Microbe_treatment,alpha=Sample_type))+
+  #geom_point(data=df.all.div.nocon.noday20.noahk,alpha=0.5,position=position_jitterdodge(0.9))+
+  #ggtitle("Experiment samples")+
+  geom_bar(stat="identity",position="dodge",color="black")+
+  geom_errorbar(aes(ymin=InvSimpson-se,ymax=InvSimpson+se),position=position_dodge(0.9),width=0.5,color="black")+
+  #geom_point(position=position_dodge(0.5),color="black",size=2)+
+  #facet_grid(Sample_type~Food_type)+
+  facet_wrap(~Food_type,scales="free_x")+
+  #ylim(0,65)+
+  scale_alpha_manual(values=c(1,0.6),name="Sample type",labels=c("Larvae","Mesocosm water"))+
+  scale_fill_manual(values=c(new.colors),name="Microbes")+
+  #scale_color_manual(values=c("black","grey"))+
+  #scale_shape_manual(values=c(24,22),name="Diet")+
+  scale_x_discrete(labels=c("LAB","MOS","ENV","MOS+ENV","MOS+ENV+LAB"))+
+  #geom_text(aes(x=1,y=29),label="Mosq.",color="#D83706")+
+  #geom_text(aes(x=1,y=73),label="Env.",color="#3B9FFD")+
+  #geom_text(aes(x=5,y=5),label="E.coli",color="gray60")+
+  ylab("Simpson's (inv.)")+
+  xlab("Microbes")+
+  #xlim(-1,6)+
+  guides(fill="none",color="none")+
+  theme_cowplot()+
+  theme(axis.text.x=element_text(angle=45,hjust=1),plot.margin = unit(c(1,1,0,0), "lines"))
+gg.bars.exp.simp
+
+#ggarrange(gg.bars.stocks.simp,gg.bars.exp.simp,widths=c(0.5,1),labels=c("(a)","(b)"))
+
+ggarrange(gg.bars.stocks.rich,gg.bars.exp.rich,gg.bars.stocks.simp,gg.bars.exp.simp,widths=c(0.5,1),labels=c("(a)","(b)","(c)","(d)"),common.legend=T,legend="right")
+
+#ggsave("reusum23.alpha.diversity.pdf",width=9,height=8)
+#ggsave("reusum23.alpha.diversity.png",width=9,height=4)
+```
+
+# Basic stats
+
+```{r}
+glm.obs.full.nor <- glmmTMB(Observed~Microbe_treatment*Food_type*Sample_type,data=df.div.exp.no20.noahk)
+summary(glm.obs.full)
+
+glm.obs.full.poi <- glmmTMB(Observed~Microbe_treatment*Food_type*Sample_type,data=df.div.exp.no20.noahk,family=poisson)
+
+glm.obs.full.nb1 <- glmmTMB(Observed~Microbe_treatment*Food_type*Sample_type,data=df.div.exp.no20.noahk,family=nbinom1)
+
+glm.obs.full.nb2 <- glmmTMB(Observed~Microbe_treatment*Food_type*Sample_type,data=df.div.exp.no20.noahk,family=nbinom2)
+
+AICtab(glm.obs.full.nor,glm.obs.full.poi,glm.obs.full.nb1,glm.obs.full.nb2)
+##poisson best
+
+##checking variable interactions
+glm.obs.poi.fm <- glmmTMB(Observed~Microbe_treatment*Food_type+Sample_type,data=df.div.exp.no20.noahk,family=poisson)
+
+glm.obs.poi.fs <- glmmTMB(Observed~Microbe_treatment+Food_type*Sample_type,data=df.div.exp.no20.noahk,family=poisson)
+
+glm.obs.poi.ms <- glmmTMB(Observed~Microbe_treatment*Sample_type+Food_type,data=df.div.exp.no20.noahk,family=poisson)
+
+AICtab(glm.obs.full.poi,glm.obs.poi.fm,glm.obs.poi.fs,glm.obs.poi.ms)
+##full model best
+
+##checking sigs
+glm.obs.poi.no3 <- glmmTMB(Observed~Microbe_treatment+Sample_type+Food_type+Microbe_treatment:Food_type+Sample_type:Food_type+Microbe_treatment:Sample_type,data=df.div.exp.no20.noahk,family=poisson)
+
+AICtab(glm.obs.poi.no3,glm.obs.full.poi)
+
+anova(glm.obs.poi.no3,glm.obs.full.poi) #ns
+
+```
+
+# Correlations by mesocosm
+
+```{r}
+df.div.water <- subset(df.div.exp.no20.noahk,Sample_type=="Water")
+df.div.larv <- subset(df.div.exp.no20.noahk,Sample_type=="Larvae")
+
+meso.corr <- merge(df.div.water,df.div.larv,by="Mesocosm_id")
+ggplot(meso.corr,aes(x=InvSimpson.x,y=InvSimpson.y))+
+  geom_point()+
+  #facet_wrap(~day.y)+
+  geom_smooth()
+
+meso.corr$Food_type.x==meso.corr$Food_type.y
+ggplot(meso.corr,aes(x=Observed.x,y=Observed.y,color=Microbe_treatment.x))+
+  geom_point()+
+  #geom_smooth(se=FALSE)+
+  facet_wrap(~Food_type.x)
+```
+
+# Correlations with fitness
+
+## Setup
+
+```{r}
+meso.data <- read.csv("../raw_data/bamboomesos_mesocosmdata.csv")
+
+df.div.exp.meso <- merge(df.div.exp.no20.noahk,meso.data,by="Mesocosm_id")
+
+df.div.exp.meso$Food_type.x==df.div.exp.meso$Food_type.y
+
+##rename
+df.div.exp.meso$Food_type.x <- sub("Larval food","Artificial",df.div.exp.meso$Food_type.x)
+```
+
+## Pupation
+
+```{r}
+gg.fit.pup.rich <- ggplot(df.div.exp.meso,aes(x=Observed,y=Proportion_pupated,color=Food_type.x,shape=Microbe_treatment.x))+
+  geom_smooth(aes(group=Food_type.x,linetype=Food_type.x,fill=Food_type.x),method="lm")+
+  geom_point(size=2)+
+  scale_shape_manual(values=c(4,3,5,9,8),name="Microbes",labels=c("LAB","MOS","ENV","MOS+ENV","MOS+ENV+LAB"))+
+  scale_linetype_manual(name="Diet",values=c("solid","longdash"))+
+  facet_wrap(~Sample_type,scales="free")+
+  xlab("ASV richness")+
+  ylab("Proportion pupated")+
+  scale_color_manual(values=c("#D66982","#B9C184"),name="Diet")+
+  scale_fill_manual(values=c("#D66982","#B9C184"),name="Diet")+
+  theme_cowplot()
+  #facet_wrap(Sample_type~Food_type.x,scales="free")
+gg.fit.pup.rich
+
+gg.fit.pup.simp <- ggplot(df.div.exp.meso,aes(x=InvSimpson,y=Proportion_pupated,color=Food_type.x,shape=Microbe_treatment.x))+
+  geom_smooth(aes(group=Food_type.x,linetype=Food_type.x,fill=Food_type.x),method="lm")+
+  geom_point(size=2)+
+  scale_shape_manual(values=c(4,3,5,9,8),name="Microbes",labels=c("LAB","MOS","ENV","MOS+ENV","MOS+ENV+LAB"))+
+  scale_linetype_manual(name="Diet",values=c("solid","longdash"))+
+  facet_wrap(~Sample_type,scales="free")+
+  xlab("Simpson's (inv.)")+
+  ylab("Proportion pupated")+
+  scale_color_manual(values=c("#D66982","#B9C184"),name="Diet")+
+  scale_fill_manual(values=c("#D66982","#B9C184"),name="Diet")+
+  theme_cowplot()
+  #facet_wrap(Sample_type~Food_type.x,scales="free")
+gg.fit.pup.simp
+
+ggarrange(gg.fit.pup.rich,gg.fit.pup.simp,labels=c("(a)","(b)"),nrow=2,common.legend=T,legend="right")
+
+#ggsave("alpha.fitness.pupation.pdf",height=5,width=6)
+```
+
+## Biomass
+
+```{r}
+gg.fit.bio.rich <- ggplot(df.div.exp.meso,aes(x=Observed,y=Biomass_day40,color=Food_type.x,shape=Microbe_treatment.x))+
+  geom_smooth(aes(group=Food_type.x,linetype=Food_type.x,fill=Food_type.x),method="lm")+
+  geom_point(size=2)+
+  scale_shape_manual(values=c(4,3,5,9,8),name="Microbes",labels=c("LAB","MOS","ENV","MOS+ENV","MOS+ENV+LAB"))+
+  scale_linetype_manual(name="Diet",values=c("solid","longdash"))+
+  facet_wrap(~Sample_type,scales="free")+
+  xlab("ASV richness")+
+  ylab("Pupae sum (mg)")+
+  scale_color_manual(values=c("#D66982","#B9C184"),name="Diet")+
+  scale_fill_manual(values=c("#D66982","#B9C184"),name="Diet")+
+  theme_cowplot()
+  #facet_wrap(Sample_type~Food_type.x,scales="free")
+gg.fit.bio.rich
+
+gg.fit.bio.simp <- ggplot(df.div.exp.meso,aes(x=InvSimpson,y=Biomass_day40,color=Food_type.x,shape=Microbe_treatment.x))+
+  geom_smooth(aes(group=Food_type.x,linetype=Food_type.x,fill=Food_type.x),method="lm")+
+  geom_point(size=2)+
+  scale_shape_manual(values=c(4,3,5,9,8),name="Microbes",labels=c("LAB","MOS","ENV","MOS+ENV","MOS+ENV+LAB"))+
+  scale_linetype_manual(name="Diet",values=c("solid","longdash"))+
+  facet_wrap(~Sample_type,scales="free")+
+  xlab("Simpson's (inv.)")+
+  ylab("Pupae sum (mg)")+
+  scale_color_manual(values=c("#D66982","#B9C184"),name="Diet")+
+  scale_fill_manual(values=c("#D66982","#B9C184"),name="Diet")+
+  theme_cowplot()
+  #facet_wrap(Sample_type~Food_type.x,scales="free")
+gg.fit.bio.simp
+
+ggarrange(gg.fit.bio.rich,gg.fit.bio.simp,labels=c("(a)","(b)"),nrow=2,common.legend=T,legend="right")
+
+#ggsave("alpha.fitness.biomass.pdf",height=5,width=6)
+```
+
+# Getting unique ASV richness per mesocosm
+
+So totaling the number of ASVs present in both the water and the larvae, but only counting the ones that are shared once...
+
+```{r}
+library("dplyr")
+
+melt <- psmelt(ps.clean)
+meso.list <- unique(melt$Mesocosm_id)
+df.meso.rich <- c()
+
+for (meso.id in 1:length(meso.list)){
+  Mesocosm_id <- meso.list[meso.id]
+  relevant.meso <- melt[melt$Mesocosm_id==Mesocosm_id,]
+  relevant.meso.no0 <- relevant.meso[relevant.meso$Abundance>0,]
+  unique.meso.otus <- unique(relevant.meso.no0$OTU)
+  richness.unique <- length(unique.meso.otus)
+  df.meso.rich <- rbind(df.meso.rich,data.frame(Mesocosm_id,richness.unique))
+}
+
+##adding more metadata
+samdf <- data.frame(ps.clean@sam_data)
+
+samdf.meso.rich <- inner_join(df.meso.rich,samdf,multiple="first")
+
+#write.csv(df.meso.rich,file="bamboomesos_mesocosm.unique.richness.csv")
+
+##double checking 
+# bfood <- subset(melt,Mesocosm_id=="B_food")
+# bfood.no0 <- bfood[bfood$Abundance>0,]
+# unique(bfood.no0$OTU)
+
+samdf.meso.rich$Biomass_day40[is.na(samdf.meso.rich$Biomass_day40)] <- 0
+
+samdf.meso.rich.exp1 <- subset(samdf.meso.rich,Mesocosm_type=="Experiment")
+samdf.meso.rich.exp <- subset(samdf.meso.rich.exp1,Microbe_treatment!="AHK")
+
+str(samdf.meso.rich.exp)
+
+samdf.meso.rich.exp$Microbe_treatment <- factor(samdf.meso.rich.exp$Microbe_treatment,levels=c("ECO","MMO","EMO","MEM","ALL"))
+samdf.meso.rich.exp$Food_type <- factor(samdf.meso.rich.exp$Food_type,levels=c("Larval food","Bamboo"))
+
+#samdf.meso.rich.exp$
+
+##basic plot
+ggplot(samdf.meso.rich.exp,aes(x=richness.unique,y=Biomass_day40,color=Food_type,shape=Microbe_treatment,group=Food_type))+
+  geom_smooth(aes(group=Food_type,linetype=Food_type,fill=Food_type),method="lm")+
+  geom_point(size=2)+
+  scale_shape_manual(values=c(4,3,5,9,8),name="Microorganisms",labels=c("Lab","Mosquito (Mos.)","Environment (Env.)","Mos.+Env.","Mos.+Env.+Lab"))+
+  scale_linetype_manual(name="Diet",values=c("solid","longdash"),labels=c("Standard","Bamboo"))+
+  #facet_wrap(~Sample_type,scales="free")+
+  xlab("ASV richness per mesocosm")+
+  ylab("Pupae sum (mg)")+
+  scale_color_manual(values=c("#D66982","#B9C184"),name="Diet",labels=c("Standard","Bamboo"))+
+  scale_fill_manual(values=c("#D66982","#B9C184"),name="Diet",labels=c("Standard","Bamboo"))+
+  theme_cowplot()+
+  theme(legend.key.width = unit(2, "line"))+
+  annotate("text", x=110, y=18, label = expression(italic(P)[italic(diet):italic(richness)]~"< 0.05*"))
+
+#ggsave("rich.biomass.correlation.pdf",width=5,height=3)
+ggsave("rich.biomass.correlation.png",width=5,height=3)
+
+```
+
+## Simple mixed mod stats
+
+```{r}
+library("ggeffects")
+
+#pupae.weights <- read.csv("../raw_data/bamboomesos_pupaeweights.csv")
+
+#join(samdf.meso.rich, pupae.weights)
+
+summary(tweediefit.simple <- glmmTMB(Biomass_day40~Food_type*scale(richness.unique)+(1|Microbe_treatment), data=samdf.meso.rich.exp, family=tweedie()))
+Anova(tweediefit.simple)
+
+summary(tweediefit.simple.noint <- glmmTMB(Biomass_day40~Food_type+scale(richness.unique)+(1|Microbe_treatment), data=samdf.meso.rich.exp, family=tweedie()))
+
+anova(tweediefit.simple,tweediefit.simple.noint)
+
+##plotting
+str(tweediefit.simple)
+predict <- ggpredict(tweediefit.simple, terms=c("richness.unique[all]","Food_type"), type="re")
+ggplot(predict,aes(x=x,y=predicted,color=group))+
+  geom_line()+
+  #geom_smooth()+
+  xlab("ASV richness")+
+  theme_cowplot()+
+  ylab("Predicted biomass")
+  #geom_errorbar(aes(ymin=predicted-std.error,ymax=predicted+std.error))+
+
++
+  scale_color_gradientn(colors=hcl.colors(20,"Sunset"))+
+  theme_cowplot()
+```
+
+# Richness x biomass
+
+## Using unique richness per mesocosm
+
+```{r}
+pupae.weights <- read.csv("../raw_data/bamboomesos_pupaeweights.csv")
+
+aggregate(Dry_weightAVG~Exp_day+Mesocosm_id, data=pupae.weights, FUN=sum)
+
+biomass <- with(merge(expand.grid(Exp_day=8:40,Mesocosm_id=c(unique(pupae.weights$Mesocosm_id)), value=0), pupae.weights, all=TRUE), 
+              aggregate(Dry_weightAVG, by=(list(Exp_day, Mesocosm_id)), FUN=sum))
+biomass[is.na(biomass)] <- 0
+
+colnames(biomass) <- c("day","Mesocosm_id","biomass")
+
+biomass.rich1 <- plyr::join(biomass,samdf.meso.rich,by="Mesocosm_id")
+biomass.rich2 <- subset(biomass.rich1,Mesocosm_type=="Experiment")
+biomass.rich3 <- subset(biomass.rich2,Microbe_treatment!="AHK")
+biomass.rich <- subset(biomass.rich3,Exp_day!=20)
+
+summary(tweediefit1 <- glmmTMB(biomass~Food_type*scale(richness.unique)*scale(day)+Food_type*scale(richness.unique)*scale(I(day^2))+(1|Microbe_treatment)+(1|Mesocosm_id), data=biomass.rich, family=tweedie()))
+#Anova(tweediefit1)
+
+summary(tweediefit2 <- glmmTMB(biomass~Food_type*scale(richness.unique)+Food_type*scale(day)+Food_type*scale(I(day^2))+scale(richness.unique)*scale(day)+scale(richness.unique)*scale(I(day^2))+(1|Microbe_treatment)+(1|Mesocosm_id), data=biomass.rich, family=tweedie()))
+
+anova(tweediefit1,tweediefit2)
+
+#visualize model
+library("ggeffects")
+predict <- ggpredict(tweediefit1, terms=c("Food_type", "richness.unique[all]", "day[all]"), type="re")
+ggplot(predict,aes(x=facet,y=sqrt(predicted),group=interaction(x,group),color=as.numeric(group),linetype=x))+
+  geom_line()+
+  scale_color_gradientn(colors=hcl.colors(20,"Sunset"))+
+  theme_cowplot()
+
+
+# predict <- ggpredict(tweediefit1, terms=c("Food_type","richness.unique","day[all]"), type="re")
+# ggplot(predict,aes(x=facet,y=sqrt(predicted)))
+# #predictbamboo <- subset(predict, group=="Bamboo")
+# ggplot(predict, aes(x=facet, y=sqrt(predicted), group=factor(group),color=x))+
+#   geom_line() 
+# 
+# predictlarval<-subset(predict, group=="Larval")
+# ggplot(predictlarval, aes(x=facet, y=sqrt(predicted), group=x)) + geom_line(aes(color=)) 
+# 
+
+```
+
+## Water by itself
+
+```{r}
+biomass.rich1 <- join(biomass,df.div.exp,by="Mesocosm_id")
+biomass.rich2 <- subset(biomass.rich1,Mesocosm_type=="Experiment")
+biomass.rich3 <- subset(biomass.rich2,Microbe_treatment!="AHK")
+biomass.rich4 <- subset(biomass.rich3,Exp_day!=20)
+biomass.rich.water <- subset(biomass.rich4,Sample_type=="Water")
+
+##without scale
+summary(tweediefit1.water <- glmmTMB(biomass~Food_type*Observed*scale(day)+Food_type*Observed*scale(I(day^2))+(1|Mesocosm_id), data=biomass.rich.water, family=tweedie()))
+#Anova(tweediefit1)
+
+summary(tweediefit2.water <- glmmTMB(biomass~Food_type*Observed+Food_type*scale(day)+Food_type*scale(I(day^2))+Observed*scale(day)+Observed*scale(I(day^2))+(1|Mesocosm_id), data=biomass.rich.water, family=tweedie()))
+
+anova(tweediefit1,tweediefit2)
+
+##with scale
+summary(tweediefit1.water <- glmmTMB(biomass~Food_type*scale(Observed)*scale(day)+Food_type*scale(Observed)*scale(I(day^2))+(1|Microbe_treatment)+(1|Mesocosm_id), data=biomass.rich.water, family=tweedie()))
+#Anova(tweediefit1)
+
+summary(tweediefit2.water <- glmmTMB(biomass~Food_type*scale(Observed)+Food_type*scale(day)+Food_type*scale(I(day^2))+scale(Observed)*scale(day)+scale(Observed)*scale(I(day^2))+(1|Microbe_treatment)+(1|Mesocosm_id), data=biomass.rich.water, family=tweedie()))
+
+anova(tweediefit1,tweediefit2)
+```
+
+## Larvae by themselves
+
+A few low-read samples are lost during rarefaction that may be messing with the stats, seeing what their richness values are here
+
+```{r}
+setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Summer2023_REU/Bamboo_mesos/02.diversity")
+
+ps.clean <- readRDS("../01.process_asvs/bamboomesos_ps.lulu.clean.decontam.rds")
+ps.clean ##163 samples - 7 lost
+
+ps.lost1 <- prune_samples(sample_sums(ps.clean)<10999,ps.clean)
+ps.lost <- prune_taxa(taxa_sums(ps.lost1)>0,ps.lost1)
+ps.lost@otu_table
+samples.lost <- row.names(ps.lost@sam_data)
+##going to retain their individual richness values below
+
+df.lost <- data.frame(estimate_richness(ps.lost, split=TRUE, measures=c("Shannon","InvSimpson","Observed")))
+
+df.lost$Short_label <- rownames(df.lost)
+
+df.lost.div <- merge(df.lost,samdf,by="Short_label") #add sample data
+df.lost.div
+```
+
+```{r}
+biomass.rich.larv <- subset(biomass.rich4,Sample_type=="Larvae")
+
+summary(tweediefit1.larv <- glmmTMB(biomass~Food_type*Observed*scale(day)+Food_type*Observed*scale(I(day^2))+(1|Microbe_treatment)+(1|Mesocosm_id), data=biomass.rich.larv, family=tweedie()))
+#Anova(tweediefit1)
+
+summary(tweediefit2.larv <- glmmTMB(biomass~Food_type*scale(richness.unique)+Food_type*scale(day)+Food_type*scale(I(day^2))+scale(richness.unique)*scale(day)+scale(richness.unique)*scale(I(day^2))+(1|Microbe_treatment)+(1|Mesocosm_id), data=biomass.rich, family=tweedie()))
+
+anova(tweediefit1,tweediefit2)
+
+#visualize model
+library("ggeffects")
+predict <- ggpredict(tweediefit1, terms=c("Food_type", "richness.unique[all]", "day[all]"), type="re")
+ggplot(predict,aes(x=facet,y=sqrt(predicted),group=interaction(x,group),color=as.numeric(group),linetype=x))+
+  geom_line()+
+  scale_color_gradientn(colors=hcl.colors(20,"Sunset"))+
+  theme_cowplot()
+```
+
+## Richness stats
+
+```{r}
+df.div.exp.meso.water <- subset(df.div.exp.meso,Sample_type=="Water")
+
+summary(tweediefit1 <- glmmTMB(Biomass_day40~Food_type.x*Observed+(1|Microbe_treatment.x), data=df.div.exp.meso.water, family=tweedie()))
+#Anova(tweediefit1)
+
+df.div.exp.meso.larv <- subset(df.div.exp.meso,Sample_type=="Larvae")
+
+summary(tweediefit1 <- glmmTMB(Biomass_day40~Food_type.x*Observed+(1|Microbe_treatment.x), data=df.div.exp.meso.larv, family=tweedie()))
+Anova(tweediefit1)
+
+summary(tweediefit1 <- glmmTMB(Biomass_day40~Food_type.x*Observed+(1|Microbe_treatment.x)+(1|Mesocosm_id), data=df.div.exp.meso.water, family=tweedie()))
+Anova(tweediefit1)
+
+summary(tweediefit1 <- glmmTMB(Biomass_day40~Food_type.x*Observed+(1|Microbe_treatment.x), data=df.div.exp.meso, family=tweedie()))
+
+##unique richness values 
+#biomass.rich.d40 <- join(biomass.rich,df.div.exp.meso)
+biomass.rich.meso1 <- join(samdf.meso.rich,df.div.exp.meso)
+str(biomass.rich.meso1)
+biomass.rich.meso2 <- subset(biomass.rich.meso1,Mesocosm_type=="Experiment")
+biomass.rich.meso <- subset(biomass.rich.meso2,Microbe_treatment!="AHK")
+str(biomass.rich.meso)
+str(biomass.rich.meso)
+#biomass.rich.meso$Biomass_day40[is.na(biomass.rich.meso$Biomass_day40)] <- 0
+#biomass.rich.meso[is.na(biomass.rich.meso]
+
+##more simple version
+summary(tweediefit.simple <- glmmTMB(Biomass_day40~Food_type*scale(richness.unique)+(1|Microbe_treatment), data=biomass.rich.meso, family=tweedie()))
+Anova(tweediefit.simple)
+
+summary(tweediefit.simple.noint <- glmmTMB(Biomass_day40~Food_type+scale(richness.unique)+(1|Microbe_treatment), data=biomass.rich.meso, family=tweedie()))
+
+anova(tweediefit.simple,tweediefit.simple.noint)
+
+##plotting
+str(tweediefit.simple)
+predict <- ggpredict(tweediefit.simple, terms=c("richness.unique[all]","Food_type"), type="re")
+ggplot(predict,aes(x=x,y=predicted,color=group))+
+  geom_line()+
+  #geom_smooth()+
+  xlab("ASV richness")+
+  theme_cowplot()
+  #ylab("Predicted")
+  #geom_errorbar(aes(ymin=predicted-std.error,ymax=predicted+std.error))+
+
++
+  scale_color_gradientn(colors=hcl.colors(20,"Sunset"))+
+  theme_cowplot()
+
+biomass.rich.meso.lf <- subset(biomass.rich.meso,Food_type=="Larval food")
+ggplot(biomass.rich.meso,aes(x=richness.unique,y=Biomass_day40,color=Food_type))+
+  geom_point()+
+  geom_smooth()
+
+##quadratic?
+summary(tweediefit.quad <- glmmTMB(Biomass_day40~Food_type*scale(richness.unique)+Food_type*scale(I(richness.unique^2))+(1|Microbe_treatment), data=biomass.rich, family=tweedie()))
+
+summary(tweediefit1.larv <- glmmTMB(biomass~Food_type*Observed*scale(day)+Food_type*Observed*scale(I(day^2))+(1|Microbe_treatment)+(1|Mesocosm_id), data=biomass.rich.larv, family=tweedie()))
+
+
+summary(tweediefit.simple <- glmmTMB(Biomass_day40~Food_type*scale(richness.unique)+(1|Microbe_treatment), data=biomass.rich.meso, family=tweedie()))
+
+
+##stats
+df.div.lar <- subset(df.div.exp.meso,Sample_type=="Larvae")
+df.div.wtr <- subset(df.div.exp.meso,Sample_type=="Water")
+
+##larvae
+shapiro.test(df.div.lar$Observed)
+
+a.lar.pup <- aov(Proportion_pupated~Observed*Food_type.x,data=df.div.lar)
+summary(a.lar.pup)
+
+##water
+shapiro.test(df.div.wtr$Observed)
+
+a.wtr.pup <- aov(Proportion_pupated~Observed*Food_type.x,data=df.div.wtr)
+summary(a.wtr.pup)
+
+# library("bestNormalize")
+# bestNormalize(df.div.lar$Proportion_pupated)
+# df.div.lar$pup.cs <- center_scale(df.div.lar$Proportion_pupated)$x
+# df.div.lar$pup.cs <- log(df.div.lar$Proportion_pupated)
+
+##mixed mods
+#df.div.lar$Proportion_pupated.scale <- scale(df.div.lar$Proportion_pupated, center = TRUE, scale = TRUE)
+
+mod.obs.wtr <- lmer(Proportion_pupated ~ Observed+Food_type.x+Observed:Food_type.x+(1|Microbe_treatment.x),data=df.div.wtr)
+
+summary(mod.obs.wtr)
+Anova(mod.obs.wtr)
+
+##larvae full mod - biomass
+mod.obs.lar <- lmer(Biomass_day40 ~ Observed+Food_type.x+Observed:Food_type.x+(1|Microbe_treatment.x),data=df.div.lar)
+
+summary(mod.obs.lar)
+Anova(mod.obs.lar)
+
+mod.obs.lar.noint <- lmer(Biomass_day40 ~ Observed+Food_type.x+(1|Microbe_treatment.x),data=df.div.lar)
+#summary(mod.obs.lar)
+anova(mod.obs.lar,mod.obs.lar.noint) #sig 0.05*
+
+##larvae full mod - pupation
+mod.obs.lar <- lmer(Proportion_pupated ~ Observed+Food_type.x+Observed:Food_type.x+(1|Microbe_treatment.x),data=df.div.lar)
+
+summary(mod.obs.lar)
+Anova(mod.obs.lar)
+
+mod.obs.lar.noint <- lmer(Proportion_pupated ~ Observed+Food_type.x+(1|Microbe_treatment.x),data=df.div.lar)
+#summary(mod.obs.lar)
+anova(mod.obs.lar,mod.obs.lar.noint) #sig**
+
+##water full mod - biomass
+mod.obs.wtr <- lmer(Biomass_day40 ~ Observed+Food_type.x+Observed:Food_type.x+(1|Microbe_treatment.x),data=df.div.wtr)
+
+summary(mod.obs.wtr)
+Anova(mod.obs.wtr)
+
+mod.obs.wtr.noint <- lmer(Biomass_day40 ~ Observed+Food_type.x+(1|Microbe_treatment.x),data=df.div.wtr)
+#summary(mod.obs.wtr)
+anova(mod.obs.wtr,mod.obs.wtr.noint) #sig 0.05*
+
+##water full mod - pupation
+mod.obs.wtr <- lmer(Proportion_pupated ~ Observed+Food_type.x+Observed:Food_type.x+(1|Microbe_treatment.x),data=df.div.wtr)
+
+summary(mod.obs.wtr)
+Anova(mod.obs.wtr)
+
+mod.obs.wtr.noint <- lmer(Proportion_pupated ~ Observed+Food_type.x+(1|Microbe_treatment.x),data=df.div.wtr)
+#summary(mod.obs.wtr)
+anova(mod.obs.wtr,mod.obs.wtr.noint) #sig**
+
+##reduced mod
+mod.obs.lar.red <- lmer(Biomass_day40 ~ Food_type.x+Observed:Food_type.x+(1|Microbe_treatment.x),data=df.div.lar)
+summary(mod.obs.lar.red)
+
+plot(mod.obs.lar.red)
+qqnorm(resid(mod.obs.lar.red))
+qqline(resid(mod.obs.lar.red))
+mod.obs.lar.red.resid <- simulateResiduals(fittedModel = mod.obs.lar.red, plot = T)
+shapiro.test(resid(mod.obs.lar.red.resid))
+
+ggplot(df.div.lar, aes(x = Observed, y = Biomass_day40, colour = Microbe_treatment.x)) +
+      facet_wrap(~Food_type.x) +   # a panel for each mountain range
+      geom_point(alpha = 0.5) +
+      theme_classic() +
+      geom_line(data = cbind(df.div.lar, pred = predict(mod.obs.lar.red)), aes(y = pred), size = 1) +  # adding predicted line from mixed model 
+      theme(legend.position = "none",
+      panel.spacing = unit(2, "lines"))  # adding space between panels
+
+
+```
+
+### Simpson's
+
+```{r}
+ggplot(df.div.exp.meso,aes(x=InvSimpson,y=Biomass_day40))+
+  geom_point()+
+  facet_wrap(~Food_type.x,scales="free")
+
+ggplot(df.div.exp.meso,aes(x=InvSimpson,y=Proportion_pupated,color=Food_type.x))+
+  geom_point()+
+  geom_smooth(method="lm",se=F)+
+  facet_wrap(~Sample_type,scales="free")
+  #facet_wrap(Sample_type~Food_type.x,scales="free")
+
+ggplot(df.div.exp.meso,aes(x=InvSimpson,y=Biomass_day40,color=Food_type.x))+
+  geom_point()+
+  geom_smooth(method="lm",se=F)+
+  facet_wrap(~Sample_type,scales="free")
+
+##dots & error bars
+gg.simp <- ggplot(df.div.exp,aes(x=infusion,y=InvSimpson,fill=inf.temp,shape=inf.temp))+
+  geom_jitter(alpha=0.5,position=position_jitterdodge(jitter.width=0.2),color="gray")+
+  geom_errorbar(data=df.div.exp.se,aes(ymax=InvSimpson+se,ymin=InvSimpson-se),width=0.2,color="black",position=position_dodge(width=0.6))+
+  geom_point(data=df.div.exp.se,size=2.5,position=position_dodge(width=0.6))+
+  #geom_boxplot(outlier.shape=NA,alpha=0.5)+
+  facet_wrap(~type)+
+  theme_cowplot()+
+  ylab("Simpson's (inv.)")+
+  xlab("Infusion")+
+  scale_x_discrete(labels=c("OL","SG","PW"))+
+  scale_fill_manual(values=c("#B5D69F","#7DBA54","#C488A2","#992559","#B6F6EE","#60eede"),name="Infusion, temp.",labels=c("OL_cool","OL_warm","SG_cool","SG_warm","PW_cool","PW_warm"))+
+  scale_shape_manual(values=c(22,24,22,24,22,24),name="Infusion, temp.",labels=c("OL_cool","OL_warm","SG_cool","SG_warm","PW_cool","PW_warm"))
+gg.simp
+
+gg.mw.simp.time <- ggplot(df.div.water,aes(x=infusion,y=InvSimpson,fill=inf.temp))+
+  geom_boxplot()+
+  #geom_jitter(alpha=0.5,position=position_jitterdodge(jitter.width=0.2),color="gray")+
+  #geom_errorbar(data=df.div.exp.se,aes(ymax=Observed+se,ymin=Observed-se),width=0.2,color="black",position=position_dodge(width=0.6))+
+  #geom_point(data=df.div.exp.se,size=2.5,position=position_dodge(width=0.6))+
+  #geom_boxplot(outlier.shape=NA,alpha=0.5)+
+  facet_wrap(~day)+
+  theme_cowplot()+
+  ylab("Simpson's index (inv.)")+
+  xlab("Infusion")+
+  scale_x_discrete(labels=c("OL","SG","PW"))+
+  scale_fill_manual(values=c("#B5D69F","#7DBA54","#C488A2","#992559","#B6F6EE","#60eede"),name="Infusion, temp.",labels=c("OL_cool","OL_warm","SG_cool","SG_warm","PW_cool","PW_warm"))+
+  ggtitle("Mesocosm water")
+```
+
+### Multi-panel (Figure 2)
+
+```{r}
+ggarrange(gg.rich,gg.simp,common.legend=T,legend="right")
+
+##just water things
+ggarrange(gg.mw.rich.time,gg.mw.simp.time,common.legend=T,legend="right",nrow=2)
+
+#ggsave("div.water.time.png",width=6,height=6)
+```
+
+## Statz
+
+### Richness{.tabset}
+
+#### Water richness stats
+
+```{r}
+df.div.mw <- subset(df.div.exp,type=="Meso. water")
+
+df.div.mw$day <- as.factor(df.div.mw$day)
+str(df.div.mw)
+
+#hist(df.div.mw$Observed)
+#shapiro.test(log(df.div.mw$Observed))
+shapiro.test(df.div.mw$Observed)
+
+#wrich1<-glmmTMB(Observed~day+temperature+infusion+dispersal+offset(log(lib_size_trim))+(1|mesocosm),family="poisson",data=df.div.mw)
+#wrich2<-glmmTMB(Observed~day+temperature+infusion+dispersal+offset(log(lib_size_trim))+(1|mesocosm),family="compois",data=df.div.mw)
+wrich3<-glmmTMB(Observed~day+temperature+infusion+dispersal+offset(log(lib_size_trim))+(1|mesocosm),data=df.div.mw)
+
+#AICtab(wrich1,wrich2,wrich3)
+
+##full model
+wrich1<-glmmTMB(Observed~day+temperature+infusion+dispersal+offset(log(lib_size_trim))+(1|mesocosm),data=df.div.mw)
+##no dispersal
+wrich1nd<-glmmTMB(Observed~day+temperature+infusion+offset(log(lib_size_trim))+(1|mesocosm), data=df.div.mw)
+##minus infusion
+wrich1ni<-glmmTMB(Observed~day+temperature+dispersal+offset(log(lib_size_trim))+(1|mesocosm), data=df.div.mw)
+##minus temperature 
+wrich1nt<-glmmTMB(Observed~day+infusion+dispersal+offset(log(lib_size_trim))+(1|mesocosm), data=df.div.mw)
+##minus time 
+wrich1nnd<-glmmTMB(Observed~temperature+infusion+dispersal+offset(log(lib_size_trim))+(1|mesocosm), data=df.div.mw)
+
+Anova(wrich1)
+# Response: Observed
+#                Chisq Df Pr(>Chisq)    
+# day          13.2024  2   0.001359 ** 
+# temperature   0.6742  1   0.411599    
+# infusion    152.9448  2  < 2.2e-16 ***
+# dispersal     0.7326  1   0.392033    
+# ---
+# Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+AICtab(wrich1,wrich1nd,wrich1ni,wrich1nt,wrich1nnd) #no temp best... almost tied with no dispersal, then full
+
+##interaction?
+wrich1.allint <- glmmTMB(Observed~day*temperature*infusion+offset(log(lib_size_trim))+(1|mesocosm),data=df.div.mw)
+wrich1.allint1 <- glmmTMB(Observed~day*temperature+infusion+offset(log(lib_size_trim))+(1|mesocosm),data=df.div.mw)
+wrich1.allint2 <- glmmTMB(Observed~day+temperature*infusion+offset(log(lib_size_trim))+(1|mesocosm),data=df.div.mw)
+wrich1.allint3 <- glmmTMB(Observed~day*infusion+temperature+dispersal+offset(log(lib_size_trim))+(1|mesocosm),data=df.div.mw) #second lowest AIC
+wrich1.intred <- glmmTMB(Observed~day*infusion+offset(log(lib_size_trim))+(1|mesocosm), data=df.div.mw) #lowest AIC
+wrich1.noint1 <- glmmTMB(Observed~day+infusion+offset(log(lib_size_trim))+(1|mesocosm), data=df.div.mw)
+wrich1.noint2 <- glmmTMB(Observed~day+infusion+temperature+offset(log(lib_size_trim))+(1|mesocosm), data=df.div.mw)
+
+AICtab(wrich1.allint,wrich1.allint1,wrich1.allint2,wrich1.allint3,wrich1.intred,wrich1.noint1,wrich1.noint2)
+
+#anova(wrich1.int,wrich1.full) #sig 0.001
+Anova(wrich1.allint)
+# Analysis of Deviance Table (Type II Wald chisquare tests)
+# 
+# Response: Observed
+#                             Chisq Df Pr(>Chisq)    
+# day                       18.6821  2  8.775e-05 ***
+# temperature                0.8238  1     0.3641    
+# infusion                 180.0249  2  < 2.2e-16 ***
+# day:temperature            2.3143  2     0.3144    
+# day:infusion              62.0786  4  1.060e-12 ***
+# temperature:infusion       4.1335  2     0.1266    
+# day:temperature:infusion   5.5591  4     0.2346    
+# ---
+# Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Anova(wrich1.intred) #all 0.001, no temperature included
+Anova(wrich1.allint3) #all 0.001, except temp is 0.3796
+
+#tapply(df.div.mw$log(Observed), df.div.mw$infusion, mean)
+#tapply(df.div.mw$log(Observed), df.div.mw$day, mean)
+
+##model checking
+shapiro.test(residuals(wrich1.intred)) #awesome
+qqnorm(residuals(wrich1.intred))
+qqline(residuals(wrich1.intred), col="red")
+
+#plotResiduals(wrich1.int)
+wrich1.intred.resid <- simulateResiduals(fittedModel = wrich1.intred, plot = T)
+
+#plot(wrich1.int.resid)
+plotResiduals(wrich1.intred.resid, form = df.div.mw$infusion)
+plotResiduals(wrich1.intred.resid, form = df.div.mw$day)
+
+##posthoc things
+##just without dispersal because not plotting it
+##also not plotting day but it should be in the model somewhere already
+wrich1.allint3.em <- emmeans(wrich1.allint3,~infusion*temperature)
+
+multcomp::cld(wrich1.allint3.em)
+ # infusion temperature emmean    SE  df lower.CL upper.CL .group
+ # SW       C             19.1 0.352 199     18.4     19.8  1    
+ # SW       H             19.4 0.355 199     18.7     20.1  1    
+ # SG       C             21.2 0.356 199     20.5     21.9   2   
+ # SG       H             21.5 0.358 199     20.8     22.2   2   
+ # OL       C             24.7 0.352 199     24.0     25.4    3  
+ # OL       H             25.0 0.355 199     24.3     25.7    3  
+```
+
+#### Water richness stats - rarefied
+
+Same as above but without offset for library size
+
+```{r}
+df.div.mw <- subset(df.div.exp,type=="Meso. water")
+
+df.div.mw$day <- as.factor(df.div.mw$day)
+str(df.div.mw)
+
+#hist(df.div.mw$Observed)
+#shapiro.test(log(df.div.mw$Observed))
+shapiro.test(df.div.mw$Observed)
+
+#wrich1<-glmmTMB(Observed~day+temperature+infusion+dispersal+offset(log(lib_size_trim))+(1|mesocosm),family="poisson",data=df.div.mw)
+#wrich2<-glmmTMB(Observed~day+temperature+infusion+dispersal+offset(log(lib_size_trim))+(1|mesocosm),family="compois",data=df.div.mw)
+wrich3<-glmmTMB(Observed~day+temperature+infusion+dispersal+(1|mesocosm),data=df.div.mw)
+
+#AICtab(wrich1,wrich2,wrich3)
+
+##full model
+wrich1<-glmmTMB(Observed~day+temperature+infusion+dispersal+(1|mesocosm),data=df.div.mw)
+##no dispersal
+wrich1nd<-glmmTMB(Observed~day+temperature+infusion+(1|mesocosm), data=df.div.mw)
+##minus infusion
+wrich1ni<-glmmTMB(Observed~day+temperature+dispersal+(1|mesocosm), data=df.div.mw)
+##minus temperature 
+wrich1nt<-glmmTMB(Observed~day+infusion+dispersal+(1|mesocosm), data=df.div.mw)
+##minus time 
+wrich1nnd<-glmmTMB(Observed~temperature+infusion+dispersal+(1|mesocosm), data=df.div.mw)
+
+Anova(wrich1)
+# Analysis of Deviance Table (Type II Wald chisquare tests)
+# 
+# Response: Observed
+#                Chisq Df Pr(>Chisq)    
+# day          10.2547  2   0.005932 ** 
+# temperature   0.5020  1   0.478604    
+# infusion    133.7700  2  < 2.2e-16 ***
+# dispersal     0.5322  1   0.465695    
+# ---
+# Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+##same p-values as not rarefied
+
+AICtab(wrich1,wrich1nd,wrich1ni,wrich1nt,wrich1nnd) #no temp best... tied with no dispersal, then full
+
+##interaction?
+wrich1.allint <- glmmTMB(Observed~day*temperature*infusion+(1|mesocosm),data=df.div.mw)
+wrich1.allint1 <- glmmTMB(Observed~day*temperature+infusion+(1|mesocosm),data=df.div.mw)
+wrich1.allint2 <- glmmTMB(Observed~day+temperature*infusion+(1|mesocosm),data=df.div.mw)
+wrich1.allint3 <- glmmTMB(Observed~day*infusion+temperature+dispersal+(1|mesocosm),data=df.div.mw) #second lowest AIC
+wrich1.intred <- glmmTMB(Observed~day*infusion+(1|mesocosm), data=df.div.mw) #lowest AIC
+wrich1.noint1 <- glmmTMB(Observed~day+infusion+(1|mesocosm), data=df.div.mw)
+wrich1.noint2 <- glmmTMB(Observed~day+infusion+temperature+(1|mesocosm), data=df.div.mw)
+
+AICtab(wrich1.allint,wrich1.allint1,wrich1.allint2,wrich1.allint3,wrich1.intred,wrich1.noint1,wrich1.noint2) #intred best, same as not rarfied
+
+#anova(wrich1.int,wrich1.full) #sig 0.001
+Anova(wrich1.allint)
+# Analysis of Deviance Table (Type II Wald chisquare tests)
+# 
+# Response: Observed
+#                             Chisq Df Pr(>Chisq)    
+# day                       14.7390  2  0.0006302 ***
+# temperature                0.6319  1  0.4266476    
+# infusion                 164.6677  2  < 2.2e-16 ***
+# day:temperature            2.1143  2  0.3474442    
+# day:infusion              68.9507  4   3.78e-14 ***
+# temperature:infusion       4.6235  2  0.0990855 .  
+# day:temperature:infusion   6.1549  4  0.1878773    
+# ---
+# Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Anova(wrich1.intred) #all 0.001, no temperature included
+Anova(wrich1.allint3) #all 0.001, except temp is 0.44
+
+#tapply(df.div.mw$log(Observed), df.div.mw$infusion, mean)
+#tapply(df.div.mw$log(Observed), df.div.mw$day, mean)
+
+##model checking
+shapiro.test(residuals(wrich1.intred)) #awesome
+qqnorm(residuals(wrich1.intred))
+qqline(residuals(wrich1.intred), col="red")
+
+#plotResiduals(wrich1.int)
+wrich1.intred.resid <- simulateResiduals(fittedModel = wrich1.intred, plot = T)
+
+#plot(wrich1.int.resid)
+plotResiduals(wrich1.intred.resid, form = df.div.mw$infusion)
+plotResiduals(wrich1.intred.resid, form = df.div.mw$day)
+
+##posthoc things
+##just without dispersal because not plotting it
+##also not plotting day but it should be in the model somewhere already
+wrich1.allint3.em <- emmeans(wrich1.allint3,~infusion*temperature)
+
+multcomp::cld(wrich1.allint3.em)
+ # infusion temperature emmean    SE  df lower.CL upper.CL .group
+ # SW       C             19.1 0.371 198     18.3     19.8  1    
+ # SW       H             19.4 0.373 198     18.6     20.1  12   
+ # SG       C             20.9 0.374 198     20.1     21.6   23  
+ # SG       H             21.1 0.377 198     20.4     21.9    3  
+ # OL       C             24.6 0.371 198     23.9     25.4     4 
+ # OL       H             24.9 0.373 198     24.2     25.7     4 
+```
+
+#### Mosquito richness stats
+
+```{r}
+df.div.mq <- subset(df.div.exp,type=="Mosquitoes")
+
+hist(df.div.mq$Observed)
+shapiro.test(df.div.mq$Observed)
+
+##different stat families
+mrich1 <- glmmTMB(Observed~newday+temperature+infusion+dispersal+sex+offset(log(lib_size_trim))+(1|mesocosm),data=df.div.mq)
+mrich2 <- glmmTMB(Observed~newday+temperature+infusion+dispersal+sex+offset(log(lib_size_trim))+(1|mesocosm),family="compois",data=df.div.mq)
+mrich3 <- glmmTMB(Observed~newday+temperature+infusion+dispersal+sex+offset(log(lib_size_trim))+(1|mesocosm),family="genpois",data=df.div.mq)
+mrich4 <- glmmTMB(Observed~newday+temperature+infusion+dispersal+sex+offset(log(lib_size_trim))+(1|mesocosm),family="poisson",data=df.div.mq)
+#mrich4 <- glmmTMB(Observed~newday+temperature+infusion+dispersal+sex+offset(log(lib_size_trim))+(1|mesocosm),family="nbinom1",data=df.div.mq)
+#mrich5 <- glmmTMB(Observed~newday+temperature+infusion+dispersal+sex+offset(log(lib_size_trim))+(1|mesocosm),family="nbinom2",data=df.div.mq)
+
+AICtab(mrich1,mrich2,mrich3,mrich4) #gaussian again
+
+##full model
+mrich1 <- glmmTMB(Observed~newday+temperature+infusion+dispersal+sex+offset(log(lib_size_trim))+(1|mesocosm),data=df.div.mq)
+##no dispersal 
+mrich1nd <- glmmTMB(Observed~newday+temperature+infusion+sex+offset(log(lib_size_trim))+(1|mesocosm),data=df.div.mq)
+##minus infusion 
+mrich1ni <- glmmTMB(Observed~newday+temperature+dispersal+sex+offset(log(lib_size_trim))+(1|mesocosm),data=df.div.mq)
+##minus temperature 
+mrich1nt <- glmmTMB(Observed~newday+infusion+dispersal+sex+offset(log(lib_size_trim))+(1|mesocosm),data=df.div.mq)
+##minus time 
+mrich1nnd <- glmmTMB(Observed~temperature+infusion+dispersal+sex+offset(log(lib_size_trim))+(1|mesocosm), data=df.div.mq)
+##minus sex
+mrich1ns <- glmmTMB(Observed~newday+temperature+infusion+dispersal+offset(log(lib_size_trim))+(1|mesocosm),data=df.div.mq)
+
+Anova(mrich1)
+
+shapiro.test(residuals(mrich1))
+qqnorm(residuals(mrich1))
+qqline(residuals(mrich1), col="red")
+
+mrich1.resid <- simulateResiduals(fittedModel = mrich1, plot = T) 
+
+##posthoc things
+mrich1.em <- emmeans(mrich1,~infusion*temperature)
+multcomp::cld(mrich1.em)
+##no differences
+```
+
+#### Mosquito richness stats - rarefied
+
+Same as above but without offset for library size
+
+```{r}
+df.div.mq <- subset(df.div.exp,type=="Mosquitoes")
+
+hist(df.div.mq$Observed)
+shapiro.test(df.div.mq$Observed)
+
+##different stat families
+mrich1 <- glmmTMB(Observed~newday+temperature+infusion+dispersal+sex+(1|mesocosm),data=df.div.mq)
+mrich2 <- glmmTMB(Observed~newday+temperature+infusion+dispersal+sex+(1|mesocosm),family="compois",data=df.div.mq)
+mrich3 <- glmmTMB(Observed~newday+temperature+infusion+dispersal+sex+(1|mesocosm),family="genpois",data=df.div.mq)
+mrich4 <- glmmTMB(Observed~newday+temperature+infusion+dispersal+sex+(1|mesocosm),family="poisson",data=df.div.mq)
+#mrich4 <- glmmTMB(Observed~newday+temperature+infusion+dispersal+sex+(1|mesocosm),family="nbinom1",data=df.div.mq)
+#mrich5 <- glmmTMB(Observed~newday+temperature+infusion+dispersal+sex+(1|mesocosm),family="nbinom2",data=df.div.mq)
+
+AICtab(mrich1,mrich2,mrich3,mrich4) #compois 
+
+##full model
+mrich1 <- glmmTMB(Observed~newday+temperature+infusion+dispersal+sex+(1|mesocosm),family="compois",data=df.div.mq)
+##no dispersal 
+mrich1nd <- glmmTMB(Observed~newday+temperature+infusion+sex+(1|mesocosm),family="compois",data=df.div.mq)
+##minus infusion 
+mrich1ni <- glmmTMB(Observed~newday+temperature+dispersal+sex+(1|mesocosm),family="compois",data=df.div.mq)
+##minus temperature 
+mrich1nt <- glmmTMB(Observed~newday+infusion+dispersal+sex+(1|mesocosm),family="compois",data=df.div.mq)
+##minus time 
+mrich1nnd <- glmmTMB(Observed~temperature+infusion+dispersal+sex+(1|mesocosm),family="compois", data=df.div.mq)
+##minus sex
+mrich1ns <- glmmTMB(Observed~newday+temperature+infusion+dispersal+(1|mesocosm),family="compois",data=df.div.mq)
+
+Anova(mrich1)
+
+shapiro.test(residuals(mrich1))
+qqnorm(residuals(mrich1))
+qqline(residuals(mrich1), col="red")
+
+mrich1.resid <- simulateResiduals(fittedModel = mrich1, plot = T) 
+
+##posthoc things
+mrich1.em <- emmeans(mrich1,~infusion*temperature)
+multcomp::cld(mrich1.em)
+##no differences
+```
+
+### Simpson's{.tabset}
+
+#### Water Simpson's stats
+
+```{r}
+hist(df.div.mw$InvSimpson)
+shapiro.test(df.div.mw$InvSimpson)
+
+hist(log(df.div.mw$InvSimpson))
+shapiro.test(log(df.div.mw$InvSimpson))
+
+##normalizing because residuals bad below
+bestNormalize(df.div.mw$InvSimpson) #orderNorm
+df.div.mw$simp.norm <- bestNormalize(df.div.mw$InvSimpson)$x.t
+shapiro.test(df.div.mw$simp.norm)
+
+##just replaced InvSimpson with simp.norm
+##full model
+wsimp1 <- glmmTMB(simp.norm~day+temperature+infusion+dispersal+(1|mesocosm),data=df.div.mw)
+##no dispersal
+wsimp1nd <- glmmTMB(simp.norm~day+temperature+infusion+(1|mesocosm),data=df.div.mw)
+##minus infusion
+wsimp1ni <- glmmTMB(simp.norm~day+temperature+dispersal+(1|mesocosm),data=df.div.mw)
+##minus temperature 
+wsimp1nt <- glmmTMB(simp.norm~day+infusion+dispersal+(1|mesocosm),data=df.div.mw)
+##minus time 
+wsimp1nnd <- glmmTMB(simp.norm~temperature+infusion+dispersal+(1|mesocosm),data=df.div.mw)
+
+Anova(wsimp1)
+# Analysis of Deviance Table (Type II Wald chisquare tests)
+# 
+# Response: simp.norm
+#                Chisq Df Pr(>Chisq)    
+# day          49.7901  2  1.542e-11 ***
+# temperature  41.3001  1  1.306e-10 ***
+# infusion    229.1055  2  < 2.2e-16 ***
+# dispersal     0.0091  1      0.924    
+# ---
+# Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+##~same results with normalized results
+##same results with rarefied
+
+AICtab(wsimp1,wsimp1nd,wsimp1ni,wsimp1nt,wsimp1nnd)
+##no dispersal good, then full model
+
+##interaction?
+wsimp1.int1 <- glmmTMB(simp.norm~day*infusion*temperature+(1|mesocosm), data=df.div.mw)
+wsimp1.int2 <- glmmTMB(simp.norm~day*infusion+temperature+(1|mesocosm), data=df.div.mw) #best AIC
+wsimp1.int3 <- glmmTMB(simp.norm~day+infusion*temperature+(1|mesocosm), data=df.div.mw)
+
+AICtab(wsimp1.int1,wsimp1.int2,wsimp1.int3,wsimp1nd) #int better
+#interaction with day & infusion
+
+Anova(wsimp1.int2) #all 0.001 sig level, same with rare
+# Response: simp.norm
+#                Chisq Df Pr(>Chisq)    
+# day           70.733  2  4.370e-16 ***
+# infusion     227.491  2  < 2.2e-16 ***
+# temperature   39.606  1  3.107e-10 ***
+# day:infusion  58.541  4  5.874e-12 ***
+# ---
+# Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+##all of the below was bad before normalizing
+shapiro.test(residuals(wsimp1))
+qqnorm(residuals(wsimp1))
+qqline(residuals(wsimp1), col="red")
+
+wsimp1.resid <- simulateResiduals(fittedModel = wsimp1, plot = T) 
+
+##posthoc things
+wsimp1.em <- emmeans(wsimp1,~infusion*temperature)
+multcomp::cld(wsimp1.em)
+ # infusion temperature emmean     SE  df lower.CL upper.CL .group
+ # SG       C           -1.255 0.0934 202   -1.439  -1.0708  1    
+ # SG       H           -0.656 0.0939 202   -0.841  -0.4712   2   
+ # OL       C           -0.104 0.0927 202   -0.287   0.0786    3  
+ # SW       C            0.442 0.0927 202    0.259   0.6244     4 
+ # OL       H            0.495 0.0932 202    0.311   0.6783     4 
+ # SW       H            1.040 0.0932 202    0.857   1.2240      5
+```
+
+#### Mosquito Simpson's
+
+From manuscript pre-revisions: "In contrast, the Simpson’s index, which integrates evenness into a measure of alpha diversity, of the adult mosquito microbiome was lower in male mosquitoes relative to female mosquitoes (p<0.0001). This trend was associated with the increased dominance of wAlbB in males. The Simpson’s index of the adult mosquito microbiome did not vary significantly with the dispersal, aquatic chemistry, temperature, or time of emergence."
+
+```{r}
+hist(df.div.mq$InvSimpson)
+
+df.div.mq$simp.norm <- bestNormalize(df.div.mq$InvSimpson)$x.t #orderNorm
+hist(df.div.mq$simp.norm)
+
+##full model
+msimp.all <- glmmTMB(simp.norm~newday+temperature+infusion+dispersal+sex+(1|mesocosm), data=df.div.mq)
+##without sex
+msimp.nosex <- glmmTMB(simp.norm~day+temperature+infusion+dispersal+(1|mesocosm), data=df.div.mq)
+##without dispersal
+msimp.nodis <- glmmTMB(simp.norm~newday+temperature+infusion+sex+(1|mesocosm), data=df.div.mq)
+##without infusion
+msimp.noinf <- glmmTMB(simp.norm~newday+temperature+dispersal+sex+(1|mesocosm), data=df.div.mq)
+##without temperature
+msimp.notem <- glmmTMB(simp.norm~newday+infusion+dispersal+sex+(1|mesocosm), data=df.div.mq)
+##without time
+msimp.notim <- glmmTMB(simp.norm~temperature+infusion+dispersal+sex+(1|mesocosm), data=df.div.mq)
+
+Anova(msimp.all)
+# Analysis of Deviance Table (Type II Wald chisquare tests)
+# 
+# Response: simp.norm
+#               Chisq Df Pr(>Chisq)    
+# newday       2.2911  2    0.31805    
+# temperature  0.2987  1    0.58469    
+# infusion     2.7011  2    0.25909    
+# dispersal    2.8332  1    0.09234 .  
+# sex         67.5319  1    < 2e-16 ***
+
+AICtab(msimp.all,msimp.nosex,msimp.nodis,msimp.noinf,msimp.notem,msimp.notim)
+#no time & no temp tied for best, then no infusion
+
+##all of the below was bad before normalizing
+shapiro.test(residuals(msimp.all))
+qqnorm(residuals(msimp.all))
+qqline(residuals(msimp.all), col="red")
+
+msimp.all.resid <- simulateResiduals(fittedModel = msimp.all, plot = T) 
+
+##posthoc things
+msimp.all.em <- emmeans(msimp.all,~infusion*temperature)
+multcomp::cld(msimp.all.em)
+#no diffs
+```
+
+## Infusion water things
+
+```{r}
+df.div.inf <- subset(df.div,type=="Infusion water")
+
+df.div.inf.se <- summarySE(df.div.inf,measurevar="Observed",groupvars=c("infusion"))
+df.div.inf.se
+
+# gg.iw.rich <- ggplot(df.div.inf,aes(x=infusion,y=Observed,fill=infusion))+
+#   geom_jitter(alpha=0.5,position=position_jitterdodge(jitter.width=0.2),color="gray")+
+#   geom_errorbar(data=df.div.inf.se,aes(ymax=Observed+se,ymin=Observed-se),width=0.2,color="black",position=position_dodge(width=0.6))+
+#   geom_point(data=df.div.inf.se,size=2.5,position=position_dodge(width=0.6))+
+#   #geom_boxplot(outlier.shape=NA,alpha=0.5)+
+#   theme_cowplot()+
+#   ggtitle("Infusion water")
+# gg.iw.rich
+```
+
+# Diversity correlations 
+
+## Diversity x day
+
+Doesn't look interesting
+
+```{r}
+ggplot(df.div.mq,aes(x=day,y=Observed))+
+  geom_point()+
+  geom_smooth()
+
+ggplot(df.div.mq,aes(x=day,y=InvSimpson))+
+  geom_point()+
+  geom_smooth()
+```
+
+## Diversity - mesocosm vs. mosquito
+
+```{r}
+library(reshape)
+
+meso.corr <- merge(df.div.mq,df.div.mw,by="mesocosm")
+ggplot(meso.corr,aes(x=InvSimpson.x,y=InvSimpson.y))+
+  geom_point()+
+  #facet_wrap(~day.y)+
+  geom_smooth()
+
+ggplot(meso.corr,aes(x=Observed.x,y=Observed.y))+
+  geom_point()+
+  geom_smooth()
+```
+

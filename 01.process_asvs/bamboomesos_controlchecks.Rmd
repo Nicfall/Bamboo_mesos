@@ -1,0 +1,325 @@
+---
+title: "bamboomesos_controlchecks"
+author: "NGK"
+date: "`r Sys.Date()`"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Setup
+
+```{r}
+library(MicEco)
+library("ggplot2")
+library("phyloseq")
+
+setwd("~/Library/CloudStorage/GoogleDrive-nicolagk@hawaii.edu/My Drive/Bamboo_mesos/Bamboo_mesos/01.process_asvs")
+```
+
+## Data
+
+```{r}
+##ps object with all the steps except the trimming one
+ps.clean.notrim <- readRDS("bamboomesos_ps.lulu.clean.notrim.decontam.rds")
+##ps object with the trimming
+ps.clean.trim <- readRDS("bamboomesos_ps.lulu.clean.decontam.rds")
+
+##seeing if raw reads line up with expectations
+samdf.clean.trim <- ps.clean.trim@sam_data
+
+ggplot(samdf.clean.trim,aes(x=Short_label,y=lib_size_clean,color=Microbe_treatment))+
+  geom_point()+
+  facet_wrap(~Microbe_treatment,scales="free_x")
+
+samdf.clean.trim.no20 <- subset(samdf.clean.trim,Exp_day!=20)
+
+ggplot(samdf.clean.trim.no20,aes(x=Mesocosm_treatment,y=Raw_reads,color=Microbe_treatment))+
+  geom_boxplot()
+```
+
+# Microbe stocks
+
+```{r}
+ps.stocks1 <- subset_samples(ps.clean.trim,Sample_type=="Microbe Stock")
+ps.stocks <- prune_taxa(taxa_sums(ps.stocks1)!=0,ps.stocks1)
+ps.stocks
+
+ps_venn(ps.stocks,group="Microbe_treatment",quantities=TRUE,main="ASVs per microbial stock",labels=c("LAB","ENV","MOS"),fills = list(fill = c("#7D0112", "#84D1B5","#C6A947"), alpha = 0.5))
+ps_venn(ps.stocks,group="Microbe_treatment",plot=F)
+
+#grid.draw(venn.stocks)
+
+ps.stocks.notrim1 <- subset_samples(ps.clean.notrim,Sample_type=="Microbe Stock")
+ps.stocks.notrim <- prune_taxa(taxa_sums(ps.stocks.notrim1)!=0,ps.stocks.notrim1)
+ps.stocks.notrim
+
+ps_venn(ps.stocks.notrim,group="Microbe_treatment",quantities=TRUE,main="ASVs per microbial stock",labels=c("LAB","ENV","MOS"),fills = list(fill = c("#7D0112", "#84D1B5","#C6A947"), alpha = 0.5))
+
+#grid.draw(venn.stocks.notrim)
+stocks.notrim <- ps_venn(ps.stocks.notrim,group="Microbe_treatment",quantities=TRUE,main="ASVs per microbial stock",labels=c("LAB","ENV","MOS"),fills = list(fill = c("#7D0112", "#84D1B5","#C6A947"), alpha = 0.5),plot=F)
+
+stocks.notrim[["E. coli"]]
+##2 is like in everything in the real samples & very little in the stocks, plus looks like it came from lab water :(
+envonly.untrim <- stocks.notrim[["Env. microbes"]]
+mosonly.untrim <- stocks.notrim[["Mosquito microbes"]]
+
+##saving to add info to taxa file, which I will do manually in Excel
+write.table(mosonly.untrim,"mosonly.txt", sep="\t",col.names = FALSE, row.names = FALSE,quote=F)
+write.table(envonly.untrim,"envonly.txt", sep="\t",col.names = FALSE, row.names = FALSE,quote=F)
+#envmos.untrim <- stocks.notrim
+
+plot_bar(ps.stocks.notrim)
+
+##others to check out:
+# > stocks.notrim[["E. coli__Env. microbes__Mosquito microbes"]]
+# [1] "ASV0003"  "ASV0007"
+# > stocks.notrim[["E. coli__Env. microbes"]]
+# [1] "ASV0005" "ASV0008" "ASV0009" "ASV0132"
+# > stocks.notrim[["E. coli__Mosquito microbes"]]
+# [1] "ASV0001" = definitely from E. coli
+# > stocks.notrim[["Env. microbes__Mosquito microbes"]]
+# [1] "ASV0006" "ASV0053" "ASV0136" "ASV0149" "ASV0525" "ASV0989" "ASV1146"
+```
+
+# Checking where microbes came from
+
+I looked at the ones that were trimmed <0.1% abundance before, but there are a ton that are unclear so checking less stringently which ones might be in MOS, ENV, or both
+
+```{r}
+otu.trim <- data.frame(ps.clean.trim@otu_table)
+otu.notrim <- data.frame(ps.clean.notrim@otu_table)
+
+##sample that aren't matching up between them:
+#row.names(otu.trim) %in% row.names(otu.notrim)
+what <- otu.trim[!row.names(otu.trim) %in% row.names(otu.notrim),]
+what2 <- otu.notrim[!row.names(otu.notrim) %in% row.names(otu.trim),]
+
+rowSums(what)
+rowSums(what2)
+```
+
+## Hatching flask & lab water
+
+```{r}
+##which ones are in the hatching flasks - trimmed data
+# - Hatching flask water
+# - Hatching flask L1s
+# - Lab water 
+
+ps.base1 <- subset_samples(ps.clean.trim,Mesocosm_treatment=="Hatch_flask" | Mesocosm_treatment=="Lab_water")
+
+ps.base <- prune_taxa(taxa_sums(ps.base1)!=0,ps.base1)
+ps.base
+
+plot_bar(ps.base,fill="id",x="Longer_name")+
+  facet_wrap(~Genus,scales="free")
+
+ps.base@otu_table
+##4 taxa of note to take with a grain of salt:
+##"ASV0002" "ASV0008" "ASV0018" "ASV0030" 
+#Wolbachia: "ASV0227" "ASV0274"
+
+#ASV2 = extremely convincing information that it was in the lab water - Sphingomonas
+#the hatching flask water looked very clean though... confusing
+#ASV0030 = in the hatching flask larvae??? 
+#ASV0008 = in the hatching flask larvae - but just 80 counts total... - Novosphingobium
+#ASV18 = 800+ counts in the lab water
+
+##ASV30 = E.coli
+ps.trim.asv30.1 <- subset_taxa(ps.clean.trim, id=="ASV0030")
+ps.trim.asv30 <- prune_taxa(taxa_sums(ps.trim.asv30.1)!=0,ps.trim.asv30.1)
+
+plot_bar(ps.trim.asv30,fill="id")+
+  facet_wrap(Sample_type~Microbe_treatment,scales="free")
+
+##ASV2 = sphingomonas - in the lab water?
+ps.trim.asv2.1 <- subset_taxa(ps.clean.trim, id=="ASV0002")
+ps.trim.asv2 <- prune_taxa(taxa_sums(ps.trim.asv2.1)!=0,ps.trim.asv2.1)
+
+plot_bar(ps.trim.asv2,fill="id")+
+  facet_wrap(Sample_type~Microbe_treatment,scales="free")
+
+##asv8 = sphingomonas - in the lab water?
+ps.trim.asv8.1 <- subset_taxa(ps.clean.trim, id=="ASV0008")
+ps.trim.asv8 <- prune_taxa(taxa_sums(ps.trim.asv8.1)!=0,ps.trim.asv8.1)
+
+plot_bar(ps.trim.asv8,fill="id")+
+  facet_wrap(Sample_type~Microbe_treatment,scales="free")
+
+##asv18 = sphingomonas 
+ps.trim.asv18.1 <- subset_taxa(ps.clean.trim, id=="ASV0018")
+ps.trim.asv18 <- prune_taxa(taxa_sums(ps.trim.asv18.1)!=0,ps.trim.asv18.1)
+
+plot_bar(ps.trim.asv18,fill="id")+
+  facet_wrap(Sample_type~Microbe_treatment,scales="free")
+
+##all taxa that are in the base controls
+ps.clean.basetax <- subset_taxa(ps.clean.trim, taxa_names(ps.clean.trim) %in% taxa_names(ps.base))
+
+plot_bar(ps.clean.basetax,fill="id")+
+  facet_wrap(Genus~Sample_type,scales="free")
+
+ps.clean.wolb <- subset_taxa(ps.clean,Genus=="Wolbachia")
+plot_bar(ps.clean.wolb)
+```
+
+## Additional mesocosm controls
+
+```{r}
+ps.mesocontrols1 <- subset_samples(ps.clean.trim,Microbe_treatment %in% c("None_food","None_larvae"))
+ps.mesocontrols1
+ps.mesocontrols <- prune_taxa(taxa_sums(ps.mesocontrols1)!=0,ps.mesocontrols1)
+ps.mesocontrols
+
+plot_bar(ps.mesocontrols,fill="Genus", x="Longer_name")+
+  facet_wrap(~id,scales="free")
+
+##asv49 = Amnibacterium 
+ps.trim.asv49.1 <- subset_taxa(ps.clean.trim, id=="ASV0049")
+ps.trim.asv49 <- prune_taxa(taxa_sums(ps.trim.asv49.1)!=0,ps.trim.asv49.1)
+
+plot_bar(ps.trim.asv49,fill="id")+
+  facet_wrap(Sample_type~Microbe_treatment,scales="free")
+
+##asv68 = Amnibacterium 
+ps.trim.asv68.1 <- subset_taxa(ps.clean.trim, id=="ASV0068")
+ps.trim.asv68 <- prune_taxa(taxa_sums(ps.trim.asv68.1)!=0,ps.trim.asv68.1)
+
+plot_bar(ps.trim.asv68,fill="id")+
+  facet_wrap(Sample_type~Microbe_treatment,scales="free")
+
+##asv97 = methylo 
+ps.trim.asv97.1 <- subset_taxa(ps.clean.trim, id=="ASV0097")
+ps.trim.asv97 <- prune_taxa(taxa_sums(ps.trim.asv97.1)!=0,ps.trim.asv97.1)
+
+plot_bar(ps.trim.asv97,fill="id")+
+  facet_wrap(Sample_type~Microbe_treatment,scales="free")
+
+##asv131 - spirosoma
+ps.trim.asv131.1 <- subset_taxa(ps.clean.notrim, id=="ASV0131")
+ps.trim.asv131 <- prune_taxa(taxa_sums(ps.trim.asv131.1)!=0,ps.trim.asv131.1)
+
+plot_bar(ps.trim.asv131,fill="id")+
+  facet_wrap(Sample_type~Microbe_treatment,scales="free")
+
+###same stuff as above but relative abundance
+ps.mesocontrols.rel <- transform_sample_counts(ps.mesocontrols, function(x) x / sum(x))
+
+plot_bar(ps.mesocontrols.rel,fill="id",x="Longer_name")+
+  facet_wrap(~Genus,scales="free")
+
+sample_sums(ps.mesocontrols)
+
+##how many shared with real samples
+ps.clean.trim
+ps.noctrl <- subset_samples(ps.clean.trim,!Mesocosm_type %in% c("Negative","Positive"))
+ps.noctrl
+table(ps.noctrl@sam_data$Mesocosm_type)
+
+ps_venn(ps.noctrl,group="Mesocosm_type",quantities=TRUE)
+ps_venn(ps.noctrl,group="Mesocosm_type",quantities=TRUE,plot=F)
+
+##see if we accounted for all the unclear ones overlapping with known sources:
+ps.noctrl.unc <- subset_taxa(ps.noctrl,likely_source_untrimmed=="unclear")
+ps.noctrl.unc
+
+table(ps.noctrl.unc@sam_data$Mesocosm_type)
+ps_venn(ps.noctrl.unc,group="Mesocosm_type",quantities=TRUE)
+
+table(ps.noctrl.unc@sam_data$Microbe_treatment)
+
+ps.noctrl.unc.big3 <- subset_samples(ps.noctrl.unc,Microbe_treatment %in% c("ECO","EMO","MMO") & Exp_day!=20)
+#table(ps.noctrl.unc.big3@sam_data$Exp_day)
+
+ps_venn(ps.noctrl.unc.big3,group="Microbe_treatment",quantities=TRUE)
+
+ps_venn(ps.noctrl.unc.big3,group="Microbe_treatment",quantities=TRUE,plot=F)
+
+##checking out just eco group
+ps.unc.eco1 <- subset_samples(ps.noctrl.unc,Microbe_treatment=="ECO")
+ps.unc.eco <- prune_taxa(taxa_sums(ps.unc.eco1)!=0,ps.unc.eco1)
+ps_venn(ps.unc.eco,group="Mesocosm_treatment",quantities=T)
+
+plot_bar(ps.unc.eco,fill="id",x="Longer_name")+
+  facet_wrap(~Genus,scales="free")
+
+##Massilia looks sus
+ps.asv420 <- subset_taxa(ps.clean.trim,id=="ASV0420")
+plot_bar(ps.asv420)+
+  facet_wrap(Sample_type~Microbe_treatment,scales="free")
+
+##Methylo 28 looks sus
+ps.asv28 <- subset_taxa(ps.clean.trim,id=="ASV0028")
+plot_bar(ps.asv28)+
+  facet_wrap(Sample_type~Microbe_treatment,scales="free")
+
+##Methylo 75 looks sus
+ps.asv75 <- subset_taxa(ps.clean.trim,id=="ASV0075")
+plot_bar(ps.asv75)+
+  facet_wrap(Sample_type~Microbe_treatment,scales="free")
+
+##checking out just emo & mmo group
+ps.unc.envmos1 <- subset_samples(ps.noctrl.unc,Microbe_treatment %in% c("EMO","MMO") & Exp_day!=20 & Mesocosm_type=="Experiment")
+ps.unc.envmos1
+ps.unc.envmos <- prune_taxa(taxa_sums(ps.unc.envmos1)!=0,ps.unc.envmos1)
+ps_venn(ps.unc.envmos,group="Microbe_treatment",quantities=T)
+table(ps.unc.envmos@sam_data$Mesocosm_treatment)
+
+ps_venn(ps.unc.envmos,group="Microbe_treatment",quantities=T)
+
+venn.unc.envmos <- ps_venn(ps.unc.envmos,group="Microbe_treatment",quantities=T,plot=F)
+
+ps.unc.envmos.8<- subset_taxa(ps.unc.envmos, id %in% c("ASV0037","ASV0057","ASV0060","ASV0065","ASV0125","ASV0130","ASV0176","ASV0181"))
+
+plot_bar(ps.unc.envmos.8,fill="id",x="Longer_name")+
+  facet_wrap(~Microbe_treatment,scales="free")
+
+ps.asv37 <- subset_taxa(ps.clean.trim,id=="ASV0037")
+plot_bar(ps.asv37)+
+  facet_wrap(Sample_type~Microbe_treatment,scales="free")
+
+ps.asv57 <- subset_taxa(ps.clean.trim,id=="ASV0057")
+plot_bar(ps.asv57)+
+  facet_wrap(Sample_type~Microbe_treatment,scales="free")
+
+ps.asv60 <- subset_taxa(ps.clean.trim,id=="ASV0060")
+plot_bar(ps.asv60)+
+  facet_wrap(Sample_type~Microbe_treatment,scales="free")
+
+ps.asv65 <- subset_taxa(ps.clean.trim,id=="ASV0065")
+plot_bar(ps.asv65)+
+  facet_wrap(Sample_type~Microbe_treatment,scales="free")
+
+ps.asv125 <- subset_taxa(ps.clean.trim,id=="ASV0125")
+plot_bar(ps.asv125)+
+  facet_wrap(Sample_type~Microbe_treatment,scales="free")
+
+ps.asv176 <- subset_taxa(ps.clean.trim,id=="ASV0176")
+plot_bar(ps.asv176)+
+  facet_wrap(Sample_type~Microbe_treatment,scales="free")
+
+ps.asv181 <- subset_taxa(ps.clean.trim,id=="ASV0181")
+plot_bar(ps.asv181)+
+  facet_wrap(Sample_type~Microbe_treatment,scales="free")
+
+##based on negative controls:
+ps.asv7 <- subset_taxa(ps.clean.trim,id=="ASV0007")
+plot_bar(ps.asv7)+
+  facet_wrap(Sample_type~Microbe_treatment,scales="free")
+```
+
+## Grabbing a ton more to add to likely ENV and MOS sources
+
+Will do manually in excel after... Also... some of the output above won't look the same after I change the spreadsheets... oh well 
+
+```{r}
+envonly.unc <- venn.unc.envmos[["EMO"]]
+mosonly.unc <- venn.unc.envmos[["MMO"]]
+
+##saving to add info to taxa file, which I will do manually in Excel
+write.table(mosonly.unc,"mosonly_more.txt", sep="\t",col.names = FALSE, row.names = FALSE,quote=F)
+write.table(envonly.unc,"envonly_more.txt", sep="\t",col.names = FALSE, row.names = FALSE,quote=F)
+```
+
+

@@ -1,0 +1,418 @@
+---
+title: "Bamboo mesocosms - physiology results"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+ rmarkdown::html_document:
+    theme: cerulean
+    toc: yes
+    toc_float: yes
+    highlight: haddock
+    number_sections: true
+editor_options: 
+  chunk_output_type: console
+---
+
+Notes: almost everything is "done" in the code here - except moving the library packages to where they're supposed to be and maybe cleaning up a few places & adding some notes
+
+# Setup
+
+## Libraries
+
+```{r}
+library("dplyr")
+library("ggplot2")
+library("cowplot")
+
+# #install.packages("lubridate")
+# library("lubridate")
+# #install.packages("Rmisc")
+# library("Rmisc")
+# #install.packages("coxme")
+# library("coxme")
+# library("car")
+# #install.packages("bbmle")
+# library("bbmle")
+# #install.packages("emmeans")
+# library("emmeans")
+# #install.packages("DHARMa")
+# library("DHARMa")
+# #install.packages("multcomp")
+# library("multcomp")
+# #install.packages("multcompView")
+# library("multcompView")
+# library("glmmTMB")
+```
+
+## Read in data
+
+```{r}
+setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/05.phys_analysis")
+
+pupae.wts <- read.csv("../bamboomesos_pupaeweights.csv")
+```
+
+# Biomass by date
+
+```{r}
+##doesn't make sense to compare with the AHK & None_larvae microbe treatments since they only had one mesocosm replicate each, but leaving in for now for interest
+#pupae.wts.noahk <- subset(pupae.wts,Microbe_treatment!="AHK")
+#pupae.wts.exp <- subset(pupae.wts.noahk,Microbe_treatment!="None_larvae")
+
+#pupae.wts$food.microbe <- paste0(pupae.wts$Food_type,"_",pupae.wts$Microbe_treatment)
+
+pupae.wts$Dry_weightAVG[is.na(pupae.wts$Dry_weightAVG)] <- 0
+
+pupae.wts.sum <- pupae.wts %>%
+  dplyr::group_by(Food_type,Microbe_treatment,Exp_day) %>%
+  dplyr::summarize(biomass_sum=sum(Dry_weightAVG)) %>%
+  dplyr::mutate(biomass_cumsum=cumsum(biomass_sum))
+
+pupae.wts.sum2 <- pupae.wts.sum %>%
+  as.data.frame() %>%
+  add_row(Food_type="Bamboo",Microbe_treatment="ECO",Exp_day=0,biomass_sum=0,biomass_cumsum=0) %>%
+  add_row(Food_type="Bamboo",Microbe_treatment="EMO",Exp_day=0,biomass_sum=0,biomass_cumsum=0) %>%
+  add_row(Food_type="Bamboo",Microbe_treatment="MMO",Exp_day=0,biomass_sum=0,biomass_cumsum=0) %>%
+  add_row(Food_type="Bamboo",Microbe_treatment="MEM",Exp_day=0,biomass_sum=0,biomass_cumsum=0) %>%
+  add_row(Food_type="Bamboo",Microbe_treatment="ALL",Exp_day=0,biomass_sum=0,biomass_cumsum=0) %>%
+  add_row(Food_type="Bamboo",Microbe_treatment="AHK",Exp_day=0,biomass_sum=0,biomass_cumsum=0) %>%
+  add_row(Food_type="Bamboo",Microbe_treatment="None_larvae",Exp_day=0,biomass_sum=0,biomass_cumsum=0) %>%
+  add_row(Food_type="Larval food",Microbe_treatment="ECO",Exp_day=0,biomass_sum=0,biomass_cumsum=0) %>%
+  add_row(Food_type="Larval food",Microbe_treatment="EMO",Exp_day=0,biomass_sum=0,biomass_cumsum=0) %>%
+  add_row(Food_type="Larval food",Microbe_treatment="MMO",Exp_day=0,biomass_sum=0,biomass_cumsum=0) %>%
+  add_row(Food_type="Larval food",Microbe_treatment="MEM",Exp_day=0,biomass_sum=0,biomass_cumsum=0) %>%
+  add_row(Food_type="Larval food",Microbe_treatment="ALL",Exp_day=0,biomass_sum=0,biomass_cumsum=0) %>%
+  add_row(Food_type="Larval food",Microbe_treatment="AHK",Exp_day=0,biomass_sum=0,biomass_cumsum=0) %>%
+  add_row(Food_type="Larval food",Microbe_treatment="None_larvae",Exp_day=0,biomass_sum=0,biomass_cumsum=0) %>%
+  add_row(Food_type="Bamboo",Microbe_treatment="ECO",Exp_day=40,biomass_sum=0,biomass_cumsum=0) %>%
+  add_row(Food_type="Bamboo",Microbe_treatment="EMO",Exp_day=40,biomass_sum=0,biomass_cumsum=8.963) %>%
+  add_row(Food_type="Bamboo",Microbe_treatment="MMO",Exp_day=40,biomass_sum=0,biomass_cumsum=7.355) %>%
+  add_row(Food_type="Bamboo",Microbe_treatment="MEM",Exp_day=40,biomass_sum=0,biomass_cumsum=9.671) %>%
+  add_row(Food_type="Bamboo",Microbe_treatment="ALL",Exp_day=40,biomass_sum=0,biomass_cumsum=11.406) %>%
+  add_row(Food_type="Bamboo",Microbe_treatment="AHK",Exp_day=40,biomass_sum=0,biomass_cumsum=0) %>%
+  add_row(Food_type="Bamboo",Microbe_treatment="None_larvae",Exp_day=40,biomass_sum=0,biomass_cumsum=0.197) %>%
+  add_row(Food_type="Larval food",Microbe_treatment="ECO",Exp_day=40,biomass_sum=0,biomass_cumsum=31.091) %>%
+  add_row(Food_type="Larval food",Microbe_treatment="EMO",Exp_day=40,biomass_sum=0,biomass_cumsum=38.516) %>%
+  add_row(Food_type="Larval food",Microbe_treatment="MMO",Exp_day=40,biomass_sum=0,biomass_cumsum=65.280) %>%
+  add_row(Food_type="Larval food",Microbe_treatment="MEM",Exp_day=40,biomass_sum=0,biomass_cumsum=17.002) %>%
+  add_row(Food_type="Larval food",Microbe_treatment="ALL",Exp_day=40,biomass_sum=0,biomass_cumsum=15.672) %>%
+  add_row(Food_type="Larval food",Microbe_treatment="AHK",Exp_day=40,biomass_sum=0,biomass_cumsum=15.548) %>%
+  add_row(Food_type="Larval food",Microbe_treatment="None_larvae",Exp_day=40,biomass_sum=0,biomass_cumsum=7.414)
+
+pupae.wts.sum3 <- subset(pupae.wts.sum2,Microbe_treatment!="None_larvae"&Microbe_treatment!="AHK")
+
+pupae.wts.sum3$biomass_cumsum_by5 <- (pupae.wts.sum3$biomass_cumsum)/5
+
+#new.colors <- c("gray60","#D83706","#3B9FFD","#4145AA","black")
+
+pupae.wts.sum3$Microbe_treatment <- factor(pupae.wts.sum3$Microbe_treatment,levels=c("ECO","MMO","EMO","MEM","ALL"))
+
+##Matt versions
+#install.packages("extrafont")
+# library("extrafont")
+# #install.packages("extrafontdb")
+# library("extrafontdb")
+# font_import()
+
+new.colors <- c("#7D0112","#C6A947","#84D1B5","#0085A6","#1F28A2")
+
+##average by 5
+ggplot(pupae.wts.sum3,aes(x=Exp_day,y=biomass_cumsum_by5,color=Microbe_treatment,linetype=Food_type))+
+  #geom_vline(xintercept=5,linetype="dotted",alpha=0.5)+
+  #geom_vline(xintercept=8,linetype="dotted",alpha=0.5)+
+  geom_step(lwd=0.9)+
+  #scale_linetype_manual(name="Diet",labels=c("Bamboo","Lab food"),values=c("solid","twodash"))+
+  #xlim(0,39)+
+  #theme_cowplot()+
+  theme_linedraw()+
+  xlab("Experimental day")+
+  ylab("Cumulative pupal biomass (mg) ")+
+  #scale_y_continuous(labels=c("0 mg","5 mg","10 mg","15 mg"))+
+  scale_color_manual(values=new.colors)+
+  #scale_color_manual(name="Microbes",values=new.colors,labels=c("Marginal microbiome (MM)","Mosquito symbionts only (MS)","Environmental microbes only (EM)","MS+EM","MS+EM+MM"))+
+  #theme(text=element_text(family="Calibri"),legend.key.width = unit(1.85, "line"))+
+  scale_linetype_manual(values=c("solid","longdash"),name="Food type",labels=c("Bamboo detritus","Lab food"))
+  #scale_color_manual(values=c("#7DBA54","#992559","#60eede"),name="Infusion")
+
+#ggsave("pupae.weights.sum.png",width=5,height=3)
+
+##average by 5
+pupae.wts.sum3.bamboo <- subset(pupae.wts.sum3,Food_type=="Bamboo")
+gg.bamboo <- ggplot(pupae.wts.sum3.bamboo,aes(x=Exp_day,y=biomass_cumsum_by5,color=Microbe_treatment))+
+  #geom_vline(xintercept=5,linetype="dotted",alpha=0.5)+
+  #geom_vline(xintercept=8,linetype="dotted",alpha=0.5)+
+  geom_step(lwd=0.9)+
+  #scale_linetype_manual(name="Diet",labels=c("Bamboo","Lab food"),values=c("solid","twodash"))+
+  #xlim(0,39)+
+  #theme_cowplot()+
+  theme_cowplot()+
+  xlab("Experimental day")+
+  ylab("Cumulative pupal biomass (mg)")+
+  scale_y_continuous(breaks=c(0,1,2),labels=c("0","1","2"))+
+  #scale_color_manual(values=new.colors)+
+  scale_color_manual(name="Microorganisms",values=new.colors,labels=c("LAB","MOS","ENV","MOS+ENV","MOS+ENV+LAB"))+
+  #theme(legend.key.width = unit(1.85, "line"))+
+  coord_cartesian(xlim=c(7,40))+
+  #geom_hline(yintercept=0,lwd=0.9,color="gray60")+
+  #scale_linetype_manual(values=c("solid","longdash"),name="Food type",labels=c("Bamboo detritus","Lab food"))+
+  #theme(axis.title.y=element_blank())+
+  ylab("")+
+  ggtitle("Bamboo diet")
+  #scale_color_manual(values=c("#7DBA54","#992559","#60eede"),name="Infusion")
+
+gg.bamboo
+
+#ggsave("pupae.weights.sum_bamboo.png",width=5,height=3)
+
+##average by 5
+pupae.wts.sum3.labfood <- subset(pupae.wts.sum3,Food_type=="Larval food")
+gg.labfood <- ggplot(pupae.wts.sum3.labfood,aes(x=Exp_day,y=biomass_cumsum_by5,color=Microbe_treatment))+
+  #geom_vline(xintercept=5,linetype="dotted",alpha=0.5)+
+  #geom_vline(xintercept=8,linetype="dotted",alpha=0.5)+
+  geom_step(lwd=0.9)+
+  #scale_linetype_manual(name="Diet",labels=c("Bamboo","Lab food"),values=c("solid","twodash"))+
+  #xlim(0,39)+
+  theme_cowplot()+
+  #theme_linedraw()+
+  xlab("Experimental day")+
+  ylab("Sum of pupal biomass (mg)  ")+
+  ggtitle("Standard diet")+
+  #scale_y_continuous(labels=c("0 mg","5 mg","10 mg","15 mg"))+
+  #scale_color_manual(values=new.colors)+
+  scale_color_manual(name="Microorganisms",values=new.colors,labels=c("Lab strains (LAB)","Mosquito (MOS)","Environmental (ENV)","MOS+ENV","MOS+ENV+LAB"))+
+  #theme(legend.key.width = unit(1.85, "line"))+
+  #theme(axis.title.x=element_blank())+
+  coord_cartesian(xlim=c(7,40))
+  #geom_hline(yintercept=0,lwd=0.9,color="gray60")+
+  #scale_linetype_manual(values=c("solid","longdash"),name="Food type",labels=c("Bamboo detritus","Lab food"))
+  #scale_color_manual(values=c("#7DBA54","#992559","#60eede"),name="Infusion")
+gg.labfood
+
+#ggsave("pupae.weights.sum_labfood.png",width=5,height=3)
+
+library("ggpubr")
+
+ggarrange(gg.labfood,gg.bamboo,common.legend=T,legend="right",labels=c("(b)","(c)"))
+#ggsave("facet.diet.pdf",width=8,height=3)
+
+## survival plot stuff I didn't end up using
+# install.packages(c("survival", "lubridate", "ggsurvfit", "gtsummary", "tidycmprsk"))
+# remotes::install_github("zabore/condsurv")
+# remotes::install_github("zabore/ezfun")
+# library(gtsummary)
+# library(tidycmprsk)
+# library(condsurv)
+
+# library(survival)
+# #install.packages("ggsurvfit")
+# library(ggsurvfit)
+# 
+
+# 
+# Surv(surv.mq$day, surv.mq$status)[1:10]
+# s1 <- survfit(Surv(day,status) ~ 1, data = surv.mq)
+# str(s1)
+# 
+# survfit2(Surv(day,status) ~ 1, data = surv.mq) %>% 
+#   ggsurvfit() +
+#   labs(
+#     x = "Days",
+#     y = "Overall survival probability"
+#   )+ 
+#   add_confidence_interval()
+```
+
+## Subsetting some data for mesocosm metadata sheet
+
+Also doing by mesocosm id instead of treatment like above
+
+```{r}
+pupae.wts.meso.sum <- pupae.wts %>%
+  dplyr::group_by(Food_type,Microbe_treatment,Mesocosm_id,Exp_day) %>%
+  dplyr::summarize(biomass_sum=sum(Dry_weightAVG)) %>%
+  dplyr::mutate(biomass_cumsum=cumsum(biomass_sum))
+
+#write.csv(pupae.wts.meso.sum,file="pupae.wts.mesocosm.summed.csv")
+```
+
+# Statz
+
+## Libraries
+
+```{r}
+library(plyr)
+library(dplyr)
+library(tidyr)
+```
+
+## Data frame setups
+
+```{r}
+pupae.wts.exp <- subset(pupae.wts,Microbe_treatment=="ECO"|Microbe_treatment=="EMO"|Microbe_treatment=="MMO"|Microbe_treatment=="MEM"|Microbe_treatment=="ALL")
+table(pupae.wts.exp$Microbe_treatment)
+
+aggregate(Dry_weightAVG~Exp_day+Mesocosm_id, data=pupae.wts.exp, FUN=sum)
+
+biomass <- with(merge(expand.grid(Exp_day=8:40, Mesocosm_id=unique(pupae.wts.exp$Mesocosm_id), value = 0), pupae.wts.exp, all = TRUE), aggregate(Dry_weightAVG, by=list(Exp_day, Mesocosm_id), FUN=sum))
+biomass[is.na(biomass)] <- 0
+
+names(biomass)[1]<-paste("day")
+names(biomass)[2]<-paste("mesocosmID")
+names(biomass)[3]<-paste("biomass")
+
+pupate <- with(merge(expand.grid(Exp_day=8:40,Mesocosm_id=c(unique(pupae.wts.exp$Mesocosm_id)), value=0), pupae.wts.exp, all=TRUE), aggregate(Pupated, by=(list(Exp_day, Mesocosm_id)), FUN=sum))
+pupate[is.na(pupate)] <- 0
+
+names(pupate)[1]<-paste("day")
+names(pupate)[2]<-paste("mesocosmID")
+names(pupate)[3]<-paste("total.pupation")
+
+masspupated <- cbind(biomass, pupate)
+##write.csv(massemerged, "massemerged.csv")
+
+##making a copy so I don't overwrite:
+tallydata <- masspupated
+#tallydata <- read.csv("massemerged.csv", header=TRUE)
+tallydata$diet <- ifelse(grepl("B_", tallydata$mesocosmID), "Bamboo", "Larval")
+
+tallydata$microbe <- substr(tallydata$mesocosmID,3,5)
+
+tallydata$period <- ifelse(tallydata$day<=10, "A", ifelse(tallydata$day<=20, "B", ifelse(tallydata$day<=30, "C", "D")))
+                                    
+tallydata$factorial <- paste(tallydata$diet, tallydata$microbe)
+```
+
+## Fit stat models
+
+```{r}
+#fit statistical models
+##GLMMs
+library(glmmTMB)
+
+tallydata$microbe<-as.factor(tallydata$microbe)
+tallydata$diet<-as.factor(tallydata$diet)
+tallydata$rowid<-1:nrow(tallydata)
+
+#compare likelihood using IC between quasipoisson, gaussian, tweedie.
+summary(quasinb <- glmmTMB(biomass~diet*microbe*scale(day)+diet*microbe*scale(I(day^2))+(1|mesocosmID), data=tallydata, family=nbinom1))
+
+summary(normie <- glmmTMB(biomass~diet*microbe*scale(day)+diet*microbe*scale(I(day^2))+(1|mesocosmID), data=tallydata, family=gaussian))
+
+summary(tweediem <- glmmTMB(biomass~diet*microbe*scale(day)+diet*microbe*scale(I(day^2))+(1|mesocosmID), data=tallydata, family=tweedie()))
+
+AIC(quasinb)
+AIC(normie)
+AIC(tweediem)
+#tweedie familiy assuming compound Poisson-gamma distribution best fit to these data which makes sense given its a continuous variable with many zeros
+#compound Poisson-gamma does a substantially better job at handling random intercept
+###quadratic temporal mixed models
+```
+
+## Tweedie models
+
+```{r}
+summary(tweediefit1 <- glmmTMB(biomass~diet*microbe*scale(day)+diet*microbe*scale(I(day^2))+(1|mesocosmID), data=tallydata, family=tweedie()))
+summary(tweediefit2 <- glmmTMB(biomass~diet*microbe+diet*scale(day)+diet*scale(I(day^2))+microbe*scale(day)+microbe*scale(I(day^2))+(1|mesocosmID), data=tallydata, family=tweedie()))
+anova(tweediefit1,tweediefit2)
+sigma(tweediefit1)
+family_params(tweediefit1)
+family_params(tweediefit2)
+#p=4.969e-05, full three-order quadratic model more likely than second order model 
+###global test of the central hypothesis that the
+###quadratic pattern of pupal biomass generation over time
+###is dependent on an interaction between detritus type and microbe treatment
+```
+
+## Ggpredict
+
+```{r}
+#newdata <- cbind(tallydata$microbe, tallydata$diet, tallydata$day)
+#colnames(newdata)<- c("microbe","diet","day")
+library(ggeffects)
+
+new.colors <- c("#7D0112","#C6A947","#84D1B5","#0085A6","#1F28A2")
+
+#visualize model
+predict <- ggpredict(tweediefit1, terms=c("microbe", "diet", "day[all]"), type="fixed")
+
+predictbamboo <- subset(predict, group=="Bamboo")
+
+predictbamboo$x <- factor(predictbamboo$x,levels=c("ECO","MMO","EMO","MEM","ALL"))
+predictbamboo$facet <- as.numeric(as.character(predictbamboo$facet))
+
+ggpred.bamboo <- ggplot(predictbamboo, aes(x=facet, y=sqrt(predicted), group=x))+
+  geom_line(aes(color=x))+
+  scale_x_continuous(limits=c(8,40))+
+  theme_cowplot()+
+  scale_color_manual(name="Microorganisms",values=new.colors,labels=c("Lab strains (LAB)","Mosquito (MOS)","Environmental (ENV)","MOS+ENV","MOS+ENV+LAB"))+
+  xlab("Experimental day")+
+  ggtitle("Bamboo diet")
+ggpred.bamboo
+
+predictlarval <- subset(predict, group=="Larval")
+
+predictlarval$x <- factor(predictlarval$x,levels=c("ECO","MMO","EMO","MEM","ALL"))
+predictlarval$facet <- as.numeric(as.character(predictlarval$facet))
+
+ggpred.larval <- ggplot(predictlarval, aes(x=facet, y=sqrt(predicted), group=x))+
+  geom_line(aes(color=x))+
+  scale_x_continuous(limits=c(8,40))+
+  theme_cowplot()+
+  scale_color_manual(name="Microorganisms",values=new.colors,labels=c("Lab strains (LAB)","Mosquito (MOS)","Environmental (ENV)","MOS+ENV","MOS+ENV+LAB"))+
+  xlab("Experimental day")+
+  ggtitle("Standard diet")
+ggpred.larval
+
+library("ggpubr")
+ggarrange(ggpred.larval,ggpred.bamboo,labels=c("(a)","(b)"),common.legend=T,legend="right")
+#ggsave("facet.diet.rate.pdf",width=8,height=3)
+#ggsave("facet.diet.rate.png",width=8,height=3)
+```
+
+## Stats subset by diet
+
+### Bamboo
+
+```{r}
+##diet sub-models to visualize the effects in the global model
+#bamboo detritus
+bamboo <- subset(tallydata, diet=="Bamboo")
+summary(bamtweediefit1 <- glmmTMB(biomass~microbe*scale(day)+microbe*scale(I(day^2))+(1|mesocosmID), data=bamboo, family=tweedie()))
+
+summary(bamtweediefit2 <- glmmTMB(biomass~microbe+scale(day)+scale(I(day^2))+(1|mesocosmID), data=bamboo, family=tweedie()))
+anova(bamtweediefit1,bamtweediefit2) ##sig***
+
+bamboo$microbe <- relevel(bamboo$microbe, ref="MMO")
+summary(bamtweediefit1 <- glmmTMB(biomass~microbe*scale(day)+microbe*scale(I(day^2))+(1|mesocosmID), data=bamboo, family=tweedie()))
+
+bamboo$microbe<-relevel(bamboo$microbe, ref="ALL")
+summary(bamtweediefit1 <- glmmTMB(biomass~microbe*scale(day)+microbe*scale(I(day^2))+(1|mesocosmID), data=bamboo, family=tweedie()))
+
+bamboo$microbe<-relevel(bamboo$microbe, ref="MEM")
+summary(bamtweediefit1 <- glmmTMB(biomass~microbe*scale(day)+microbe*scale(I(day^2))+(1|mesocosmID), data=bamboo, family=tweedie()))
+
+bamboo$microbe<-relevel(bamboo$microbe, ref="EMO")
+summary(bamtweediefit1 <- glmmTMB(biomass~microbe*scale(day)+microbe*scale(I(day^2))+(1|mesocosmID), data=bamboo, family=tweedie()))
+```
+
+### Larval food
+
+```{r}
+larval <- subset(tallydata, diet=="Larval")
+
+larval$microbe <- relevel(larval$microbe, ref="MMO")
+
+summary(lartweediefit1 <- glmmTMB(biomass~microbe*scale(day)+microbe*scale(I(day^2))+(1|mesocosmID), data=larval, family=tweedie()))
+
+summary(lartweediefit2 <- glmmTMB(biomass~microbe+scale(day)+scale(I(day^2))+(1|mesocosmID), data=larval, family=tweedie()))
+
+anova(lartweediefit1,lartweediefit2)
+
+larval$microbe <- relevel(larval$microbe, ref="EMO")
+
+summary(lartweediefit1 <- glmmTMB(biomass~microbe*scale(day)+microbe*scale(I(day^2))+(1|mesocosmID), data=larval, family=tweedie()))
+
+larval$microbe <- relevel(larval$microbe, ref="MEM")
+
+summary(lartweediefit1 <- glmmTMB(biomass~microbe*scale(day)+microbe*scale(I(day^2))+(1|mesocosmID), data=larval, family=tweedie()))
+```
+

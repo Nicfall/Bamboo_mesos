@@ -1,0 +1,31 @@
+---
+title: "Bamboo mesocosms diversity analysis - iNEXT"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+ rmarkdown::html_document:
+    theme: cerulean
+    toc: yes
+    toc_float: yes
+    highlight: haddock
+    number_sections: true
+editor_options: 
+  chunk_output_type: console
+---
+
+# Setup
+
+Following [this page](https://cran.r-project.org/web/packages/iNEXT/vignettes/Introduction.pdf)
+
+```{r}
+#install.packages("iNEXT")
+library("iNEXT")
+library("ggplot2")
+```
+
+```{r}
+data(spider)
+
+```
+
+
+

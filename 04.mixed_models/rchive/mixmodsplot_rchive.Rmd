@@ -1,0 +1,679 @@
+---
+title: "mixmodsplots_rchive"
+author: "Nicola G. Kriefall"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# Correlations between real data & predicted values
+
+```{r}
+pred.lar.nb1$variable <- pred.lar.nb1$x
+pred.lar.nb1$variable_trt <- paste0(pred.lar.nb1$variable,"_",pred.lar.nb1$group,"_",pred.lar.nb1$facet)
+
+df.larv.long$variable_trt <- paste0(df.larv.long$variable,"_",df.larv.long$Food_type,"_",df.larv.long$Microbe_treatment)
+
+larv.pred.nb1 <- merge(df.larv.long,pred.lar.nb1,by="variable_trt")
+
+cor.nb1 <- ggplot(larv.pred.nb1,aes(x=predicted,y=value))+
+  geom_point(aes(color=Microbe_treatment))+
+  geom_smooth()+
+  ggtitle("nb1")
+
+pred.lar.nb2$variable <- pred.lar.nb2$x
+pred.lar.nb2$variable_trt <- paste0(pred.lar.nb2$variable,"_",pred.lar.nb2$group,"_",pred.lar.nb2$facet)
+
+larv.pred.nb2 <- merge(df.larv.long,pred.lar.nb2,by="variable_trt")
+
+cor.nb2 <- ggplot(larv.pred.nb2,aes(x=predicted,y=value))+
+  geom_point(aes(color=Microbe_treatment))+
+  geom_smooth()+
+  ggtitle("nb2")
+
+ggarrange(cor.nb1,cor.nb2,common.legend=T,legend="right")
+
+lm.nb2 <- lm(predicted~value,data=larv.pred.nb2)
+summary(lm.nb2)
+
+lm.nb1 <- lm(predicted~value,data=larv.pred.nb1)
+summary(lm.nb1)
+```
+
+# Plotting ASVs relative abundance across treatments
+
+## Average the mesocosms
+
+```{r}
+df.larv.long$relabun <- (df.larv.long$value/df.larv.long$sum)
+
+df.larv.avg <- 
+  df.larv.long %>% 
+  group_by(Microbe_treatment,Food_type,variable) %>% 
+  dplyr::summarise(mean_relabun=mean(relabun), .groups = 'drop')
+
+df.larv.mem <- subset(df.larv.avg, Microbe_treatment=="MEM"|Microbe_treatment=="MMO"|Microbe_treatment=="EMO")
+
+ggplot(df.larv.mem,aes(x=Food_type,y=mean_relabun,color=Microbe_treatment,group=interaction(variable,Microbe_treatment)))+
+  geom_point()+
+  scale_color_manual(values=c("#84D1B5","#0085A6","#C6A947"))+
+  geom_line(aes(linetype=Microbe_treatment))+
+  scale_linetype_manual(values=c("solid","longdash","solid"))+
+  facet_wrap(~variable)
+
+ggplot(df.larv.mem,aes(x=Food_type,y=mean_relabun,color=Microbe_treatment,group=interaction(variable,Microbe_treatment)))+
+  geom_point()+
+  scale_color_manual(values=c("#84D1B5","#0085A6","#C6A947"))+
+  geom_line(aes(linetype=Microbe_treatment))+
+  scale_linetype_manual(values=c("solid","longdash","solid"))
+  #facet_wrap(~variable)
+
+df.water.long$relabun <- (df.water.long$value/df.water.long$sum)
+
+df.water.avg <- df.water.long %>% group_by(Microbe_treatment,Food_type,variable) %>% 
+  dplyr::summarise(mean_relabun=mean(relabun), .groups = 'drop')
+
+df.water.mem <- subset(df.water.avg, Microbe_treatment=="MEM"|Microbe_treatment=="MMO"|Microbe_treatment=="EMO")
+
+ggplot(df.water.mem,aes(x=Food_type,y=mean_relabun,color=Microbe_treatment,group=interaction(variable,Microbe_treatment)))+
+  geom_point()+
+  scale_color_manual(values=c("#84D1B5","#0085A6","#C6A947"))+
+  geom_line()+
+  facet_wrap(~variable)
+
+ggplot(df.water.mem,aes(x=Food_type,y=mean_relabun,color=Microbe_treatment,group=interaction(variable,Microbe_treatment)))+
+  geom_point()+
+  scale_color_manual(values=c("#84D1B5","#0085A6","#C6A947"))+
+  geom_line(aes(linetype=Microbe_treatment))+
+  scale_linetype_manual(values=c("solid","longdash","solid"))
+  #facet_wrap(~variable)
+```
+
+# Heat map
+
+```{r}
+#install.packages("pheatmap")
+library("pheatmap")
+library("RColorBrewer")
+
+ps.lar.trim.rel = transform_sample_counts(ps.exp.lar.trim, function(x) x / sum(x))
+
+#ps.rtp.rel <- subset_samples(ps.rtp.rel1,orgname!="M_D13_SG2_7_S254_L001")
+
+otu.rel <- data.frame(ps.lar.trim.rel@otu_table)
+sam.rel <- data.frame(ps.lar.trim.rel@sam_data)
+tax.rel <- data.frame(ps.lar.trim.rel@tax_table)
+
+sam.rel$Food_type <- gsub("Larval food","Larval_food",sam.rel$Food_type)
+
+row.names(otu.rel) == row.names(sam.rel)
+
+pheatmap(as.matrix(otu.rel))
+
+#sam.rel$sample_arr <- paste0(sam.rel$stage,"_",sam.rel$temperature,"_",sam.rel$infusion,"_",sam.rel$orgname)
+
+#row.names(sam.rel) <- sam.rel$sample_arr
+#row.names(otu.rel) <- sam.rel$sample_arr
+
+#order(sam.rel,)
+#setorder(sam.rel, sample_arr)
+#sam.arr <- sam.rel[order(row.names(sam.rel)),]
+#otu.arr <- otu.rel[order(row.names(otu.rel)),]
+#row.names(otu.arr) == row.names(sam.arr)
+
+#otu.mq.rel.walb <- otu.mq.rel[,c("wAlbA","wAlbB")]
+
+#walb.data.df = data.frame("sex" = main.mq.info$sex)
+#rownames(walb.data.df) <- main.mq.info$orgname
+#df.data = data.frame("infusion" = sam.rel$infusion)
+#rownames(df.data) <- sam.rel$orgname
+
+annotation_row = data.frame(microbes=sam.rel$Microbe_treatment,
+                            food=sam.rel$Food_type)
+annotation_row
+
+rownames(annotation_row) <- sam.rel$Short_label
+
+ann_colors = list(
+  food = c(Bamboo="black", Larval_food="white"),
+  microbes = c(MMO="#C6A947",ECO="#7D0112",ALL="#1F28A2",MEM="#0085A6",EMO="#84D1B5"))
+ann_colors
+
+pheatmap(as.matrix(otu.rel),
+         scale="column",
+         #labels_col=tax.rel$Genus,
+         #labels_row=sam.rel$
+         show_rownames=TRUE,
+         #cluster_cols=TRUE,
+         #cluster_rows=FALSE,
+         annotation_row=annotation_row,
+         annotation_colors = ann_colors,
+         colorRampPalette(rev(brewer.pal(n=7,name="PuOr")))(100))
+
+##saved as png 400x450
+
+pheatmap(df.larv.long)
+
+```
+
+# Adonis
+
+```{r}
+library("vegan")
+
+otu.lar <- data.frame(ps.exp.lar.trim@otu_table)
+sam.lar <- data.frame(ps.exp.lar.trim@sam_data)
+
+dist.lar <- vegdist(otu.lar, method="horn")
+
+adonis2(dist.lar ~ Food_type*Microbe_treatment, data=sam.lar, permutations=999,by="terms") 
+
+adonis2(dist.lar ~ Microbe_treatment*Food_type, data=sam.lar, permutations=999,by="terms") 
+
+```
+
+# Plot coefficient things
+
+## Setup
+
+```{r}
+library("stringr")
+library("ggplot2")
+#install.packages("dplyr")
+library("dplyr")
+#install.packages("ggrepel")
+library("ggrepel")
+#install.packages("cowplot")
+library("cowplot")
+
+setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/04.mixed_models")
+
+#larv.coef <- read.csv("larv.mod.ranef_investigate.csv")
+larv.coef <- read.csv("larv.mod.ranef.csv")
+
+water.coef <- read.csv("water.mod.ranef.csv")
+```
+
+## Larvae
+
+```{r}
+larv.var <- subset(larv.coef,grpvar=="variable:Microbe_treatment:Food_type")
+
+larv.var$id <- substr(larv.var$grp,1,7)
+larv.var$food <- str_sub(larv.var$grp,13,18)
+larv.var$microbes <- str_sub(larv.var$grp,9,11)
+```
+
+### Bar plot
+
+```{r}
+ggplot(larv.var,aes(x=id,y=condval,fill=condval))+
+  geom_bar(stat="identity",color="black")+
+  geom_errorbar(aes(ymin=condval+condsd,ymax=condval-condsd),width=0)+
+  facet_grid(microbes~food)+
+  theme_bw()+
+  theme(axis.text.x=element_text(angle=90))+
+  scale_fill_gradient2()
+
+##add taxa info:
+tax.tab <- data.frame(ps.exp.lar.trim@tax_table)
+
+#larv.biom.coef$ASV_id <- larv.biom.coef$grp
+
+larv.biom.coef.tax <- plyr::join(larv.var,tax.tab,by="id")
+
+larv.biom.coef.tax$otu.microbes <- paste0(larv.biom.coef.tax$id,"_",larv.biom.coef.tax$microbes)
+
+larv.coef1 <- subset(larv.biom.coef.tax,microbes!="ECO")
+larv.coef2 <- subset(larv.coef1,microbes!="ALL")
+
+larv.coef.bamboo <- subset(larv.coef2,food=="Bamb")
+larv.coef.larval <- subset(larv.coef2,food=="Larv")
+
+larv.coef.food <- merge(larv.coef.larval,larv.coef.bamboo,by="otu.microbes")
+
+larv.coef.food$microbes.x==larv.coef.food$microbes.y
+
+library("ggrepel")
+
+larv.coef.food$microbes.x <- factor(larv.coef.food$microbes.x,levels=c("MMO","EMO","MEM"))
+new.new.colors <- c("#C6A947","#84D1B5","#0085A6")
+
+ggplot(larv.coef.food,aes(x=condval.x,y=condval.y,color=microbes.x,group=microbes.x,label=Genus.x,shape=microbes.x))+
+  geom_point(size=2)+
+  theme_cowplot()+
+  #geom_smooth(method = "lm", se = F,linetype="dashed",linewidth=0.75,show.legend=F)+
+  geom_hline(yintercept=0,linetype="dotted",color="darkgrey")+
+  geom_vline(xintercept=0,linetype="dotted",color="darkgrey")+
+  geom_text_repel(color="black")+
+  xlab("Conditional mode in standard diet")+
+  ylab("Conditional mode in bamboo diet")+
+  scale_color_manual(values=new.new.colors,name="Microorganisms",labels=c("Mosquito (Mos.)","Environment (Env.)","Mos.+Env."))+
+  scale_shape_manual(values=c(3,5,9),name="Microorganisms",labels=c("Mosquito (Mos.)","Environment (Env.)","Mos.+Env."))
+
+ggsave("cond.modes.plot.pdf",height=4,width=8)
+
+ggsave("cond.modes.plot.png",height=4,width=8)
+
+larv.coef.clost <- subset(larv.coef.food,Genus.x=="Clostridium sensu stricto 5")
+ggplot(larv.coef.clost,aes(x=condval.x,y=condval.y,color=microbes.x,group=microbes.x,label=Genus.x,shape=microbes.x))+
+  geom_point(size=2)+
+  theme_cowplot()+
+  #geom_smooth(method = "lm", se = F,linetype="dashed",linewidth=0.75,show.legend=F)+
+  geom_hline(yintercept=0,linetype="dotted",color="darkgrey")+
+  geom_vline(xintercept=0,linetype="dotted",color="darkgrey")+
+  geom_text_repel(color="black")+
+  xlab("Conditional mode in standard diet")+
+  ylab("Conditional mode in bamboo diet")+
+  scale_color_manual(values=new.new.colors,name="Microorganisms",labels=c("Mosquito (Mos.)","Environment (Env.)","Mos.+Env."))+
+  scale_shape_manual(values=c(3,5,9),name="Microorganisms",labels=c("Mosquito (Mos.)","Environment (Env.)","Mos.+Env."))
+
+#ggsave("cond.modes.plot.clost.pdf",height=4,width=8)
+
+larv.coef.kais <- subset(larv.coef.food,Genus.x=="Kaistia")
+ggplot(larv.coef.kais,aes(x=condval.x,y=condval.y,color=microbes.x,group=microbes.x,label=Genus.x,shape=microbes.x))+
+  geom_point(size=2)+
+  theme_cowplot()+
+  #geom_smooth(method = "lm", se = F,linetype="dashed",linewidth=0.75,show.legend=F)+
+  geom_hline(yintercept=0,linetype="dotted",color="darkgrey")+
+  geom_vline(xintercept=0,linetype="dotted",color="darkgrey")+
+  geom_text_repel(color="black")+
+  xlab("Conditional mode in standard diet")+
+  ylab("Conditional mode in bamboo diet")+
+  scale_color_manual(values=new.new.colors,name="Microorganisms",labels=c("Mosquito (Mos.)","Environment (Env.)","Mos.+Env."))+
+  scale_shape_manual(values=c(3,5,9),name="Microorganisms",labels=c("Mosquito (Mos.)","Environment (Env.)","Mos.+Env."))
+
+#ggsave("cond.modes.plot.kais.pdf",height=4,width=8)
+
+larv.coef2$otu.food <- paste0(larv.coef2$id,"_",larv.coef2$food)
+
+larv.coef.mmo <- subset(larv.coef2,microbes=="MMO")
+larv.coef.mem <- subset(larv.coef2,microbes=="MEM")
+
+larv.coef.memo <- merge(larv.coef.mmo,larv.coef.mem,by="otu.food")
+
+larv.coef.memo$food.x==larv.coef.memo$food.y
+
+library("ggrepel")
+
+larv.coef.food$microbes.x <- factor(larv.coef.food$microbes.x,levels=c("MMO","EMO","MEM"))
+new.new.colors <- c("#C6A947","#84D1B5","#0085A6")
+
+ggplot(larv.coef.memo,aes(x=condval.x,y=condval.y,color=food.x,group=food.x,label=Genus.x,shape=food.x))+
+  geom_point(size=2)+
+  theme_cowplot()+
+  #geom_smooth(method = "lm", se = F,linetype="dashed",linewidth=0.75,show.legend=F)+
+  geom_hline(yintercept=0,linetype="dotted",color="darkgrey")+
+  geom_vline(xintercept=0,linetype="dotted",color="darkgrey")+
+  geom_text_repel(color="black")+
+  xlab("Conditional mode in MMO")+
+  ylab("Conditional mode in MEM")
+  #scale_color_manual(values=new.new.colors,name="Microorganisms",labels=c("Mosquito (Mos.)","Environment (Env.)","Mos.+Env."))+
+  #scale_shape_manual(values=c(3,5,9),name="Microorganisms",labels=c("Mosquito (Mos.)","Environment (Env.)","Mos.+Env."))
+
+##biomass
+# ggplot(larv.biom.coef.tax,aes(x=reorder(otu_gen,condval),y=condval,fill=condval))+
+#   geom_bar(stat="identity",color="black")+
+#   geom_errorbar(aes(ymin=condval+condsd,ymax=condval-condsd),width=0)+
+#   #facet_grid(Microbes~Food_type)+
+#   theme_bw()+
+#   theme(axis.text.x=element_text(angle=90,hjust=1))+
+#   scale_fill_gradient2()
+```
+
+### Bamboo vs. lab food
+
+```{r}
+larv.coef.tax <- plyr::join(larv.coef,tax.tab)
+
+larv.coef.tax$otu_gen <- paste0(larv.coef.tax$ASV_id,"_",larv.coef.tax$Genus)
+
+larv.coef.tax$otu_microbes <- paste0(larv.coef.tax$otu_gen,"_",larv.coef.tax$Microbes)
+
+larv.coef2 <- subset(larv.coef.tax,Microbes!="ECO")
+
+larv.coef.bamboo <- subset(larv.coef2,Food_type=="Bamboo")
+larv.coef.larval <- subset(larv.coef2,Food_type=="Larval")
+
+larv.coef.food <- merge(larv.coef.larval,larv.coef.bamboo,by="otu_microbes")
+
+larv.coef.food$Microbes.x==larv.coef.food$Microbes.y
+water.coef.food$Microbes.x==water.coef.food$Microbes.y
+
+
+#new.colors <- c("#D83706","#3B9FFD","#4145AA","black")
+
+larv.coef.food$Microbes.x <- factor(larv.coef.food$Microbes.x,levels=c("MMO","EMO","MEM","ALL"))
+
+ggplot(larv.coef.food,aes(x=condval.x,y=condval.y,label=otu_microbes,color=Microbes.x,shape=Microbes.x,fill=Microbes.x))+
+  geom_hline(yintercept=0,linetype="dotted",color="darkgrey")+
+  geom_vline(xintercept=0,linetype="dotted",color="darkgrey")+
+  xlab("Conditional mode in lab food")+
+  ylab("Conditional mode in bamboo")+
+  geom_abline(slope=1, intercept = 0,linetype="dotted",color="darkgrey")+
+  geom_abline(slope=-1, intercept = 0,linetype="dotted",color="darkgrey")+
+  geom_smooth(method = "lm", se = F,linetype="dashed",linewidth=0.75,show.legend=F)+
+  geom_point()+
+  geom_text_repel(color="black")+
+  scale_color_manual(values=new.colors,name="Microbes",labels=c("Mosquito","Environmental","Mosq.+Env.","Mosq.+Env.+E.coli"))+
+  scale_shape_manual(values=c(3,23,9,19),name="Microbes",labels=c("Mosquito","Environmental","Mosq.+Env.","Mosq.+Env.+E.coli"))+
+  scale_fill_manual(values=new.colors,name="Microbes",labels=c("Mosquito","Environmental","Mosq.+Env.","Mosq.+Env.+E.coli"))+
+  #scale_color_manual(values=c("black","blue","purple","red"))+
+  theme_cowplot()+
+  ggtitle("Larvae")+
+  guides(color = guide_legend(override.aes = list(size=4)))
+
+## Water
+water.coef$otu_microbes <- paste0(water.coef$ASV_id,"_",water.coef$Microbes)
+
+water.coef2 <- subset(water.coef,Microbes!="ECO")
+
+water.coef.bamboo <- subset(water.coef2,Food_type=="Bamboo")
+water.coef.larval <- subset(water.coef2,Food_type=="Larval")
+
+water.coef.food <- merge(water.coef.larval,water.coef.bamboo,by="otu_microbes")
+
+water.coef.food$Microbes.x==water.coef.food$Microbes.y
+
+new.colors <- c("#D83706","#3B9FFD","#4145AA","black")
+
+water.coef.food$Microbes.x <- factor(water.coef.food$Microbes.x,levels=c("MMO","EMO","MEM","ALL"))
+
+ggplot(water.coef.food,aes(x=condval.x,y=condval.y,label=otu_microbes,color=Microbes.x,shape=Microbes.x,fill=Microbes.x))+
+  geom_hline(yintercept=0,linetype="dotted",color="darkgrey")+
+  geom_vline(xintercept=0,linetype="dotted",color="darkgrey")+
+  xlab("Conditional mode in lab food")+
+  ylab("Conditional mode in bamboo")+
+  geom_abline(slope=1, intercept = 0,linetype="dotted",color="darkgrey")+
+  geom_abline(slope=-1, intercept = 0,linetype="dotted",color="darkgrey")+
+  geom_smooth(method = "lm", se = F,linetype="dashed",linewidth=0.75,show.legend=F)+
+  geom_point()+
+  geom_text_repel(color="black")+
+  scale_color_manual(values=new.colors,name="Microbes",labels=c("Mosquito","Environmental","Mosq.+Env.","Mosq.+Env.+E.coli"))+
+  scale_shape_manual(values=c(3,23,9,19),name="Microbes",labels=c("Mosquito","Environmental","Mosq.+Env.","Mosq.+Env.+E.coli"))+
+  scale_fill_manual(values=new.colors,name="Microbes",labels=c("Mosquito","Environmental","Mosq.+Env.","Mosq.+Env.+E.coli"))+
+  #scale_color_manual(values=c("black","blue","purple","red"))+
+  theme_cowplot()+
+  ggtitle("Water")+
+  guides(color = guide_legend(override.aes = list(size=4)))
+
+library("lme4")
+library("car")
+
+lmer.lar <- lmer(condval.x~condval.y+(1|Microbes.x),data=larv.coef.food)
+summary(lmer.lar)
+Anova(lmer.lar)
+
+lmer.obs.lar <- lmer(Proportion_pupated ~ Observed*Food_type.x+(1|Microbe_treatment.x),data=df.div.lar)
+
+library("lme4")
+library("car")
+
+lmer.wtr <- lmer(condval.x~condval.y+(1|Microbes.x),data=water.coef.food)
+summary(lmer.wtr)
+Anova(lmer.wtr)
+
+lmer.obs.wtr <- lmer(Proportion_pupated ~ Observed*Food_type.x+(1|Microbe_treatment.x),data=df.div.wtr)
+
+```
+
+```{r}
+##adding taxa info
+# ps.clean <- readRDS("../../02.process_asvs/ps.clean.trim.rds")
+# ps.clean
+ps.trim.lar <- readRDS("../../04.mixed_models/ps.exp.lar.trim.rds")
+
+tax.tab.lar <- data.frame(ps.trim.lar@tax_table)
+tax.tab.lar$ASV_id <- tax.tab.lar$ASV_id
+
+tax.lar.coef <- plyr::join(larv.coef,tax.tab.lar)
+
+tax.lar.coef$otu_gen <- paste0(tax.lar.coef$ASV_id,"_",tax.lar.coef$Genus)
+
+larv.coef.less.tax <- tax.lar.coef[tax.lar.coef$ASV_id %in% otus.larv.uniq,]
+
+ggplot(larv.coef.less.tax,aes(x=condval,y=otu_gen,fill=condval))+
+  geom_bar(stat="identity",color="black")+
+  geom_errorbar(aes(xmin=condval+condsd,xmax=condval-condsd),width=0)+
+  facet_grid(Food_type~Microbes)+
+  theme_bw()+
+  #theme(axis.text.x=element_text(angle=90,hjust=1))+
+  scale_fill_gradient2()+
+  ggtitle("Larvae - matching culture isolates")
+```
+
+### Larval biomass
+
+```{r}
+larv.biom.coef$ASV_id <- larv.biom.coef$grp
+tax.lar.biom.coef <- plyr::join(larv.biom.coef,tax.tab.lar)
+
+tax.lar.biom.coef$otu_gen <- paste0(tax.lar.biom.coef$ASV_id,"_",tax.lar.biom.coef$Genus)
+
+larv.biom.coef.less.tax <- tax.lar.biom.coef[tax.lar.biom.coef$ASV_id %in% otus.larv.uniq,]
+
+ggplot(larv.biom.coef.less.tax,aes(y=reorder(otu_gen,condval),x=condval,fill=condval))+
+  geom_bar(stat="identity",color="black")+
+  geom_errorbar(aes(xmin=condval+condsd,xmax=condval-condsd),width=0)+
+  #facet_grid(food~microbes)+
+  theme_bw()+
+  #theme(axis.text.x=element_text(angle=90))+
+  scale_fill_gradient2()
+```
+
+## Water - shared with culture sequences
+
+```{r}
+otus.water <- c(list.water$V1)
+otus.water.uniq <- unique(otus.water) 
+otus.water.uniq #26
+
+water.coef.less <- water.coef[water.coef$ASV_id %in% otus.water.uniq,]
+
+ggplot(water.coef.less,aes(x=ASV_id,y=condval,fill=condval))+
+  geom_bar(stat="identity",color="black")+
+  geom_errorbar(aes(ymin=condval+condsd,ymax=condval-condsd),width=0)+
+  facet_grid(Microbes~Food_type)+
+  theme_bw()+
+  #theme(axis.text.x=element_text(angle=90))+
+  scale_fill_gradient2()
+
+##adding taxa info
+# ps.clean <- readRDS("../../02.process_asvs/ps.clean.trim.rds")
+# ps.clean
+ps.trim.wtr <- readRDS("../../04.mixed_models/ps.exp.wtr.trim.rds")
+
+tax.tab.wtr <- data.frame(ps.trim.wtr@tax_table)
+
+tax.wtr.coef <- plyr::join(water.coef,tax.tab.wtr)
+
+tax.wtr.coef$otu_gen <- paste0(tax.wtr.coef$ASV_id,"_",tax.wtr.coef$Genus)
+
+wtr.coef.less.tax <- tax.wtr.coef[tax.wtr.coef$ASV_id %in% otus.water.uniq,]
+
+ggplot(wtr.coef.less.tax,aes(x=otu_gen,y=condval,fill=condval))+
+  geom_bar(stat="identity",color="black")+
+  geom_errorbar(aes(ymin=condval+condsd,ymax=condval-condsd),width=0)+
+  facet_grid(Microbes~Food_type)+
+  theme_bw()+
+  theme(axis.text.x=element_text(angle=90,hjust=1))+
+  scale_fill_gradient2()
+
+ggplot(wtr.coef.less.tax,aes(x=condval,y=otu_gen,fill=condval))+
+  geom_bar(stat="identity",color="black")+
+  geom_errorbar(aes(xmin=condval+condsd,xmax=condval-condsd),width=0)+
+  facet_grid(Food_type~Microbes)+
+  theme_bw()+
+  #theme(axis.text.x=element_text(angle=90,hjust=1))+
+  scale_fill_gradient2()+
+  ggtitle("Water - matching culture isolates")
+```
+
+## Water vs. larvae overlap
+
+```{r}
+otus.larv.overlap <- otus.larv.uniq[otus.larv.uniq %in% otus.water.uniq]
+otus.larv.overlap #13 together
+
+otus.larv.nolap <- otus.larv.uniq[!otus.larv.uniq %in% otus.water.uniq]
+otus.larv.nolap #11 unique
+
+otus.water.nolap <- otus.water.uniq[!otus.water.uniq %in% otus.larv.uniq]
+otus.water.nolap #13 unique
+```
+
+## Bamboo vs. larval food
+
+### Larvae - all data
+
+```{r}
+tax.lar.coef$otu_microbes <- paste0(tax.lar.coef$otu_gen,"_",tax.lar.coef$Microbes)
+
+tax.lar.coef2 <- subset(tax.lar.coef,Microbes!="ECO")
+
+larv.coef.bamboo <- subset(tax.lar.coef2,Food_type=="Bamboo")
+larv.coef.larval <- subset(tax.lar.coef2,Food_type=="Larval")
+
+larv.coef.food <- merge(larv.coef.larval,larv.coef.bamboo,by="otu_microbes")
+
+larv.coef.food$Microbes.x==larv.coef.food$Microbes.y
+
+new.colors <- c("#D83706","#3B9FFD","#4145AA","black")
+
+larv.coef.food$Microbes.x <- factor(larv.coef.food$Microbes.x,levels=c("MMO","EMO","MEM","ALL"))
+
+ggplot(larv.coef.food,aes(x=condval.x,y=condval.y,label=otu_microbes,color=Microbes.x,shape=Microbes.x,fill=Microbes.x))+
+  geom_hline(yintercept=0,linetype="dotted",color="darkgrey")+
+  geom_vline(xintercept=0,linetype="dotted",color="darkgrey")+
+  xlab("Conditional mode in lab food")+
+  ylab("Conditional mode in bamboo")+
+  geom_abline(slope=1, intercept = 0,linetype="dotted",color="darkgrey")+
+  geom_abline(slope=-1, intercept = 0,linetype="dotted",color="darkgrey")+
+  geom_smooth(method = "lm", se = F,linetype="dashed",linewidth=0.75,show.legend=F)+
+  geom_point()+
+  geom_text_repel(color="black")+
+  scale_color_manual(values=new.colors,name="Microbes",labels=c("Mosquito","Environmental","Mosq.+Env.","Mosq.+Env.+E.coli"))+
+  scale_shape_manual(values=c(3,23,9,19),name="Microbes",labels=c("Mosquito","Environmental","Mosq.+Env.","Mosq.+Env.+E.coli"))+
+  scale_fill_manual(values=new.colors,name="Microbes",labels=c("Mosquito","Environmental","Mosq.+Env.","Mosq.+Env.+E.coli"))+
+  #scale_color_manual(values=c("black","blue","purple","red"))+
+  #scale_color_manual(values=c("#7DBA54","#992559","#60eede"),name="Infusion")+
+  theme_cowplot()+
+  ggtitle("Larvae - all data")+
+  guides(color = guide_legend(override.aes = list(size=4)))
+
+##same plot but shared with culture isolates
+larv.coef.less.tax$otu_microbes <- paste0(larv.coef.less.tax$otu_gen,"_",larv.coef.less.tax$Microbes)
+
+larv.coef.less2 <- subset(larv.coef.less.tax,Microbes!="ECO")
+
+larv.coef.less.bamboo <- subset(larv.coef.less2,Food_type=="Bamboo")
+larv.coef.less.larval <- subset(larv.coef.less2,Food_type=="Larval")
+
+larv.coef.less.food <- merge(larv.coef.less.larval,larv.coef.less.bamboo,by="otu_microbes")
+
+larv.coef.less.food$Microbes.x==larv.coef.less.food$Microbes.y
+
+larv.coef.less.food$Microbes.x <- factor(larv.coef.less.food$Microbes.x,levels=c("MMO","EMO","MEM","ALL"))
+
+ggplot(larv.coef.less.food,aes(x=condval.x,y=condval.y,label=otu_microbes))+
+  geom_point(data=larv.coef.food,aes(x=condval.x,y=condval.y,shape=Microbes.x),color="grey",fill="grey")+
+  geom_hline(yintercept=0,linetype="dotted",color="darkgrey")+
+  geom_vline(xintercept=0,linetype="dotted",color="darkgrey")+
+  xlab("Conditional mode in lab food")+
+  ylab("Conditional mode in bamboo")+
+  geom_point(data=larv.coef.less.food,aes(x=condval.x,y=condval.y,shape=Microbes.x,color=Microbes.x,fill=Microbes.x))+
+  geom_text_repel(color="black")+
+  scale_color_manual(values=new.colors,name="Microbes",labels=c("Mosquito","Environmental","Mosq.+Env.","Mosq.+Env.+E.coli"))+
+  scale_shape_manual(values=c(3,23,9,19),name="Microbes",labels=c("Mosquito","Environmental","Mosq.+Env.","Mosq.+Env.+E.coli"))+
+  scale_fill_manual(values=new.colors,name="Microbes",labels=c("Mosquito","Environmental","Mosq.+Env.","Mosq.+Env.+E.coli"))+
+  #scale_color_manual(values=c("black","blue","purple","red"))+
+  #scale_color_manual(values=c("#7DBA54","#992559","#60eede"),name="Infusion")+
+  theme_cowplot()+
+  ggtitle("Larvae - matching culture isolates >98.8%")+
+  guides(color = guide_legend(override.aes = list(size=4)))
+```
+
+# Archive
+
+```{r}
+##I got a warning about the way the offset term was transformed
+df.larv.long$sum.log <- log(df.larv.long$sum)
+larv.mod.biom2 <- glmmTMB(value~offset(sum.log)+food.microbes+Biomass_day40+(1|variable)+(0+Biomass_day40|variable)+(1|variable:food.microbes),family=nbinom2,dispformula=~variable+food.microbes,data=df.larv.long)
+
+df.water.long$sum.log <- log(df.water.long$sum)
+water.mod2 <- glmmTMB(value~offset(sum.log)+food.microbes+Biomass_day40+(1|variable)+(1|variable:food.microbes),family=nbinom2,dispformula=~variable+food.microbes,data=df.water.long)
+
+pred.lar1 <- ggpredict(larv.mod.biom2, terms=c("variable", "food.microbes"), type="re")
+pred.lar1
+
+##warning message version
+pred.lar.warn <- ggpredict(larv.mod.biom, terms=c("variable", "food.microbes"), type="re")
+pred.lar.warn
+
+pred.wtr1 <- ggpredict(water.mod2, terms=c("variable", "food.microbes"), type="re")
+pred.wtr1
+
+pred.wtr <- pred.wtr1[pred.wtr1$x %in% pred.lar1$x,]
+pred.lar <- pred.lar1[pred.lar1$x %in% pred.wtr1$x,]
+
+pred.lar$type <- "larvae"
+pred.wtr$type <- "water"
+pred.both <- data.frame(rbind(pred.lar,pred.wtr))
+
+tax.tab <- data.frame(ps.trim.lar@tax_table)
+
+pred.both$ASV_id <- pred.both$x
+
+pred.both.tax <- plyr::join(pred.both,tax.tab)
+
+library("stringr")
+pred.both.tax$food <- substr(pred.both.tax$group,1,6)
+pred.both.tax$microbes <- str_sub(pred.both.tax$group,-3,-1)
+
+pred.both.tax$microbes <- factor(pred.both.tax$microbes,levels=c("ECO","MMO","EMO","MEM","ALL"))
+
+#split into groups of 20
+asv.list <- c(unique(as.character(pred.both.tax$ASV_id)))
+asv.list.11 <- data.frame(rd1=asv.list[1:11])
+
+pred.both.tax.11 <- pred.both.tax[pred.both.tax$ASV_id %in% asv.list.11$rd1,]
+
+ggplot(pred.both.tax,aes(x=microbes,y=predicted,fill=food,shape=type))+
+  #scale_shape_manual(values=c(17,2,15,0),name="Diet-sample type",labels=c("Bamboo-larvae","Bamboo-water","Lab food-larvae","Lab food-water"))+
+  scale_shape_manual(values=c(21,24),name="Sample type",labels=c("Larvae","Water"))+
+  facet_wrap(~ASV_id,scales="free")+
+  geom_point(position=position_dodge(width=0.2),color="black")+
+  scale_fill_manual(values=c("green","orange"))+
+  #geom_line(aes(group=type),linetype="dotted")+
+  #ylim(0,0.1)+
+  #theme(axis.text.x=element_text(angle=90))+
+  #facet_wrap(~Pool_name,scales="free",nrow=1)+
+  #scale_fill_manual(values=c("seashell3","lightsteelblue4"),name="Sample type",labels=c("Mosq.","Water"))+
+  theme_cowplot()+
+  ylab("Adj. prediction")+
+  theme(axis.text.x=element_text(angle=45,hjust=1,vjust=1.1))
+  #xlab("Infusion")
+
+#write.csv(pred.both.tax,file="ggpredict.tax.info.csv")
+##ASV3
+
+asv.list.22 <- data.frame(rd1=asv.list[12:22])
+
+pred.both.tax.22 <- pred.both.tax[pred.both.tax$ASV_id %in% asv.list.22$rd1,]
+
+ggplot(pred.both.tax.22,aes(x=group,y=predicted,fill=type,shape=type))+
+  scale_shape_manual(values=c(21,23),name="Sample type",labels=c("Mosq.","Water"))+
+  facet_wrap(~ASV_id,scales="free")+
+  geom_point(position=position_dodge(width=0.2),color="black")+
+  #geom_line(aes(group=type),linetype="dotted")+
+  #ylim(0,0.1)+
+  #theme(axis.text.x=element_text(angle=90))+
+  #facet_wrap(~Pool_name,scales="free",nrow=1)+
+  scale_fill_manual(values=c("seashell3","lightsteelblue4"),name="Sample type",labels=c("Mosq.","Water"))+
+  theme_cowplot()+
+  ylab("Adj. prediction")+
+  theme(axis.text.x=element_text(angle=45,hjust=1,vjust=1.1))
+  #xlab("Infusion")
+
+
+```
+

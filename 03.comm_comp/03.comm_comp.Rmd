@@ -1,0 +1,847 @@
+---
+title: "Bamboo mesos community composition"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+ rmarkdown::html_document:
+    theme: cerulean
+    toc: yes
+    toc_float: yes
+    highlight: haddock
+    number_sections: true
+editor_options: 
+  chunk_output_type: console
+---
+
+# Setup
+
+## Libs
+
+```{r}
+library(ggplot2)
+library(phyloseq)
+library(cowplot)
+#install.packages("colorBlindness")
+library(colorBlindness)
+library("microshades")
+library("speedyseq")
+library("ggpubr")
+```
+
+## Dater
+
+```{r}
+setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/03.comm_comp")
+
+ps.clean <- readRDS("../01.process_asvs/bamboomesos_ps.lulu.clean.decontam.rds")
+#ps.clean <- readRDS("../01.process_asvs/bamboomesos_ps.lulu.clean.decontam.rare11k.rds")
+ps.clean
+
+##newest iteration
+ps.clean.exp1 <- subset_samples(ps.clean,Mesocosm_type=="Experiment")
+ps.clean.exp2 <- subset_samples(ps.clean.exp1,Exp_day!=20)
+ps.clean.exp3 <- subset_samples(ps.clean.exp2,Microbe_treatment!="AHK")
+ps.clean.exp <- prune_taxa(taxa_sums(ps.clean.exp3) > 0, ps.clean.exp3)
+ps.clean.exp #257 taxa, 100 samples
+```
+
+### Check where microbes came from 
+
+```{r}
+##quick check
+custom.tax <- data.frame(ps.clean.exp@tax_table)
+source <- c(custom.tax$likely_source)
+custom.tax2 <- cbind(source,custom.tax[,1:9])
+custom.tax$likely_source==custom.tax2$source
+##make a copy before overwriting
+ps.custom <- ps.clean.exp
+ps.custom@tax_table <- tax_table(as.matrix(custom.tax2))
+
+ps.custom.sourceglom <- tax_glom(ps.custom,"source")
+ps.custom.sourceglom
+ps.custom.sourceglom.rel <- transform_sample_counts(ps.custom.sourceglom, function(x) x / sum(x))
+
+plot_bar(ps.custom.sourceglom.rel,fill="source")+
+  theme_cowplot()+
+  facet_wrap(Sample_type~Microbe_treatment,scales="free")+
+  scale_fill_manual(values=c("#84D1B5","#CDF0B7","#7D0112","grey80","#C6A947","#0085A6","grey50","white"))+
+  theme(axis.text.x=element_text(angle=45,hjust=1))
+
+##taking out the data so I can plot it myself
+psmelt.sourceglom.rel <- psmelt(ps.custom.sourceglom.rel)
+
+psmelt.sourceglom.rel$source <- factor(psmelt.sourceglom.rel$source, levels = c("LAB", "MOS", "MOS/ENV", "ENV", "ENV/HFlarvae", "Lab_water", "unclear", "Wolbachia"))
+
+ggplot(psmelt.sourceglom.rel, aes(x = Sample, y = Abundance, fill = source)) +
+  geom_bar(stat = "identity", position = "stack") +
+  theme_cowplot() +
+  facet_wrap(Microbe_treatment*Food_type ~ Sample_type, scales = "free") +
+  scale_fill_manual(values = c("#7D0112","#C6A947","#0085A6","#84D1B5","#CDF0B7", "grey80", "grey50", "black")) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+##E. coli
+psmelt.eco <- subset(psmelt.sourceglom.rel,Microbe_treatment=="ECO")
+psmelt.eco.bam <- subset(psmelt.eco,Food_type=="Bamboo")
+psmelt.eco.sta <- subset(psmelt.eco,Food_type=="Larval food")
+
+ggbar.eco.bam <- ggplot(psmelt.eco.bam,aes(x=Mesocosm_id,y=Abundance,fill=source))+
+  geom_bar(stat = "identity", position = "stack") +
+  theme_cowplot() +
+  facet_grid(~Sample_type,scales="free")+
+  scale_fill_manual(values = c("#7D0112","#C6A947","#0085A6","#84D1B5","#CDF0B7", "grey80", "grey50", "black"),name="Likely source") +
+  theme(axis.text.x = element_blank(),axis.title.x = element_blank(),axis.ticks.x = element_blank())+
+  ylab("Rel. abundance")
+ggbar.eco.bam
+
+ggbar.eco.sta <- ggplot(psmelt.eco.sta,aes(x=Mesocosm_id,y=Abundance,fill=source))+
+  geom_bar(stat = "identity", position = "stack") +
+  theme_cowplot() +
+  facet_grid(~Sample_type,scales="free")+
+  scale_fill_manual(values = c("#7D0112","#C6A947","#0085A6","#84D1B5","#CDF0B7", "grey80", "grey50", "black"),name="Likely source") +
+  theme(axis.text.x = element_blank(),axis.title.x = element_blank(),axis.ticks.x = element_blank())+
+  ylab("Rel. abundance")
+
+##mosquito microbes
+psmelt.mmo <- subset(psmelt.sourceglom.rel,Microbe_treatment=="MMO")
+psmelt.mmo.bam <- subset(psmelt.mmo,Food_type=="Bamboo")
+psmelt.mmo.sta <- subset(psmelt.mmo,Food_type=="Larval food")
+
+ggbar.mmo.bam <- ggplot(psmelt.mmo.bam,aes(x=Mesocosm_id,y=Abundance,fill=source))+
+  geom_bar(stat = "identity", position = "stack") +
+  theme_cowplot() +
+  facet_grid(~Sample_type,scales="free")+
+  scale_fill_manual(values = c("#7D0112","#C6A947","#0085A6","#84D1B5","#CDF0B7", "grey80", "grey50", "black"),name="Likely source") +
+  theme(axis.text.x = element_blank(),axis.title.x = element_blank(),axis.ticks.x = element_blank(),axis.title.y=element_blank())
+ggbar.mmo.bam
+
+ggbar.mmo.sta <- ggplot(psmelt.mmo.sta,aes(x=Mesocosm_id,y=Abundance,fill=source))+
+  geom_bar(stat = "identity", position = "stack") +
+  theme_cowplot() +
+  facet_grid(~Sample_type,scales="free")+
+  scale_fill_manual(values = c("#7D0112","#C6A947","#0085A6","#84D1B5","#CDF0B7", "grey80", "grey50", "black"),name="Likely source") +
+  theme(axis.text.x = element_blank(),axis.title.x = element_blank(),axis.ticks.x = element_blank(),axis.title.y=element_blank())
+ggbar.mmo.sta
+
+##env microbes
+psmelt.emo <- subset(psmelt.sourceglom.rel,Microbe_treatment=="EMO")
+psmelt.emo.bam <- subset(psmelt.emo,Food_type=="Bamboo")
+psmelt.emo.sta <- subset(psmelt.emo,Food_type=="Larval food")
+
+ggbar.emo.bam <- ggplot(psmelt.emo.bam,aes(x=Mesocosm_id,y=Abundance,fill=source))+
+  geom_bar(stat = "identity", position = "stack") +
+  theme_cowplot() +
+  facet_grid(~Sample_type,scales="free")+
+  scale_fill_manual(values = c("#7D0112","#C6A947","#0085A6","#84D1B5","#CDF0B7", "grey80", "grey50", "black"),name="Likely source") +
+  theme(axis.text.x = element_blank(),axis.title.x = element_blank(),axis.ticks.x = element_blank(),axis.title.y=element_blank())
+ggbar.emo.bam
+
+ggbar.emo.sta <- ggplot(psmelt.emo.sta,aes(x=Mesocosm_id,y=Abundance,fill=source))+
+  geom_bar(stat = "identity", position = "stack") +
+  theme_cowplot() +
+  facet_grid(~Sample_type,scales="free")+
+  scale_fill_manual(values = c("#7D0112","#C6A947","#0085A6","#84D1B5","#CDF0B7", "grey80", "grey50", "black"),name="Likely source") +
+  theme(axis.text.x = element_blank(),axis.title.x = element_blank(),axis.ticks.x = element_blank(),axis.title.y=element_blank())
+ggbar.emo.sta
+
+##env + mos
+psmelt.mem <- subset(psmelt.sourceglom.rel,Microbe_treatment=="MEM")
+psmelt.mem.bam <- subset(psmelt.mem,Food_type=="Bamboo")
+psmelt.mem.sta <- subset(psmelt.mem,Food_type=="Larval food")
+
+ggbar.mem.bam <- ggplot(psmelt.mem.bam,aes(x=Mesocosm_id,y=Abundance,fill=source))+
+  geom_bar(stat = "identity", position = "stack") +
+  theme_cowplot() +
+  facet_grid(~Sample_type,scales="free")+
+  scale_fill_manual(values = c("#7D0112","#C6A947","#0085A6","#84D1B5","#CDF0B7", "grey80", "grey50", "black"),name="Likely source") +
+  theme(axis.text.x = element_blank(),axis.title.x = element_blank(),axis.ticks.x = element_blank(),axis.title.y=element_blank())
+ggbar.mem.bam
+
+ggbar.mem.sta <- ggplot(psmelt.mem.sta,aes(x=Mesocosm_id,y=Abundance,fill=source))+
+  geom_bar(stat = "identity", position = "stack") +
+  theme_cowplot() +
+  facet_grid(~Sample_type,scales="free")+
+  scale_fill_manual(values = c("#7D0112","#C6A947","#0085A6","#84D1B5","#CDF0B7", "grey80", "grey50", "black"),name="Likely source") +
+  theme(axis.text.x = element_blank(),axis.title.x = element_blank(),axis.ticks.x = element_blank(),axis.title.y=element_blank())+
+  ylab("Relative abundance")
+ggbar.mem.sta
+
+##all
+psmelt.all <- subset(psmelt.sourceglom.rel,Microbe_treatment=="ALL")
+psmelt.all.bam <- subset(psmelt.all,Food_type=="Bamboo")
+psmelt.all.sta <- subset(psmelt.all,Food_type=="Larval food")
+
+ggbar.all.bam <- ggplot(psmelt.all.bam,aes(x=Mesocosm_id,y=Abundance,fill=source))+
+  geom_bar(stat = "identity", position = "stack") +
+  theme_cowplot() +
+  facet_grid(~Sample_type,scales="free")+
+  scale_fill_manual(values = c("#7D0112","#C6A947","#0085A6","#84D1B5","#CDF0B7", "grey80", "grey50", "black"),name="Likely source") +
+  theme(axis.text.x = element_blank(),axis.title.x = element_blank(),axis.ticks.x = element_blank(),axis.title.y=element_blank())
+ggbar.all.bam
+
+ggbar.all.sta <- ggplot(psmelt.all.sta,aes(x=Mesocosm_id,y=Abundance,fill=source))+
+  geom_bar(stat = "identity", position = "stack") +
+  theme_cowplot() +
+  facet_grid(~Sample_type,scales="free")+
+  #facet_grid(Food_type~Sample_type,scales="free")+
+  scale_fill_manual(values = c("#7D0112","#C6A947","#0085A6","#84D1B5","#CDF0B7", "grey80", "grey50", "black"),name="Likely source") +
+  theme(axis.text.x = element_blank(),axis.title.x = element_blank(),axis.ticks.x = element_blank(),axis.title.y=element_blank())+
+  ylab("Relative abundance")
+ggbar.all.sta
+
+ggarrange(ggbar.eco.sta,ggbar.mmo.sta,ggbar.emo.sta,ggbar.mem.sta,ggbar.all.sta,ggbar.eco.bam,ggbar.mmo.bam,ggbar.emo.bam,ggbar.mem.bam,ggbar.all.bam,nrow=2,ncol=5,common.legend=T,legend="right",align="hv",labels=c("(a)","(b)","(c)","(d)","(e)","(f)","(g)","(h)","(i)","(j)"))
+
+#ggsave("barplot.sources.pdf",width=13,height=4)
+#ggsave("barplot.sources.png",width=13,height=4)
+```
+
+# PCoA
+
+## All
+
+```{r}
+ord.exp.nmds.horn <- ordinate(ps.clean.exp, "NMDS", "horn")
+
+ord.exp.nmds.horn[["stress"]] #0.1501527
+
+#colorz <- c("#30123B","#E1DD37","#3E9BFE","#4143A7","#AF1801")
+#colorz <- c("#30123B","#AF1801","#22C5E2","#46F884","#E1DD37")
+
+##unformatted
+gg.exp.nmds.horn <- plot_ordination(ps.clean.exp, ord.exp.nmds.horn,color="Microbe_treatment",shape="Sample_type")+
+  #stat_ellipse()+
+  theme_cowplot()
+gg.exp.nmds.horn
+
+##extract data so I can make it look how I want
+df.gg.exp.nmds.horn <- gg.exp.nmds.horn[["data"]]
+
+df.gg.exp.nmds.horn$sample.food <- paste0(df.gg.exp.nmds.horn$Sample_type,"_",df.gg.exp.nmds.horn$Food_type)
+
+##adding ordi spider?
+#df.gg.exp.noahk.nmds.horn$Microbe_treatment <- factor(df.gg.exp.noahk.nmds.horn$Microbe_treatment,levels=c("ECO","MMO","EMO","MEM","ALL"))
+
+df.gg.exp.nmds.horn$all.trts <- paste0(df.gg.exp.nmds.horn$sample.food,"_",df.gg.exp.nmds.horn$Microbe_treatment)
+
+cent <- aggregate(cbind(NMDS1, NMDS2) ~ all.trts, data = df.gg.exp.nmds.horn, FUN = mean)
+
+segs <- merge(df.gg.exp.nmds.horn, setNames(cent, c('all.trts','oNMDS1','oNMDS2')),by = 'all.trts', sort = FALSE)
+
+##re-order
+df.gg.exp.nmds.horn$Microbe_treatment <- factor(df.gg.exp.nmds.horn$Microbe_treatment,levels=c("ECO","MMO","EMO","MEM","ALL"))
+df.gg.exp.nmds.horn$sample.food <- factor(df.gg.exp.nmds.horn$sample.food,levels=c("Larvae_Bamboo","Larvae_Larval food","Water_Bamboo","Water_Larval food"))
+
+new.colors <- c("#7D0112","#C6A947","#84D1B5","#0085A6","#1F28A2")
+
+new.plot <- ggplot(df.gg.exp.nmds.horn, aes(x=NMDS1, y=NMDS2,shape=sample.food,color=Microbe_treatment))+
+  scale_shape_manual(values=c(17,15,24,22),name="Sample type - diet",labels=c("Larvae - bamboo","Larvae - standard","Water - bamboo","Water - standard"))+
+  theme_cowplot()+
+  geom_segment(data=segs, mapping = aes(xend = oNMDS1, yend = oNMDS2),alpha=0.5)+ # spiders
+  geom_point(size=2,fill="white")+
+  scale_color_manual(values=new.colors,name="Microbes",labels=c("Lab","Mos.","Env.","Mos.+Env.","Mos.+Env.+Lab"))+
+  annotate("text",x=-1.8,y=-1.9,label="2D stress = 0.15")
+new.plot
+
+#ggsave("nmds.horn.exp.pdf",width=5.5,height=3.5)
+
+#cvdPlot(new.plot)
+```
+
+# Microbe stocks
+
+## Setup
+
+```{r}
+library("microshades")
+#remotes::install_github("mikemc/speedyseq")
+library("speedyseq")
+```
+
+## Prep
+
+```{r}
+ps.stocks1 <- subset_samples(ps.clean,Mesocosm_type=="Microbe stock")
+ps.stocks <- prune_taxa(taxa_sums(ps.stocks1) > 0, ps.stocks1)
+ps.stocks
+
+ps.stocks.rel <- transform_sample_counts(ps.stocks, function(x) x / sum(x))
+
+plot_bar(ps.stocks.rel,fill="Order")
+```
+
+
+
+## Top phyla prep
+
+```{r}
+##Who are the top taxa for microshades
+# Merges ASVs that have the same taxonomy rank
+## Phylum ##
+ps.stocks.rel.phy <- tax_glom(ps.stocks.rel, taxrank = "Phylum") 
+ps.stocks.rel.phy #8 total
+
+# Calculate taxa sum
+top5 = head(sort(colSums(otu_table(ps.stocks.rel.phy)), decreasing = TRUE), 10)
+# Combine count and taxonomyTable
+top5 = cbind(as.data.frame(tax_table(ps.stocks.rel.phy)[names(top5),]), Count = top5)
+top5
+#Proteobacteria
+#Firmicutes
+#Acidobacteriota
+#Bacteroidota
+```
+
+## Phyla microshades plotting 
+
+```{r}
+mdf.stocks <- prep_mdf(ps.stocks.rel,subgroup_level="Genus")
+
+# Create a color object for the specified data
+col.mdf.stocks <- create_color_dfs(mdf.stocks, top_orientation = F,group_level="Phylum",subgroup_level="Genus",selected_groups=c("Proteobacteria","Firmicutes","Acidobacteriota","Bacteroidota"),cvd=TRUE)
+
+#Extract
+col.mdf.stocks.m <- col.mdf.stocks$mdf
+col.mdf.stocks.c <- col.mdf.stocks$cdf
+
+##default plot
+plot_microshades(col.mdf.stocks.m, col.mdf.stocks.c)+
+  #facet_wrap(scales="free")+
+  theme_cowplot()+
+  #facet_wrap(~infusion,scales="free")+
+  scale_x_discrete(labels=c("E.coli","Mosq.","Env."))+
+  #theme(axis.text.x=element_text(angle=45,vjust=1,hjust=1))+
+  xlab("Microbe stock")+
+  #ggtitle("Mosquitoes")+
+  guides(color=guide_legend("Phylum-Family"),fill=guide_legend("Phylum-Family"))
+```
+
+## Top classes
+
+```{r}
+## Class ##
+ps.stocks.rel.cla <- tax_glom(ps.stocks.rel, taxrank = "Class") 
+ps.stocks.rel.cla #12
+
+# Calculate taxa sum
+top5 = head(sort(colSums(otu_table(ps.stocks.rel.cla)), decreasing = TRUE), 10)
+# Combine count and taxonomyTable
+top5 = cbind(as.data.frame(tax_table(ps.stocks.rel.cla)[names(top5),]), Count = top5)
+top5
+#Gammaproteobacteria
+#Alphaproteobacteria
+#Bacilli
+#Negativicutes
+#Bacteroidia
+```
+
+## Microshades plotting
+
+```{r}
+mdf.stocks <- prep_mdf(ps.stocks.rel,subgroup_level="Family")
+
+# Create a color object for the specified data
+col.mdf.stocks <- create_color_dfs(mdf.stocks, top_orientation = F,group_level="Class",subgroup_level="Family",selected_groups=c("Gammaproteobacteria","Alphaproteobacteria","Bacilli","Negativicutes"),cvd=TRUE)
+
+#Extract
+col.mdf.stocks.m <- col.mdf.stocks$mdf
+col.mdf.stocks.c <- col.mdf.stocks$cdf
+
+##default plot
+plot_microshades(col.mdf.stocks.m, col.mdf.stocks.c)+
+  #facet_wrap(scales="free")+
+  theme_cowplot()+
+  #facet_wrap(~infusion,scales="free")+
+  scale_x_discrete(labels=c("LAB","MOS","ENV"))+
+  #theme(axis.text.x=element_text(angle=45,vjust=1,hjust=1))+
+  xlab("Microbe stock")+
+  ylab("Relative abundance")+
+  #ggtitle("Mosquitoes")+
+  guides(color=guide_legend("Class-Family"),fill=guide_legend("Class-Family"))
+
+#ggsave("microshades.stocks.class.fam.pdf",width=7,height=5)
+```
+
+# Sample types summed
+
+```{r}
+ps.expstock1 <- subset_samples(ps.clean,Mesocosm_type=="Experiment"|Mesocosm_type=="Microbe stock")
+ps.expstock2 <- subset_samples(ps.expstock1,Exp_day!=20)
+ps.expstock3 <- subset_samples(ps.expstock2,Microbe_treatment!="AHK")
+ps.expstock <- prune_taxa(taxa_sums(ps.expstock3) > 0, ps.expstock3)
+ps.expstock #298 taxa, 103 samples
+
+##initial relative abundance per sample
+ps.expstock.rel <- transform_sample_counts(ps.expstock, function(x) x / sum(x))
+
+##make the variable to glom by
+samdf.expstock <- data.frame(ps.expstock.rel@sam_data)
+samdf.expstock$Microbe_treatment <- sub("E. coli","ECO",samdf.expstock$Microbe_treatment)
+samdf.expstock$Microbe_treatment <- sub("Mosquito microbes","MMO",samdf.expstock$Microbe_treatment)
+samdf.expstock$Microbe_treatment <- sub("Env. microbes","EMO",samdf.expstock$Microbe_treatment)
+samdf.expstock$Sample_type <- sub("Microbe Stock","aMicro",samdf.expstock$Sample_type)
+samdf.expstock$glom <- paste0(substr(samdf.expstock$Sample_type,1,5),"_",substr(samdf.expstock$Food_type,1,5),"_",samdf.expstock$Microbe_treatment)
+##changing the order:
+#samdf.expstock$glom <- paste0(substr(samdf.expstock$Sample_type,1,5),"_",substr(samdf.expstock$Food_type,1,5),"_",)
+samdf.expstock$glom
+ps.expstock.rel@sam_data <- sample_data(samdf.expstock)
+
+ps.expstock.rel.glom <- merge_samples(ps.expstock.rel, "glom")
+ps.expstock.rel.glom.rel <- transform_sample_counts(ps.expstock.rel.glom, function(x) x / sum(x))
+
+plot_bar(ps.expstock.rel.glom.rel,fill="Phylum")
+
+##Who are the top taxa for microshades
+# Merges ASVs that have the same taxonomy rank
+## Phylum ##
+ps.expstock.rel.glom.rel.phy <- tax_glom(ps.expstock.rel.glom.rel, taxrank = "Phylum") 
+ps.expstock.rel.glom.rel.phy #10 total
+
+# Calculate taxa sum
+top.phy = head(sort(colSums(otu_table(ps.expstock.rel.glom.rel.phy)), decreasing = TRUE), 10)
+# Combine count and taxonomyTable
+top.phy = cbind(as.data.frame(tax_table(ps.expstock.rel.glom.rel.phy)[names(top.phy),]), Count = top.phy)
+top.phy
+#Proteobacteria
+#Bacteroidota
+#Firmicutes
+#Actinobacteriota
+
+##microshades plotting
+mdf.expstock <- prep_mdf(ps.expstock.rel.glom.rel,subgroup_level="Order")
+
+# Create a color object for the specified data
+col.mdf.expstock <- create_color_dfs(mdf.expstock, top_orientation = F,group_level="Phylum",subgroup_level="Order",selected_groups=c("Proteobacteria","Bacteroidota","Firmicutes","Actinobacteriota"),cvd=TRUE)
+
+#Extract
+col.mdf.expstock.m <- col.mdf.expstock$mdf
+col.mdf.expstock.c <- col.mdf.expstock$cdf
+
+col.mdf.expstock.m$Sample_type <- substr(col.mdf.expstock.m$Sample,1,5)
+col.mdf.expstock.m$Sample_type
+col.mdf.expstock.m$Food_type <- substr(col.mdf.expstock.m$Sample,7,11)
+col.mdf.expstock.m$Food_type
+col.mdf.expstock.m$Microbe_treatment <- substr(col.mdf.expstock.m$Sample,13,16)
+col.mdf.expstock.m$Microbe_treatment
+
+#unique(col.mdf.expstock.m$Sample)
+
+# col.mdf.expstock.m$Sample <- factor(col.mdf.expstock.m$Sample,levels=c("Micro_Micro_ECO","Water_Larva_ECO","Larva_Larva_ECO","Water_Bambo_ECO","Larva_Bambo_ECO","Micro_Micro_MMO","Water_Larva_MMO","Larva_Larva_MMO","Water_Bambo_MMO","Larva_Bambo_MMO","Micro_Micro_EMO","Water_Larva_EMO","Larva_Larva_EMO","Water_Bambo_EMO","Larva_Bambo_EMO","Water_Larva_MEM","Larva_Larva_MEM","Water_Bambo_MEM",""))
+#   
+# ,[4],"Larva_Larva_ALL","","Water_Larva_ALL"
+# [10],"","",""
+# [13],"","","Larva_Bambo_ALL"
+# [16],"Water_Bambo_ALL","Larva_Bambo_MEM",""
+# [19],"","",""
+# [22],"",""
+#col.mdf.stock.m <- subset(col.mdf.expstock.m,Sample_type=="Micro")
+
+col.mdf.expstock.m$Microbe_treatment <- factor(col.mdf.expstock.m$Microbe_treatment,levels=c("ECO","EMO","MMO","MEM","ALL"))
+
+##default plot
+plot_microshades(col.mdf.expstock.m, col.mdf.expstock.c)+
+  facet_grid(.~Microbe_treatment,scales="free")+
+  theme_cowplot()+
+  #facet_wrap(~Sample_type*Microbe_treatment,scales="free",nrow=1)+
+  #scale_x_discrete(labels=c("LAB","MOS","ENV"))+
+  #theme(axis.text.x=element_blank())+
+  theme(axis.text.x=element_text(angle=45,vjust=1,hjust=1))+
+  #xlab("Microbe stock")+
+  ylab("Relative abundance")+
+  #ggtitle("Mosquitoes")+
+  guides(color=guide_legend("Class-Family"),fill=guide_legend("Class-Family"))
+
+#col.mdf.exp.m <- subset(col.mdf.expstock.m,Sample_type!="Micro")
+
+# ##default plot
+# plot_microshades(col.mdf.exp.m, col.mdf.expstock.c)+
+#   facet_grid(.~Microbe_treatment,scales="free")+
+#   theme_cowplot()+
+#   #facet_wrap(~Sample_type*Microbe_treatment,scales="free",nrow=1)+
+#   #scale_x_discrete(labels=c("LAB","MOS","ENV"))+
+#   theme(axis.text.x=element_text(angle=45,vjust=1,hjust=1))+
+#   #xlab("Microbe stock")+
+#   ylab("Relative abundance")+
+#   #ggtitle("Mosquitoes")+
+#   guides(color=guide_legend("Class-Family"),fill=guide_legend("Class-Family"))
+
+
+
+#ggsave("microshades.stocks.class.fam.pdf",width=7,height=5)
+```
+
+# Alluvium plot
+
+Just for some light torture
+
+```{r}
+#install.packages("ggalluvial")
+library("ggalluvial")
+
+##y axis = relative abundance
+##x axis = microbe treatment
+##starting with just EMO, MMO, and MEM in bamboo to practice
+
+ps.exp.mem1 <- subset_samples(ps.clean,Mesocosm_type=="Experiment")
+ps.exp.mem2 <- subset_samples(ps.exp.mem1,Exp_day!=20)
+ps.exp.mem3 <- subset_samples(ps.exp.mem2,Microbe_treatment!="AHK"&Microbe_treatment!="ALL"&Microbe_treatment!="ECO")
+ps.exp.mem.bam1 <- subset_samples(ps.exp.mem3,Food_type=="Bamboo")
+ps.mem.bam.lar1 <- subset_samples(ps.exp.mem.bam1,Sample_type=="Larvae")
+ps.mem.bam.lar <- prune_taxa(taxa_sums(ps.mem.bam.lar1) > 0, ps.mem.bam.lar1)
+ps.mem.bam.lar #109 taxa, 15 samples
+
+##initial relative abundance per sample
+ps.mem.bam.lar.rel <- transform_sample_counts(ps.mem.bam.lar, function(x) x / sum(x))
+
+# ##make the variable to glom by
+#samdf.mem.bam.lar <- data.frame(ps.mem.bam.lar@sam_data)
+# samdf.expstock$Microbe_treatment <- sub("E. coli","ECO",samdf.expstock$Microbe_treatment)
+# samdf.expstock$Microbe_treatment <- sub("Mosquito microbes","MMO",samdf.expstock$Microbe_treatment)
+# samdf.expstock$Microbe_treatment <- sub("Env. microbes","EMO",samdf.expstock$Microbe_treatment)
+# samdf.expstock$Sample_type <- sub("Microbe Stock","aMicro",samdf.expstock$Sample_type)
+# samdf.expstock$glom <- paste0(substr(samdf.expstock$Sample_type,1,5),"_",substr(samdf.expstock$Food_type,1,5),"_",samdf.expstock$Microbe_treatment)
+##changing the order:
+# samdf.expstock$glomvar <- paste0(substr(samdf.mem.bam.lar$Sample_type,1,5),"_",substr(samdf.expstock$Food_type,1,5),"_",)
+# samdf.expstock$glom
+# ps.expstock.rel@sam_data <- sample_data(samdf.expstock)
+
+ps.mem.bam.lar.rel.glom <- merge_samples(ps.mem.bam.lar.rel, "Microbe_treatment")
+ps.mem.bam.lar.rel.glom.rel <- transform_sample_counts(ps.mem.bam.lar.rel.glom, function(x) x / sum(x))
+
+plot_bar(ps.mem.bam.lar.rel.glom.rel,fill="Family")
+
+ps.mem.bam.lar.rel.glom.rel.fam <- tax_glom(ps.mem.bam.lar.rel.glom.rel,"Family")
+ps.mem.bam.lar.rel.glom.rel.fam@tax_table
+
+psmelt.mem.bam.lar.fam <- psmelt(ps.mem.bam.lar.rel.glom.rel.fam)
+str(psmelt.mem.bam.lar.fam)
+
+#is_alluvia_form(psmelt.mem.bam.lar, weight = "Abundance")
+
+ggplot(psmelt.mem.bam.lar.fam,aes(x=Sample, y=Abundance, stratum = Family, alluvium=Family, fill=Family, label=Family))+
+  geom_flow(stat = "alluvium", lode.guidance = "frontback",
+            color = "darkgray")+
+  geom_stratum(color=NA)+
+  #facet_grid(temperature~.)+
+  #scale_fill_manual(values=pal.all)+
+  theme_bw()
+```
+
+# Stocks to samples?
+
+```{r}
+#y axis = relative abundance
+##x axis = sample type
+##starting with just EMO to practice
+
+ps.emo1 <- subset_samples(ps.clean, Microbe_treatment=="EMO" | Microbe_treatment=="Env. microbes")
+ps.emo2 <- subset_samples(ps.emo1,Exp_day!=20)
+ps.emo2
+ps.emo3 <- subset_samples(ps.emo2,Mesocosm_type!="Additional control")
+table(ps.emo3@sam_data$Mesocosm_type)
+
+ps.emo3@sam_data$food_sam <- paste0(ps.emo3@sam_data$Food_type,"_",ps.emo3@sam_data$Sample_type)
+
+##initial relative abundance per sample
+ps.emo.rel <- transform_sample_counts(ps.emo3, function(x) x / sum(x))
+
+# ##make the variable to glom by
+#samdf.mem.bam.lar <- data.frame(ps.mem.bam.lar@sam_data)
+# samdf.expstock$Microbe_treatment <- sub("E. coli","ECO",samdf.expstock$Microbe_treatment)
+# samdf.expstock$Microbe_treatment <- sub("Mosquito microbes","MMO",samdf.expstock$Microbe_treatment)
+# samdf.expstock$Microbe_treatment <- sub("Env. microbes","EMO",samdf.expstock$Microbe_treatment)
+# samdf.expstock$Sample_type <- sub("Microbe Stock","aMicro",samdf.expstock$Sample_type)
+# samdf.expstock$glom <- paste0(substr(samdf.expstock$Sample_type,1,5),"_",substr(samdf.expstock$Food_type,1,5),"_",samdf.expstock$Microbe_treatment)
+##changing the order:
+# samdf.expstock$glomvar <- paste0(substr(samdf.mem.bam.lar$Sample_type,1,5),"_",substr(samdf.expstock$Food_type,1,5),"_",)
+# samdf.expstock$glom
+# ps.expstock.rel@sam_data <- sample_data(samdf.expstock)
+
+ps.emo.rel.foodsamglom <- merge_samples(ps.emo.rel, "food_sam")
+ps.emo.rel.foodsamglom.rel1 <- transform_sample_counts(ps.emo.rel.foodsamglom, function(x) x / sum(x))
+ps.emo.rel.foodsamglom.rel <- prune_taxa(taxa_sums(ps.emo.rel.foodsamglom.rel1)!=0,ps.emo.rel.foodsamglom.rel1)
+ps.emo.rel.foodsamglom.rel
+
+plot_bar(ps.emo.rel.foodsamglom.rel,fill="Family")
+
+ps.emo.rel.foodsamglom.rel.fam <- tax_glom(ps.emo.rel.foodsamglom.rel,"Family")
+ps.emo.rel.foodsamglom.rel.fam@tax_table
+
+psmelt.emo.rel.foodsamglom.rel.fam <- psmelt(ps.emo.rel.foodsamglom.rel.fam)
+#str(psmelt.emo.rel.foodsamglom.rel.fam)
+
+#is_alluvia_form(psmelt.mem.bam.lar, weight = "Abundance")
+
+ggplot(psmelt.emo.rel.foodsamglom.rel.fam,aes(x=Sample, y=Abundance, stratum = Family, alluvium=Family, fill=Family, label=Family))+
+  geom_flow(stat = "alluvium", lode.guidance = "frontback",
+            color = "darkgray")+
+  geom_stratum(color=NA)+
+  #facet_grid(temperature~.)+
+  #scale_fill_manual(values=pal.all)+
+  theme_bw()
+```
+
+# Samples to check
+
+- Hatching flask water
+- Hatching flask eggs
+- Hatching flask L1s
+- Lab water 
+
+```{r}
+ps.base1 <- subset_samples(ps.clean,Mesocosm_treatment=="Hatch_flask"|Mesocosm_treatment=="Lab_water")
+
+ps.base <- prune_taxa(taxa_sums(ps.base1)!=0,ps.base1)
+ps.base
+
+plot_bar(ps.base,fill="id",x="Longer_name")+
+  facet_wrap(~Genus,scales="free")
+
+ps.base@otu_table
+##6 taxa of note to take with a grain of salt below:
+##"ASV0002" "ASV0008" "ASV0018" "ASV0030" "ASV0227" "ASV0274"
+
+ps.clean.basetax <- subset_taxa(ps.clean, taxa_names(ps.clean) %in% taxa_names(ps.base))
+
+plot_bar(ps.clean.basetax,fill="id")+
+  facet_wrap(Genus~Sample_type,scales="free")
+
+ps.clean.wolb <- subset_taxa(ps.clean,Genus=="Wolbachia")
+plot_bar(ps.clean.wolb)
+```
+
+# Euler diagram of shared ASVs
+
+```{r}
+#install.packages("remotes")
+#remotes::install_github("Russel88/MicEco")
+library("MicEco")
+library("phyloseq")
+library("ggplot2")
+library("grid")
+#install.packages("VennDiagram")
+#library("VennDiagram")
+#library(grDevices)
+#library("stringr")
+
+setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/03.comm_comp")
+ps.clean <- readRDS("../01.process_asvs/bamboomesos_ps.lulu.clean.decontam.rds")
+```
+
+## Microbe stocks
+
+```{r}
+ps.stocks1 <- subset_samples(ps.clean,Mesocosm_type=="Microbe stock")
+ps.stocks <- prune_taxa(taxa_sums(ps.stocks1) > 0, ps.stocks1)
+ps.stocks
+
+new.colors <- c("#7D0112","#C6A947","#84D1B5","#0085A6","#1F28A2")
+
+##all
+venn.stocks <- ps_venn(ps.stocks,group="Microbe_treatment",quantities=TRUE,main="ASVs per microbial stock",labels=c("Lab","Env.","Mos."),
+         fills = list(fill = c("#7D0112", "#84D1B5","#C6A947"), alpha = 0.5))
+grid.draw(venn.stocks)
+dev.off()
+
+#pdf(file="venn.stocks.pdf",width=3,height=3)
+#png(file="venn.stocks.png",width=3,height=3)
+
+ps_venn(ps.stocks,group="Microbe_treatment",plot=F)
+##4 that are shared:
+#$`Env. microbes__Mosquito microbes`
+#[1] "ASV0006" "ASV0053" "ASV0149" "ASV0525"
+#Rhodoblastus, Roseiarcus, Roseiarcus, Roseiarcus
+```
+
+## Experiment compared with stocks
+
+```{r}
+ps.expstock1 <- subset_samples(ps.clean,Mesocosm_type=="Experiment"|Mesocosm_type=="Microbe stock")
+ps.expstock2 <- subset_samples(ps.expstock1,Exp_day!=20)
+ps.expstock <- prune_taxa(taxa_sums(ps.expstock2) > 0, ps.expstock2)
+ps.expstock
+```
+
+### Mosquito microbes
+
+```{r}
+ps.expstock.mos1 <- subset_samples(ps.expstock,Microbe_treatment=="Mosquito microbes"|Microbe_treatment=="MMO")
+ps.expstock.mos1
+ps.expstock.mos <- prune_taxa(taxa_sums(ps.expstock.mos1) > 0, ps.expstock.mos1)
+ps.expstock.mos #114 taxa, 21 samples
+
+ps_venn(ps.expstock.mos,group="Microbe_treatment")
+
+#graphics.off()
+#^had to run this twice after stupid venn pdf plotting stuff
+ps_venn(ps.expstock.mos,group="Microbe_treatment",quantities=TRUE,main="Mosquito microbes",alpha = 0.5,labels=c("Experiment","Inoculum"),fill=c("#D83706","#D83706")) #all 114 plotted
+
+##which ones are shared/not
+venn.stock.mmo <- ps_venn(ps.expstock.mos,group="Microbe_treatment",quantities=TRUE,main="Mosquito microbes",alpha = 0.5,labels=c("Experiment","Inoculum"),fill=c("#D83706","#D83706"),plot=F) #all 114 plotted
+
+plot_bar(ps.expstock.mos,fill="Genus")+
+  facet_wrap(~Family,scales="free")
+
+##found in the experiment but not the stock :/ 
+taxa_to_keep.mmo <- venn.stock.mmo[["MMO"]]
+
+ps.mmo.only <- prune_taxa(taxa_names(ps.expstock.mos) %in% taxa_to_keep.mmo, ps.expstock.mos)
+ps.mmo.only
+ps.mmo.only.no0 <- prune_samples(sample_sums(ps.mmo.only)!=0,ps.mmo.only)
+ps.mmo.only.no0
+
+plot_bar(ps.mmo.only.no0,fill="Genus")+
+  facet_wrap(~Family,scales="free")
+```
+
+## Base taxa
+
+```{r}
+ps.mmo.nobasetax <- subset_taxa(ps.mmo.only.no0, !taxa_names(ps.mmo.only.no0) %in% taxa_names(ps.base))
+plot_bar(ps.mmo.nobasetax,fill="Genus")
+
+```
+
+### Env. microbes
+
+```{r}
+##env microbes
+ps.expstock.env1 <- subset_samples(ps.expstock2,Microbe_treatment=="Env. microbes"|Microbe_treatment=="EMO")
+ps.expstock.env <- prune_taxa(taxa_sums(ps.expstock.env1) > 0, ps.expstock.env1)
+ps.expstock.env #166 taxa
+
+ps_euler(ps.expstock.env,group="Microbe_treatment",quantities=TRUE,main="Env. microbes",alpha = 0.5,fill=c("#D83706","#D83706")) #all 114 plotted
+,labels=c("Experiment","Inoculum"))
+```
+
+### Treatments compared
+
+#### Larvae
+
+```{r}
+
+ps.exp1 <- subset_samples(ps.expstock2,Microbe_treatment=="MMO"|Microbe_treatment=="EMO"|Microbe_treatment=="MEM")
+ps.exp1
+ps.exp <- prune_taxa(taxa_sums(ps.exp1) > 0, ps.exp1)
+ps.exp #234 taxa
+
+ps_euler(ps.exp,group="Microbe_treatment",quantities=TRUE)
+,
+                  fills = list(fill = c("black", "#3B9FFD","#3B9FFD","#4145AA","#D83706","#D83706"), alpha = 0.5))
+
+new.colors <- c("gray60","#D83706","#3B9FFD","#4145AA","black")
+
+ps_euler(ps.expstock,group="Microbe_treatment",quantities=TRUE)
+
+
+```
+
+## E. coli
+
+```{r}
+ps.stock.eco1 <- subset_samples(ps.stocks,Microbe_treatment=="E. coli")
+ps.stock.eco <- prune_taxa(taxa_sums(ps.stock.eco1) > 0, ps.stock.eco1)
+
+plot_bar(ps.stock.eco,fill="asv")
+ps.stock.eco@otu_table
+
+ps.stock.eco@tax_table
+```
+
+## Mosquito slurry
+
+```{r}
+ps.stock.mmo1 <- subset_samples(ps.stocks,Microbe_treatment=="Mosquito microbes")
+ps.stock.mmo <- prune_taxa(taxa_sums(ps.stock.mmo1) > 0, ps.stock.mmo1)
+
+##ASV1 blasts as Serratia, ASV30 blasts as E. coli
+ps.stock.mmo.gen = tax_glom(ps.stock.mmo, "genus")
+plot_bar(ps.stock.mmo, fill="asv")
+
+ps.exp.mmo1 <- subset_samples(ps.clean.exp,Microbe_treatment=="MMO")
+ps.exp.mmo <- prune_taxa(taxa_sums(ps.exp.mmo1) > 0, ps.exp.mmo1)
+ps.exp.mmo
+
+```
+
+## Bromeliad water
+
+```{r}
+ps.stock.emo1 <- subset_samples(ps.stocks,Microbe_treatment=="Env. microbes")
+ps.stock.emo <- prune_taxa(taxa_sums(ps.stock.emo1) > 0, ps.stock.emo1)
+
+##ASV1 blasts as Serratia, ASV30 blasts as E. coli
+#ps.stock.emo.gen = tax_glom(ps.stock.emo, "genus")
+plot_bar(ps.stock.emo, fill="asv")
+```
+
+# Controls
+
+```{r}
+ps.water <- subset_samples(ps.clean,Sample_type=="Water")
+ps.con1 <- subset_samples(ps.water,Microbe_treatment=="AHK"|Mesocosm_type=="Hatching flask"|Mesocosm_type=="Lab water")
+
+ps.con <- prune_taxa(taxa_sums(ps.con1) > 0, ps.con1)
+
+ps.con
+
+plot_bar(ps.con,fill="genus")+
+  facet_wrap(Microbe_treatment~Mesocosm_type,scales="free")
+#plot_bar(ps.con,fill="asv")+
+#  facet_wrap(Microbe_treatment~Mesocosm_type,scales="free")
+
+ps.con@otu_table
+ps.con@tax_table
+```
+
+ASV2 = Sphingomonas - dominates hatching flask & lab water & some mesocosms
+
+# Treatments
+
+## E. coli/Serratia mess
+
+```{r}
+ps.exp.asv1 <- subset_taxa(ps.clean.exp,asv=="asv1")
+
+plot_bar(ps.exp.asv1,fill="Microbe_treatment",x="Microbe_treatment")+
+  facet_wrap(Sample_type~Food_type,scale="free")+
+  ggtitle("ASV1 - Serratia?")
+
+ps.exp.asv30 <- subset_taxa(ps.clean.exp,asv=="asv30")
+
+plot_bar(ps.exp.asv30,fill="Microbe_treatment",x="Microbe_treatment")+
+  facet_wrap(Sample_type~Food_type,scales="free")+
+  ggtitle("ASV30 - E. coli?")
+
+##both
+ps.exp.asv.sereco <- subset_taxa(ps.clean.exp,asv=="asv1"|asv=="asv30")
+
+plot_bar(ps.exp.asv.sereco,fill="asv",x="Microbe_treatment")+
+  facet_wrap(Sample_type~Food_type,scale="free")+
+  ggtitle("ASV1-Serratia?; ASV30-E.coli?")
+```
+
+## Distance from center for metagenomics
+
+```{r}
+library("dplyr")
+
+df.segs <- segs %>%
+  group_by(all.trts) %>%
+  mutate(distance_from_center = sqrt((NMDS1 - oNMDS1)^2 + (NMDS2 - oNMDS2)^2))
+
+df.segs
+
+df.outliers <- df.segs %>%
+  group_by(all.trts) %>%
+  slice(which.max(distance_from_center))
+
+##checking the outliers are true visually
+ggplot(df.gg.exp.nmds.horn, aes(x=NMDS1, y=NMDS2,shape=sample.food,color=Microbe_treatment,label=Short_label))+
+  scale_shape_manual(values=c(17,15,24,22),name="Sample type - diet",labels=c("Larvae - bamboo","Larvae - standard","Water - bamboo","Water - standard"))+
+  theme_cowplot()+
+  geom_segment(data=segs, mapping = aes(xend = oNMDS1, yend = oNMDS2),alpha=0.5)+ # spiders
+  geom_point(size=2,fill="white")+
+  scale_color_manual(values=new.colors,name="Microbes",labels=c("Lab","Mos.","Env.","Mos.+Env.","Mos.+Env.+Lab"))+
+  annotate("text",x=-1.8,y=-1.9,label="2D stress = 0.15")+
+  geom_text(vjust=0,hjust=0)
+
+write.csv(df.outliers,file="comp.outliers.csv")
+```

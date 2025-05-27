@@ -1,0 +1,433 @@
+"","component","grpvar","term","grp","condval","condsd"
+"cond.1","cond","variable","(Intercept)","ASV0001",7.97260555274267e-08,0.000387751924486527
+"cond.2","cond","variable","(Intercept)","ASV0002",7.53351672626792e-08,0.000385101149898754
+"cond.3","cond","variable","(Intercept)","ASV0003",1.57669565815699e-07,0.000453902419737542
+"cond.4","cond","variable","(Intercept)","ASV0004",2.35307250261192e-08,0.000364543559584302
+"cond.5","cond","variable","(Intercept)","ASV0005",8.80989557536365e-09,0.000362573448938824
+"cond.6","cond","variable","(Intercept)","ASV0006",1.15522827779727e-07,0.000413982984322985
+"cond.7","cond","variable","(Intercept)","ASV0007",6.23749333416504e-08,0.00037806436747326
+"cond.8","cond","variable","(Intercept)","ASV0009",6.45800213735007e-08,0.000379176753771627
+"cond.9","cond","variable","(Intercept)","ASV0010",4.79022455273343e-08,0.000371658941306012
+"cond.10","cond","variable","(Intercept)","ASV0011",-1.02651899218795e-08,0.00036268861796487
+"cond.11","cond","variable","(Intercept)","ASV0012",9.69454978699756e-09,0.000362641368889386
+"cond.12","cond","variable","(Intercept)","ASV0013",3.61882038503332e-08,0.000367649889342884
+"cond.13","cond","variable","(Intercept)","ASV0016",9.95980264115924e-09,0.000362662996733268
+"cond.14","cond","variable","(Intercept)","ASV0019",6.24247563336473e-08,0.000378089110557955
+"cond.15","cond","variable","(Intercept)","ASV0024",3.75525269344929e-08,0.000368061352429865
+"cond.16","cond","variable","(Intercept)","ASV0027",4.6398175256224e-08,0.000371084352498227
+"cond.17","cond","variable","(Intercept)","ASV0030",-3.39240987383339e-09,0.000362299044386761
+"cond.18","cond","variable","(Intercept)","ASV0032",-6.90990584868141e-10,0.000362253234121374
+"cond.19","cond","variable","(Intercept)","ASV0033",7.49759663679734e-08,0.000384890162155887
+"cond.20","cond","variable","(Intercept)","ASV0043",3.44685845487799e-08,0.000367152347859498
+"cond.21","cond","variable","(Intercept)","ASV0053",3.40717555985515e-08,0.000367040877832482
+"cond.22","cond","variable","(Intercept)","ASV0054",2.75197635328856e-08,0.000365383025230322
+"cond.23","cond","variable","(Intercept)","ASV0055",1.84342059204426e-08,0.000363659825363323
+"cond.24","cond","variable","(Intercept)","ASV0058",1.99747950865712e-08,0.000363904541563579
+"cond.25","cond","variable","(Intercept)","ASV0059",1.9380245799322e-08,0.000363807792588974
+"cond.26","cond","variable","(Intercept)","ASV0060",2.92671257658998e-08,0.000365791368076419
+"cond.27","cond","variable","(Intercept)","ASV0061",5.92096775768067e-08,0.000376529792472267
+"cond.28","cond","variable","(Intercept)","ASV0066",-2.58007390900854e-08,0.000365005421093992
+"cond.29","cond","variable","(Intercept)","ASV0070",-2.62121563284984e-08,0.000365093612929148
+"cond.30","cond","variable","(Intercept)","ASV0079",4.48213753757702e-08,0.000370500749080392
+"cond.31","cond","variable","(Intercept)","ASV0083",4.30398050841396e-08,0.000369864586522066
+"cond.32","cond","variable","(Intercept)","ASV0085",-1.5601260732806e-08,0.000363260711113957
+"cond.33","cond","variable","(Intercept)","ASV0087",-8.9094838130744e-11,0.000362251284148441
+"cond.34","cond","variable","(Intercept)","ASV0099",3.92987391102411e-08,0.000368609489140206
+"cond.35","cond","variable","(Intercept)","ASV0100",-2.66246912145301e-09,0.000362280690024328
+"cond.36","cond","variable","(Intercept)","ASV0102",-3.34504497421113e-08,0.000366868880040463
+"cond.37","cond","variable","(Intercept)","ASV0109",-2.43350711637625e-08,0.000364702417744758
+"cond.38","cond","variable","(Intercept)","ASV0125",1.19771731567341e-08,0.000362846538337216
+"cond.39","cond","variable","(Intercept)","ASV0130",3.9064499058787e-08,0.000368534562578741
+"cond.40","cond","variable","(Intercept)","ASV0134",2.13299890501937e-08,0.000364135886525268
+"cond.41","cond","variable","(Intercept)","ASV0138",-4.61264489827135e-08,0.000370982409414591
+"cond.42","cond","variable","(Intercept)","ASV0149",-3.33107796693725e-08,0.000366830639383749
+"cond.43","cond","variable","(Intercept)","ASV0150",-4.46087991508205e-08,0.00037042354572366
+"cond.44","cond","variable","(Intercept)","ASV0152",-1.19390310826004e-08,0.000362842756153474
+"cond.45","cond","variable","(Intercept)","ASV0164",-2.26052644875907e-08,0.000364367305575041
+"cond.46","cond","variable","(Intercept)","ASV0210",-1.10623041303981e-08,0.000362759131626808
+"cond.47","cond","variable","(Intercept)","ASV0212",-2.389489878656e-08,0.000364614831116725
+"cond.48","cond","variable","(Intercept)","ASV0218",-4.86253527166411e-08,0.000371941383712807
+"cond.49","cond","variable","(Intercept)","ASV0220",-9.48162262086682e-09,0.000362624429873878
+"cond.50","cond","variable","(Intercept)","ASV0225",-3.10295988954527e-08,0.000366228193547872
+"cond.51","cond","variable","(Intercept)","ASV0262",-4.40800059299609e-08,0.000370233021381762
+"cond.52","cond","variable","(Intercept)","ASV0276",-2.59528783648085e-08,0.000365037874552521
+"cond.53","cond","variable","(Intercept)","ASV0289",-6.21507556243391e-08,0.000377953263262258
+"cond.54","cond","variable","(Intercept)","ASV0311",-5.26484104692152e-08,0.000373585770410868
+"cond.55","cond","variable:Microbe_treatment","(Intercept)","ASV0001:ALL",0.43517343019902,0.931058210083399
+"cond.56","cond","variable:Microbe_treatment","(Intercept)","ASV0001:ECO",9.16908143593097,1.12324639822065
+"cond.57","cond","variable:Microbe_treatment","(Intercept)","ASV0001:EMO",-2.28713672204606,0.997732965766126
+"cond.58","cond","variable:Microbe_treatment","(Intercept)","ASV0001:MEM",-3.45022321457172,1.06089862740873
+"cond.59","cond","variable:Microbe_treatment","(Intercept)","ASV0001:MMO",-1.41895136241482,1.11166606482393
+"cond.60","cond","variable:Microbe_treatment","(Intercept)","ASV0002:ALL",-1.59016633140172,1.0095195654925
+"cond.61","cond","variable:Microbe_treatment","(Intercept)","ASV0002:ECO",5.65548736646086,1.01322906664072
+"cond.62","cond","variable:Microbe_treatment","(Intercept)","ASV0002:EMO",-1.29282507829011,0.964054563161276
+"cond.63","cond","variable:Microbe_treatment","(Intercept)","ASV0002:MEM",-1.85308838867717,0.956407441776004
+"cond.64","cond","variable:Microbe_treatment","(Intercept)","ASV0002:MMO",1.39371625142835,0.942195154089528
+"cond.65","cond","variable:Microbe_treatment","(Intercept)","ASV0003:ALL",1.33112027689928,0.925165339588097
+"cond.66","cond","variable:Microbe_treatment","(Intercept)","ASV0003:ECO",-0.600172640770227,1.63140588618478
+"cond.67","cond","variable:Microbe_treatment","(Intercept)","ASV0003:EMO",-1.56788793383765,0.98204021455216
+"cond.68","cond","variable:Microbe_treatment","(Intercept)","ASV0003:MEM",1.55791540687376,0.918726846378458
+"cond.69","cond","variable:Microbe_treatment","(Intercept)","ASV0003:MMO",4.12017997887003,0.952027914238654
+"cond.70","cond","variable:Microbe_treatment","(Intercept)","ASV0004:ALL",0.44696365824947,1.12993277618637
+"cond.71","cond","variable:Microbe_treatment","(Intercept)","ASV0004:ECO",-0.0483649128489045,1.9611420530616
+"cond.72","cond","variable:Microbe_treatment","(Intercept)","ASV0004:EMO",0.752941995425402,1.10076001408352
+"cond.73","cond","variable:Microbe_treatment","(Intercept)","ASV0004:MEM",0.208945727591639,1.08736293799376
+"cond.74","cond","variable:Microbe_treatment","(Intercept)","ASV0004:MMO",-0.63798882852107,1.62106841179359
+"cond.75","cond","variable:Microbe_treatment","(Intercept)","ASV0005:ALL",0.760534308730485,1.03872346366585
+"cond.76","cond","variable:Microbe_treatment","(Intercept)","ASV0005:ECO",-0.142086038882482,1.88333110508116
+"cond.77","cond","variable:Microbe_treatment","(Intercept)","ASV0005:EMO",0.132243823828204,1.05981324487225
+"cond.78","cond","variable:Microbe_treatment","(Intercept)","ASV0005:MEM",0.690264471662824,1.00786822316299
+"cond.79","cond","variable:Microbe_treatment","(Intercept)","ASV0005:MMO",-1.17045369074125,1.46927334862772
+"cond.80","cond","variable:Microbe_treatment","(Intercept)","ASV0006:ALL",1.58890682736161,0.916806913605098
+"cond.81","cond","variable:Microbe_treatment","(Intercept)","ASV0006:ECO",-0.781771500261752,1.57156219018576
+"cond.82","cond","variable:Microbe_treatment","(Intercept)","ASV0006:EMO",0.106140786634652,0.938519470245125
+"cond.83","cond","variable:Microbe_treatment","(Intercept)","ASV0006:MEM",0.725639564603837,0.913683319855396
+"cond.84","cond","variable:Microbe_treatment","(Intercept)","ASV0006:MMO",1.90814759031914,0.958129845531056
+"cond.85","cond","variable:Microbe_treatment","(Intercept)","ASV0007:ALL",0.127254790470455,0.936855465871667
+"cond.86","cond","variable:Microbe_treatment","(Intercept)","ASV0007:ECO",-0.730742152736802,1.58673411973844
+"cond.87","cond","variable:Microbe_treatment","(Intercept)","ASV0007:EMO",-0.243807906429104,0.94020057681293
+"cond.88","cond","variable:Microbe_treatment","(Intercept)","ASV0007:MEM",0.32356815334065,0.913602129329806
+"cond.89","cond","variable:Microbe_treatment","(Intercept)","ASV0007:MMO",2.43891426228814,0.942968323755107
+"cond.90","cond","variable:Microbe_treatment","(Intercept)","ASV0009:ALL",0.797741558129441,0.951699269643475
+"cond.91","cond","variable:Microbe_treatment","(Intercept)","ASV0009:ECO",-0.407539983301707,1.71869422387472
+"cond.92","cond","variable:Microbe_treatment","(Intercept)","ASV0009:EMO",0.48648862117902,0.956630939190929
+"cond.93","cond","variable:Microbe_treatment","(Intercept)","ASV0009:MEM",0.0411296451592118,0.943458451865055
+"cond.94","cond","variable:Microbe_treatment","(Intercept)","ASV0009:MMO",1.06507329004995,1.01047954212611
+"cond.95","cond","variable:Microbe_treatment","(Intercept)","ASV0010:ALL",-0.164132821833054,0.99260316265147
+"cond.96","cond","variable:Microbe_treatment","(Intercept)","ASV0010:ECO",2.17959667307726,1.37926678922427
+"cond.97","cond","variable:Microbe_treatment","(Intercept)","ASV0010:EMO",0.32230167299139,0.972052391727234
+"cond.98","cond","variable:Microbe_treatment","(Intercept)","ASV0010:MEM",0.529154642002424,0.940803757086011
+"cond.99","cond","variable:Microbe_treatment","(Intercept)","ASV0010:MMO",-1.39610873561585,1.40851884693624
+"cond.100","cond","variable:Microbe_treatment","(Intercept)","ASV0011:ALL",0.640975322128984,0.989732098656039
+"cond.101","cond","variable:Microbe_treatment","(Intercept)","ASV0011:ECO",-0.324568276893792,1.76394708537703
+"cond.102","cond","variable:Microbe_treatment","(Intercept)","ASV0011:EMO",0.863875588777041,0.976062197740068
+"cond.103","cond","variable:Microbe_treatment","(Intercept)","ASV0011:MEM",0.290131023804307,0.971684509947121
+"cond.104","cond","variable:Microbe_treatment","(Intercept)","ASV0011:MMO",-1.78560052449469,1.36155379459633
+"cond.105","cond","variable:Microbe_treatment","(Intercept)","ASV0012:ALL",0.517869351338147,1.02545069238777
+"cond.106","cond","variable:Microbe_treatment","(Intercept)","ASV0012:ECO",-0.137360954056131,1.88674541494986
+"cond.107","cond","variable:Microbe_treatment","(Intercept)","ASV0012:EMO",-0.561861123361419,1.08208425045381
+"cond.108","cond","variable:Microbe_treatment","(Intercept)","ASV0012:MEM",0.0864890369437729,1.01053948871945
+"cond.109","cond","variable:Microbe_treatment","(Intercept)","ASV0012:MMO",0.39252937233028,1.21008590042286
+"cond.110","cond","variable:Microbe_treatment","(Intercept)","ASV0013:ALL",1.17174312406865,0.945895219909168
+"cond.111","cond","variable:Microbe_treatment","(Intercept)","ASV0013:ECO",-0.54340618923147,1.65978414065499
+"cond.112","cond","variable:Microbe_treatment","(Intercept)","ASV0013:EMO",2.06959104235978,0.948905613265641
+"cond.113","cond","variable:Microbe_treatment","(Intercept)","ASV0013:MEM",0.882438776702441,0.942080251396133
+"cond.114","cond","variable:Microbe_treatment","(Intercept)","ASV0013:MMO",-2.4692283659008,1.29126616022309
+"cond.115","cond","variable:Microbe_treatment","(Intercept)","ASV0016:ALL",0.297807598028697,1.07062543556588
+"cond.116","cond","variable:Microbe_treatment","(Intercept)","ASV0016:ECO",-0.122640445464269,1.89839502654623
+"cond.117","cond","variable:Microbe_treatment","(Intercept)","ASV0016:EMO",0.35630673624372,1.06357902225624
+"cond.118","cond","variable:Microbe_treatment","(Intercept)","ASV0016:MEM",0.855748927927176,1.01209354634037
+"cond.119","cond","variable:Microbe_treatment","(Intercept)","ASV0016:MMO",-1.08141269426416,1.49019317713847
+"cond.120","cond","variable:Microbe_treatment","(Intercept)","ASV0019:ALL",-1.00053550653162,1.1741082181545
+"cond.121","cond","variable:Microbe_treatment","(Intercept)","ASV0019:ECO",-0.0635230752843659,1.94752255335096
+"cond.122","cond","variable:Microbe_treatment","(Intercept)","ASV0019:EMO",4.097024698158,1.01004600569367
+"cond.123","cond","variable:Microbe_treatment","(Intercept)","ASV0019:MEM",-0.297092497654596,1.07448361796023
+"cond.124","cond","variable:Microbe_treatment","(Intercept)","ASV0019:MMO",-0.819156684886463,1.55792466804074
+"cond.125","cond","variable:Microbe_treatment","(Intercept)","ASV0024:ALL",1.35537797109659,0.966367104829916
+"cond.126","cond","variable:Microbe_treatment","(Intercept)","ASV0024:ECO",-0.285773348951825,1.78604843859704
+"cond.127","cond","variable:Microbe_treatment","(Intercept)","ASV0024:EMO",1.19242964005762,0.968645030026004
+"cond.128","cond","variable:Microbe_treatment","(Intercept)","ASV0024:MEM",0.573309717331855,0.963559758235321
+"cond.129","cond","variable:Microbe_treatment","(Intercept)","ASV0024:MMO",-1.68231482075541,1.37116125493262
+"cond.130","cond","variable:Microbe_treatment","(Intercept)","ASV0027:ALL",0.664549976436056,0.96332743941653
+"cond.131","cond","variable:Microbe_treatment","(Intercept)","ASV0027:ECO",-0.275882463684957,1.79201926780064
+"cond.132","cond","variable:Microbe_treatment","(Intercept)","ASV0027:EMO",-2.82584234564871,1.25392691685184
+"cond.133","cond","variable:Microbe_treatment","(Intercept)","ASV0027:MEM",0.523584974235772,0.954702419855676
+"cond.134","cond","variable:Microbe_treatment","(Intercept)","ASV0027:MMO",3.33821965995005,0.97127238986072
+"cond.135","cond","variable:Microbe_treatment","(Intercept)","ASV0030:ALL",-1.94932110609626,1.34733854322725
+"cond.136","cond","variable:Microbe_treatment","(Intercept)","ASV0030:ECO",6.82942475631786,1.09066159777769
+"cond.137","cond","variable:Microbe_treatment","(Intercept)","ASV0030:EMO",-2.24605829372623,1.32251097328907
+"cond.138","cond","variable:Microbe_treatment","(Intercept)","ASV0030:MEM",-1.66615661912581,1.15035399561271
+"cond.139","cond","variable:Microbe_treatment","(Intercept)","ASV0030:MMO",-1.07205076912531,1.49322259770835
+"cond.140","cond","variable:Microbe_treatment","(Intercept)","ASV0032:ALL",-0.719746077178342,0.992804764718205
+"cond.141","cond","variable:Microbe_treatment","(Intercept)","ASV0032:ECO",-0.357192311076447,1.74617781358167
+"cond.142","cond","variable:Microbe_treatment","(Intercept)","ASV0032:EMO",-3.07716567249933,1.24537841703089
+"cond.143","cond","variable:Microbe_treatment","(Intercept)","ASV0032:MEM",-0.0894017457330862,0.964429400482335
+"cond.144","cond","variable:Microbe_treatment","(Intercept)","ASV0032:MMO",4.22228933031812,0.966266865419811
+"cond.145","cond","variable:Microbe_treatment","(Intercept)","ASV0033:ALL",1.40344465680105,0.988745796000139
+"cond.146","cond","variable:Microbe_treatment","(Intercept)","ASV0033:ECO",-0.129259584498065,1.89283091734987
+"cond.147","cond","variable:Microbe_treatment","(Intercept)","ASV0033:EMO",1.71159317299909,0.994537752693714
+"cond.148","cond","variable:Microbe_treatment","(Intercept)","ASV0033:MEM",0.535821306345807,0.991418404299746
+"cond.149","cond","variable:Microbe_treatment","(Intercept)","ASV0033:MMO",-1.2195047929996,1.45265646535459
+"cond.150","cond","variable:Microbe_treatment","(Intercept)","ASV0043:ALL",-0.871846355058833,1.20775113694903
+"cond.151","cond","variable:Microbe_treatment","(Intercept)","ASV0043:ECO",-0.0471893296934919,1.9622507922113
+"cond.152","cond","variable:Microbe_treatment","(Intercept)","ASV0043:EMO",0.883486718200585,1.15352119447337
+"cond.153","cond","variable:Microbe_treatment","(Intercept)","ASV0043:MEM",1.8159812496415,1.06027781160003
+"cond.154","cond","variable:Microbe_treatment","(Intercept)","ASV0043:MMO",-0.722093835828794,1.5955474991734
+"cond.155","cond","variable:Microbe_treatment","(Intercept)","ASV0053:ALL",0.623135238011623,0.936215095014332
+"cond.156","cond","variable:Microbe_treatment","(Intercept)","ASV0053:ECO",-0.427196322171726,1.70929937009523
+"cond.157","cond","variable:Microbe_treatment","(Intercept)","ASV0053:EMO",0.968635211884818,0.94346704584753
+"cond.158","cond","variable:Microbe_treatment","(Intercept)","ASV0053:MEM",0.416448934109508,0.93065213328079
+"cond.159","cond","variable:Microbe_treatment","(Intercept)","ASV0053:MMO",-0.534869023666663,1.07444848282493
+"cond.160","cond","variable:Microbe_treatment","(Intercept)","ASV0054:ALL",-0.292224828638491,1.0758903351508
+"cond.161","cond","variable:Microbe_treatment","(Intercept)","ASV0054:ECO",-0.0998693928530509,1.9164189191249
+"cond.162","cond","variable:Microbe_treatment","(Intercept)","ASV0054:EMO",-0.638548820096548,1.08379636533472
+"cond.163","cond","variable:Microbe_treatment","(Intercept)","ASV0054:MEM",-0.632566068650937,1.03586099803062
+"cond.164","cond","variable:Microbe_treatment","(Intercept)","ASV0054:MMO",2.50818792754918,1.01973922058965
+"cond.165","cond","variable:Microbe_treatment","(Intercept)","ASV0055:ALL",-0.221527926122614,1.03083163475924
+"cond.166","cond","variable:Microbe_treatment","(Intercept)","ASV0055:ECO",-0.164961859534029,1.86620722959047
+"cond.167","cond","variable:Microbe_treatment","(Intercept)","ASV0055:EMO",-2.35873540453951,1.30174162694625
+"cond.168","cond","variable:Microbe_treatment","(Intercept)","ASV0055:MEM",0.174572302181793,1.00248031147014
+"cond.169","cond","variable:Microbe_treatment","(Intercept)","ASV0055:MMO",3.13666478335982,1.01667940519548
+"cond.170","cond","variable:Microbe_treatment","(Intercept)","ASV0058:ALL",0.395570710775847,1.01736782974643
+"cond.171","cond","variable:Microbe_treatment","(Intercept)","ASV0058:ECO",-0.147976043469526,1.8788348757135
+"cond.172","cond","variable:Microbe_treatment","(Intercept)","ASV0058:EMO",-2.26848605069096,1.31220974313973
+"cond.173","cond","variable:Microbe_treatment","(Intercept)","ASV0058:MEM",1.17101185067522,0.993201790686413
+"cond.174","cond","variable:Microbe_treatment","(Intercept)","ASV0058:MMO",1.46319434946263,1.08370555682356
+"cond.175","cond","variable:Microbe_treatment","(Intercept)","ASV0059:ALL",0.708656255747783,0.982787152313192
+"cond.176","cond","variable:Microbe_treatment","(Intercept)","ASV0059:ECO",-0.286213206228596,1.78588800301693
+"cond.177","cond","variable:Microbe_treatment","(Intercept)","ASV0059:EMO",1.41450166357097,0.966552069473037
+"cond.178","cond","variable:Microbe_treatment","(Intercept)","ASV0059:MEM",0.444524213724256,0.965304177550281
+"cond.179","cond","variable:Microbe_treatment","(Intercept)","ASV0059:MMO",-1.68640941058266,1.37220650538079
+"cond.180","cond","variable:Microbe_treatment","(Intercept)","ASV0060:ALL",-0.526900717647721,1.05248387840929
+"cond.181","cond","variable:Microbe_treatment","(Intercept)","ASV0060:ECO",-0.125167133555711,1.89625610148699
+"cond.182","cond","variable:Microbe_treatment","(Intercept)","ASV0060:EMO",-0.289355072025692,1.09078413685106
+"cond.183","cond","variable:Microbe_treatment","(Intercept)","ASV0060:MEM",1.01092895952194,0.993531513694903
+"cond.184","cond","variable:Microbe_treatment","(Intercept)","ASV0060:MMO",0.829124552817642,1.11950741099637
+"cond.185","cond","variable:Microbe_treatment","(Intercept)","ASV0061:ALL",1.29379281898315,0.957881977527602
+"cond.186","cond","variable:Microbe_treatment","(Intercept)","ASV0061:ECO",-0.179116268889248,1.85547558705711
+"cond.187","cond","variable:Microbe_treatment","(Intercept)","ASV0061:EMO",0.383062765577033,0.992734054425827
+"cond.188","cond","variable:Microbe_treatment","(Intercept)","ASV0061:MEM",-1.24281737686064,1.01795411715144
+"cond.189","cond","variable:Microbe_treatment","(Intercept)","ASV0061:MMO",1.56307781516214,1.02546353840481
+"cond.190","cond","variable:Microbe_treatment","(Intercept)","ASV0066:ALL",-0.787669277807127,1.08694692866398
+"cond.191","cond","variable:Microbe_treatment","(Intercept)","ASV0066:ECO",-0.19724317740049,1.84328819793265
+"cond.192","cond","variable:Microbe_treatment","(Intercept)","ASV0066:EMO",1.2278108162331,0.989529946495263
+"cond.193","cond","variable:Microbe_treatment","(Intercept)","ASV0066:MEM",0.382615716642182,0.993633514876121
+"cond.194","cond","variable:Microbe_treatment","(Intercept)","ASV0066:MMO",-1.41771121904268,1.4205106946943
+"cond.195","cond","variable:Microbe_treatment","(Intercept)","ASV0070:ALL",-0.802333450842108,1.03060901625109
+"cond.196","cond","variable:Microbe_treatment","(Intercept)","ASV0070:ECO",-0.224246816624733,1.82529693005929
+"cond.197","cond","variable:Microbe_treatment","(Intercept)","ASV0070:EMO",-2.64344756752469,1.28590067004899
+"cond.198","cond","variable:Microbe_treatment","(Intercept)","ASV0070:MEM",-1.41900686637553,1.04222550368033
+"cond.199","cond","variable:Microbe_treatment","(Intercept)","ASV0070:MMO",4.28420522573816,0.991875723017716
+"cond.200","cond","variable:Microbe_treatment","(Intercept)","ASV0079:ALL",1.41643614744652,0.944959398961838
+"cond.201","cond","variable:Microbe_treatment","(Intercept)","ASV0079:ECO",-0.282855953921839,1.78661720415199
+"cond.202","cond","variable:Microbe_treatment","(Intercept)","ASV0079:EMO",-2.96387477851639,1.23285220330597
+"cond.203","cond","variable:Microbe_treatment","(Intercept)","ASV0079:MEM",0.192987012634164,0.953361234266997
+"cond.204","cond","variable:Microbe_treatment","(Intercept)","ASV0079:MMO",3.01352262267856,0.970266912110382
+"cond.205","cond","variable:Microbe_treatment","(Intercept)","ASV0083:ALL",1.0047033661453,0.958522917287726
+"cond.206","cond","variable:Microbe_treatment","(Intercept)","ASV0083:ECO",-0.239459359860237,1.81392469975084
+"cond.207","cond","variable:Microbe_treatment","(Intercept)","ASV0083:EMO",-2.79734690888672,1.24642296838122
+"cond.208","cond","variable:Microbe_treatment","(Intercept)","ASV0083:MEM",0.229329161983898,0.959309190678417
+"cond.209","cond","variable:Microbe_treatment","(Intercept)","ASV0083:MMO",3.12428667999302,0.974970505076289
+"cond.210","cond","variable:Microbe_treatment","(Intercept)","ASV0085:ALL",-0.478193569956544,1.19415414432781
+"cond.211","cond","variable:Microbe_treatment","(Intercept)","ASV0085:ECO",-0.0736718051830302,1.93876789158825
+"cond.212","cond","variable:Microbe_treatment","(Intercept)","ASV0085:EMO",1.08338147295767,1.06096231761442
+"cond.213","cond","variable:Microbe_treatment","(Intercept)","ASV0085:MEM",-0.183827068020815,1.08609994873516
+"cond.214","cond","variable:Microbe_treatment","(Intercept)","ASV0085:MMO",-0.826716941021903,1.56013605869806
+"cond.215","cond","variable:Microbe_treatment","(Intercept)","ASV0087:ALL",0.411152364029395,0.990222462970464
+"cond.216","cond","variable:Microbe_treatment","(Intercept)","ASV0087:ECO",-0.254170613785929,1.8059029892331
+"cond.217","cond","variable:Microbe_treatment","(Intercept)","ASV0087:EMO",1.36185924604087,0.986592852997133
+"cond.218","cond","variable:Microbe_treatment","(Intercept)","ASV0087:MEM",0.251136780892668,0.982355357658302
+"cond.219","cond","variable:Microbe_treatment","(Intercept)","ASV0087:MMO",-1.77271338392966,1.36572606930989
+"cond.220","cond","variable:Microbe_treatment","(Intercept)","ASV0099:ALL",0.140914031259518,1.0153100907511
+"cond.221","cond","variable:Microbe_treatment","(Intercept)","ASV0099:ECO",-0.105224938747706,1.91192032065423
+"cond.222","cond","variable:Microbe_treatment","(Intercept)","ASV0099:EMO",1.09182456467965,0.992103380578348
+"cond.223","cond","variable:Microbe_treatment","(Intercept)","ASV0099:MEM",-0.163417195914927,0.998003780425497
+"cond.224","cond","variable:Microbe_treatment","(Intercept)","ASV0099:MMO",0.242549157442921,1.1972948001834
+"cond.225","cond","variable:Microbe_treatment","(Intercept)","ASV0100:ALL",0.303485916128466,1.01676031983499
+"cond.226","cond","variable:Microbe_treatment","(Intercept)","ASV0100:ECO",-0.251426357029336,1.80750377663699
+"cond.227","cond","variable:Microbe_treatment","(Intercept)","ASV0100:EMO",1.19342401128466,0.984571023622284
+"cond.228","cond","variable:Microbe_treatment","(Intercept)","ASV0100:MEM",0.245414801940973,0.984091053351269
+"cond.229","cond","variable:Microbe_treatment","(Intercept)","ASV0100:MMO",-1.57264798498701,1.39254443067112
+"cond.230","cond","variable:Microbe_treatment","(Intercept)","ASV0102:ALL",-2.04520726333726,1.33331706099347
+"cond.231","cond","variable:Microbe_treatment","(Intercept)","ASV0102:ECO",-0.116829287540252,1.9028412957369
+"cond.232","cond","variable:Microbe_treatment","(Intercept)","ASV0102:EMO",0.479211013854771,1.02930600377768
+"cond.233","cond","variable:Microbe_treatment","(Intercept)","ASV0102:MEM",-1.70459282664848,1.14155130327406
+"cond.234","cond","variable:Microbe_treatment","(Intercept)","ASV0102:MMO",2.36034117139063,1.04448589676421
+"cond.235","cond","variable:Microbe_treatment","(Intercept)","ASV0109:ALL",-0.417501767758301,1.12994058710775
+"cond.236","cond","variable:Microbe_treatment","(Intercept)","ASV0109:ECO",-0.0569846600112692,1.95339742936648
+"cond.237","cond","variable:Microbe_treatment","(Intercept)","ASV0109:EMO",-1.59979831178053,1.40363910570578
+"cond.238","cond","variable:Microbe_treatment","(Intercept)","ASV0109:MEM",0.620993107368087,1.05179967912998
+"cond.239","cond","variable:Microbe_treatment","(Intercept)","ASV0109:MMO",0.706096997804341,1.25810133997153
+"cond.240","cond","variable:Microbe_treatment","(Intercept)","ASV0125:ALL",-0.314184006056693,1.04900890888078
+"cond.241","cond","variable:Microbe_treatment","(Intercept)","ASV0125:ECO",-0.122724675632185,1.89817025895101
+"cond.242","cond","variable:Microbe_treatment","(Intercept)","ASV0125:EMO",0.699276757197216,1.02892054215542
+"cond.243","cond","variable:Microbe_treatment","(Intercept)","ASV0125:MEM",0.00203083688133056,1.0173473345138
+"cond.244","cond","variable:Microbe_treatment","(Intercept)","ASV0125:MMO",0.103353433905106,1.20419972155035
+"cond.245","cond","variable:Microbe_treatment","(Intercept)","ASV0130:ALL",-1.53232323368846,1.12300852015745
+"cond.246","cond","variable:Microbe_treatment","(Intercept)","ASV0130:ECO",-0.129330230971797,1.89256226961529
+"cond.247","cond","variable:Microbe_treatment","(Intercept)","ASV0130:EMO",0.804273208619018,0.984549639941417
+"cond.248","cond","variable:Microbe_treatment","(Intercept)","ASV0130:MEM",-0.784347698673908,1.01078534468259
+"cond.249","cond","variable:Microbe_treatment","(Intercept)","ASV0130:MMO",2.84118136477308,0.996470265543585
+"cond.250","cond","variable:Microbe_treatment","(Intercept)","ASV0134:ALL",0.000407449991321066,1.119769841485
+"cond.251","cond","variable:Microbe_treatment","(Intercept)","ASV0134:ECO",-0.0466210602330147,1.96268720652794
+"cond.252","cond","variable:Microbe_treatment","(Intercept)","ASV0134:EMO",1.40929990659901,1.05377902074323
+"cond.253","cond","variable:Microbe_treatment","(Intercept)","ASV0134:MEM",-0.0329923036692302,1.07879051893969
+"cond.254","cond","variable:Microbe_treatment","(Intercept)","ASV0134:MMO",-0.675168709651638,1.60573073177504
+"cond.255","cond","variable:Microbe_treatment","(Intercept)","ASV0138:ALL",-0.13872187132149,1.02958365291441
+"cond.256","cond","variable:Microbe_treatment","(Intercept)","ASV0138:ECO",-0.158930155468355,1.87069218707265
+"cond.257","cond","variable:Microbe_treatment","(Intercept)","ASV0138:EMO",1.27992137824347,1.00404617454039
+"cond.258","cond","variable:Microbe_treatment","(Intercept)","ASV0138:MEM",-0.944552194344484,1.04705182183791
+"cond.259","cond","variable:Microbe_treatment","(Intercept)","ASV0138:MMO",-1.45400375643093,1.41730888103224
+"cond.260","cond","variable:Microbe_treatment","(Intercept)","ASV0149:ALL",-0.611475109504799,0.931852568869169
+"cond.261","cond","variable:Microbe_treatment","(Intercept)","ASV0149:ECO",-0.658934431171326,1.61179642303855
+"cond.262","cond","variable:Microbe_treatment","(Intercept)","ASV0149:EMO",0.349882436414693,0.930692220509181
+"cond.263","cond","variable:Microbe_treatment","(Intercept)","ASV0149:MEM",-0.269701681627522,0.920048264921061
+"cond.264","cond","variable:Microbe_treatment","(Intercept)","ASV0149:MMO",0.167440084413722,0.986884200112947
+"cond.265","cond","variable:Microbe_treatment","(Intercept)","ASV0150:ALL",0.2028347679193,1.01821372603985
+"cond.266","cond","variable:Microbe_treatment","(Intercept)","ASV0150:ECO",-0.278683055056608,1.79078888853622
+"cond.267","cond","variable:Microbe_treatment","(Intercept)","ASV0150:EMO",0.996571615428189,0.987822992681527
+"cond.268","cond","variable:Microbe_treatment","(Intercept)","ASV0150:MEM",-0.618161325478027,1.01375460291819
+"cond.269","cond","variable:Microbe_treatment","(Intercept)","ASV0150:MMO",-1.67225002004612,1.38068048441169
+"cond.270","cond","variable:Microbe_treatment","(Intercept)","ASV0152:ALL",0.644845383614675,1.06337204466116
+"cond.271","cond","variable:Microbe_treatment","(Intercept)","ASV0152:ECO",-0.0687012229809843,1.9430674634485
+"cond.272","cond","variable:Microbe_treatment","(Intercept)","ASV0152:EMO",0.10482785535517,1.12598174529032
+"cond.273","cond","variable:Microbe_treatment","(Intercept)","ASV0152:MEM",-0.127759607559618,1.07704765375657
+"cond.274","cond","variable:Microbe_treatment","(Intercept)","ASV0152:MMO",-0.919793623851012,1.53409882732971
+"cond.275","cond","variable:Microbe_treatment","(Intercept)","ASV0164:ALL",-0.76274734402638,1.04241769779609
+"cond.276","cond","variable:Microbe_treatment","(Intercept)","ASV0164:ECO",-0.164619181617082,1.86630856580426
+"cond.277","cond","variable:Microbe_treatment","(Intercept)","ASV0164:EMO",1.32963016551386,0.98567379456726
+"cond.278","cond","variable:Microbe_treatment","(Intercept)","ASV0164:MEM",0.37990671418827,0.984628524569984
+"cond.279","cond","variable:Microbe_treatment","(Intercept)","ASV0164:MMO",-1.47625225010702,1.40876913572309
+"cond.280","cond","variable:Microbe_treatment","(Intercept)","ASV0210:ALL",0.47442565730501,1.13393974391576
+"cond.281","cond","variable:Microbe_treatment","(Intercept)","ASV0210:ECO",-0.0576211358345914,1.9528487305341
+"cond.282","cond","variable:Microbe_treatment","(Intercept)","ASV0210:EMO",0.972455158022312,1.08544969255601
+"cond.283","cond","variable:Microbe_treatment","(Intercept)","ASV0210:MEM",-1.01770239547995,1.18825498873675
+"cond.284","cond","variable:Microbe_treatment","(Intercept)","ASV0210:MMO",-0.71121909286732,1.59759234122257
+"cond.285","cond","variable:Microbe_treatment","(Intercept)","ASV0212:ALL",0.187556748500319,1.09926579224252
+"cond.286","cond","variable:Microbe_treatment","(Intercept)","ASV0212:ECO",-0.0575568939836812,1.95289758895988
+"cond.287","cond","variable:Microbe_treatment","(Intercept)","ASV0212:EMO",-0.520467354668093,1.20575754152374
+"cond.288","cond","variable:Microbe_treatment","(Intercept)","ASV0212:MEM",0.491172383458824,1.06245224141955
+"cond.289","cond","variable:Microbe_treatment","(Intercept)","ASV0212:MMO",-0.834384273113382,1.55955343877918
+"cond.290","cond","variable:Microbe_treatment","(Intercept)","ASV0218:ALL",-0.390990410478125,1.10427856890227
+"cond.291","cond","variable:Microbe_treatment","(Intercept)","ASV0218:ECO",-0.155405228130758,1.87344012472799
+"cond.292","cond","variable:Microbe_treatment","(Intercept)","ASV0218:EMO",0.678623279823693,1.03410016933604
+"cond.293","cond","variable:Microbe_treatment","(Intercept)","ASV0218:MEM",-0.37437270464646,1.05262273167544
+"cond.294","cond","variable:Microbe_treatment","(Intercept)","ASV0218:MMO",-1.25086896558418,1.45735678615993
+"cond.295","cond","variable:Microbe_treatment","(Intercept)","ASV0220:ALL",0.819445705344308,1.06821744472593
+"cond.296","cond","variable:Microbe_treatment","(Intercept)","ASV0220:ECO",-0.051694791145935,1.95813279213355
+"cond.297","cond","variable:Microbe_treatment","(Intercept)","ASV0220:EMO",-1.53160801961428,1.4118079484441
+"cond.298","cond","variable:Microbe_treatment","(Intercept)","ASV0220:MEM",-1.18582826682173,1.17805606594108
+"cond.299","cond","variable:Microbe_treatment","(Intercept)","ASV0220:MMO",1.65855749758176,1.16222377640314
+"cond.300","cond","variable:Microbe_treatment","(Intercept)","ASV0225:ALL",-0.457955262191398,1.13456456630829
+"cond.301","cond","variable:Microbe_treatment","(Intercept)","ASV0225:ECO",-0.0602203901135641,1.95053689861689
+"cond.302","cond","variable:Microbe_treatment","(Intercept)","ASV0225:EMO",0.503427345878441,1.1249841532036
+"cond.303","cond","variable:Microbe_treatment","(Intercept)","ASV0225:MEM",-0.0776525711220574,1.08517233155864
+"cond.304","cond","variable:Microbe_treatment","(Intercept)","ASV0225:MMO",-0.860345454917412,1.552979204833
+"cond.305","cond","variable:Microbe_treatment","(Intercept)","ASV0262:ALL",-1.70882844962079,1.39058681691006
+"cond.306","cond","variable:Microbe_treatment","(Intercept)","ASV0262:ECO",-0.0870967958628791,1.92739286831603
+"cond.307","cond","variable:Microbe_treatment","(Intercept)","ASV0262:EMO",-2.02531134141645,1.35708523298515
+"cond.308","cond","variable:Microbe_treatment","(Intercept)","ASV0262:MEM",0.486191225187602,1.05595096916382
+"cond.309","cond","variable:Microbe_treatment","(Intercept)","ASV0262:MMO",1.9815936420706,1.11777755701088
+"cond.310","cond","variable:Microbe_treatment","(Intercept)","ASV0276:ALL",-1.00414392401582,1.20051792337328
+"cond.311","cond","variable:Microbe_treatment","(Intercept)","ASV0276:ECO",-0.0522541766406173,1.9576548530431
+"cond.312","cond","variable:Microbe_treatment","(Intercept)","ASV0276:EMO",0.497062351637762,1.13833803122016
+"cond.313","cond","variable:Microbe_treatment","(Intercept)","ASV0276:MEM",0.550376988409906,1.06923254460055
+"cond.314","cond","variable:Microbe_treatment","(Intercept)","ASV0276:MMO",-0.787909731385523,1.57459098180821
+"cond.315","cond","variable:Microbe_treatment","(Intercept)","ASV0289:ALL",-1.31786069412837,1.10088779653232
+"cond.316","cond","variable:Microbe_treatment","(Intercept)","ASV0289:ECO",-0.136952459931901,1.88728628521356
+"cond.317","cond","variable:Microbe_treatment","(Intercept)","ASV0289:EMO",1.66479405133636,1.00687557671293
+"cond.318","cond","variable:Microbe_treatment","(Intercept)","ASV0289:MEM",-0.755713640399557,1.05232793618242
+"cond.319","cond","variable:Microbe_treatment","(Intercept)","ASV0289:MMO",-1.36257115344274,1.4363703868704
+"cond.320","cond","variable:Microbe_treatment","(Intercept)","ASV0311:ALL",-0.651858343305691,1.06004704477279
+"cond.321","cond","variable:Microbe_treatment","(Intercept)","ASV0311:ECO",-0.141978221699071,1.88340738625677
+"cond.322","cond","variable:Microbe_treatment","(Intercept)","ASV0311:EMO",1.43768615466421,1.00696183647456
+"cond.323","cond","variable:Microbe_treatment","(Intercept)","ASV0311:MEM",-0.880156890376699,1.05252488915699
+"cond.324","cond","variable:Microbe_treatment","(Intercept)","ASV0311:MMO",-1.38023244746685,1.431381386218
+"cond.325","cond","variable:Food_type","(Intercept)","ASV0001:Bamboo",0.0861647798127141,1.02563165734503
+"cond.326","cond","variable:Food_type","(Intercept)","ASV0001:Larval food",3.96967077385892,0.960057679459867
+"cond.327","cond","variable:Food_type","(Intercept)","ASV0002:Bamboo",0.22849142929051,1.10974060462994
+"cond.328","cond","variable:Food_type","(Intercept)","ASV0002:Larval food",3.60397021457775,1.03367370777539
+"cond.329","cond","variable:Food_type","(Intercept)","ASV0003:Bamboo",3.85403314613333,0.949140968816121
+"cond.330","cond","variable:Food_type","(Intercept)","ASV0003:Larval food",4.16695605917475,0.984052344258439
+"cond.331","cond","variable:Food_type","(Intercept)","ASV0004:Bamboo",-0.627044934937542,1.26051813448844
+"cond.332","cond","variable:Food_type","(Intercept)","ASV0004:Larval food",1.82410341893308,1.186837819496
+"cond.333","cond","variable:Food_type","(Intercept)","ASV0005:Bamboo",-2.0212043329209,1.27040046961244
+"cond.334","cond","variable:Food_type","(Intercept)","ASV0005:Larval food",2.46938262874042,1.05143287846324
+"cond.335","cond","variable:Food_type","(Intercept)","ASV0006:Bamboo",0.2103748567973,1.03051125690324
+"cond.336","cond","variable:Food_type","(Intercept)","ASV0006:Larval food",5.66651932879952,0.956249647768363
+"cond.337","cond","variable:Food_type","(Intercept)","ASV0007:Bamboo",-1.23001815141808,1.07195731576901
+"cond.338","cond","variable:Food_type","(Intercept)","ASV0007:Larval food",4.40316488031822,0.949913661758742
+"cond.339","cond","variable:Food_type","(Intercept)","ASV0009:Bamboo",-0.704838172356106,1.0845735220972
+"cond.340","cond","variable:Food_type","(Intercept)","ASV0009:Larval food",3.99016246202215,0.972718251344411
+"cond.341","cond","variable:Food_type","(Intercept)","ASV0010:Bamboo",0.297223673078392,1.01292183216282
+"cond.342","cond","variable:Food_type","(Intercept)","ASV0010:Larval food",2.13966636525587,1.00709583961984
+"cond.343","cond","variable:Food_type","(Intercept)","ASV0011:Bamboo",-2.90494675047783,1.21876617071738
+"cond.344","cond","variable:Food_type","(Intercept)","ASV0011:Larval food",2.38273450788133,0.991343332082219
+"cond.345","cond","variable:Food_type","(Intercept)","ASV0012:Bamboo",-1.77428210102655,1.27389888028589
+"cond.346","cond","variable:Food_type","(Intercept)","ASV0012:Larval food",2.26746465524708,1.06722552697334
+"cond.347","cond","variable:Food_type","(Intercept)","ASV0013:Bamboo",4.19302889799416,0.962931791982515
+"cond.348","cond","variable:Food_type","(Intercept)","ASV0013:Larval food",-2.35205730058199,1.59531720864307
+"cond.349","cond","variable:Food_type","(Intercept)","ASV0016:Bamboo",-1.91319603227796,1.28590702673193
+"cond.350","cond","variable:Food_type","(Intercept)","ASV0016:Larval food",2.41987256847847,1.06261653102417
+"cond.351","cond","variable:Food_type","(Intercept)","ASV0019:Bamboo",1.4326554473366,1.05304902085541
+"cond.352","cond","variable:Food_type","(Intercept)","ASV0019:Larval food",1.7430258840971,1.0895836084363
+"cond.353","cond","variable:Food_type","(Intercept)","ASV0024:Bamboo",-0.750307928178462,1.03783093344832
+"cond.354","cond","variable:Food_type","(Intercept)","ASV0024:Larval food",2.66068556900798,0.992066068278144
+"cond.355","cond","variable:Food_type","(Intercept)","ASV0027:Bamboo",2.5515069149783,0.9662645746975
+"cond.356","cond","variable:Food_type","(Intercept)","ASV0027:Larval food",-0.191132159388594,1.12928242718809
+"cond.357","cond","variable:Food_type","(Intercept)","ASV0030:Bamboo",-1.96141316888019,1.42976717157027
+"cond.358","cond","variable:Food_type","(Intercept)","ASV0030:Larval food",1.7888339977686,1.160927155389
+"cond.359","cond","variable:Food_type","(Intercept)","ASV0032:Bamboo",2.79527721557356,0.976388531144445
+"cond.360","cond","variable:Food_type","(Intercept)","ASV0032:Larval food",-2.83042938963787,1.55572623334606
+"cond.361","cond","variable:Food_type","(Intercept)","ASV0033:Bamboo",1.83794652083726,1.01134293261306
+"cond.362","cond","variable:Food_type","(Intercept)","ASV0033:Larval food",1.97624180259617,1.06057099722156
+"cond.363","cond","variable:Food_type","(Intercept)","ASV0043:Bamboo",2.94366268843444,1.11916414029569
+"cond.364","cond","variable:Food_type","(Intercept)","ASV0043:Larval food",-1.19017181555932,1.86835127173356
+"cond.365","cond","variable:Food_type","(Intercept)","ASV0053:Bamboo",2.95283274197211,0.947379668587456
+"cond.366","cond","variable:Food_type","(Intercept)","ASV0053:Larval food",-1.21952940947402,1.24785309809049
+"cond.367","cond","variable:Food_type","(Intercept)","ASV0054:Bamboo",-0.389902549484163,1.13529636527903
+"cond.368","cond","variable:Food_type","(Intercept)","ASV0054:Larval food",1.78989198363993,1.08782689240848
+"cond.369","cond","variable:Food_type","(Intercept)","ASV0055:Bamboo",2.67184659578935,1.01651689096247
+"cond.370","cond","variable:Food_type","(Intercept)","ASV0055:Larval food",-1.73405897690841,1.70882971093722
+"cond.371","cond","variable:Food_type","(Intercept)","ASV0058:Bamboo",2.72372092288773,1.02087547262146
+"cond.372","cond","variable:Food_type","(Intercept)","ASV0058:Larval food",-1.70756022669537,1.7220194728541
+"cond.373","cond","variable:Food_type","(Intercept)","ASV0059:Bamboo",-1.36874081004395,1.06260865610739
+"cond.374","cond","variable:Food_type","(Intercept)","ASV0059:Larval food",2.35465550796532,0.99157160471726
+"cond.375","cond","variable:Food_type","(Intercept)","ASV0060:Bamboo",2.88608214026183,1.03483010955591
+"cond.376","cond","variable:Food_type","(Intercept)","ASV0060:Larval food",-1.3972006391034,1.79516534903279
+"cond.377","cond","variable:Food_type","(Intercept)","ASV0061:Bamboo",2.56049665105082,0.983400527081297
+"cond.378","cond","variable:Food_type","(Intercept)","ASV0061:Larval food",0.451626723782823,1.17676415290905
+"cond.379","cond","variable:Food_type","(Intercept)","ASV0066:Bamboo",-2.63733334487673,1.17072536066612
+"cond.380","cond","variable:Food_type","(Intercept)","ASV0066:Larval food",1.32479437351654,1.01647241994378
+"cond.381","cond","variable:Food_type","(Intercept)","ASV0070:Bamboo",1.79070318875153,1.00698745319924
+"cond.382","cond","variable:Food_type","(Intercept)","ASV0070:Larval food",-3.12417183801827,1.58008976743225
+"cond.383","cond","variable:Food_type","(Intercept)","ASV0079:Bamboo",0.555501103418722,0.974457611467604
+"cond.384","cond","variable:Food_type","(Intercept)","ASV0079:Larval food",1.72465845810598,0.992907156982248
+"cond.385","cond","variable:Food_type","(Intercept)","ASV0083:Bamboo",0.613741235382405,0.981330935176071
+"cond.386","cond","variable:Food_type","(Intercept)","ASV0083:Larval food",1.57578602178009,1.00401416539838
+"cond.387","cond","variable:Food_type","(Intercept)","ASV0085:Bamboo",-1.99358157902799,1.31536213594565
+"cond.388","cond","variable:Food_type","(Intercept)","ASV0085:Larval food",1.19991196194216,1.14661623430271
+"cond.389","cond","variable:Food_type","(Intercept)","ASV0087:Bamboo",2.4021177127231,0.991086889387793
+"cond.390","cond","variable:Food_type","(Intercept)","ASV0087:Larval food",-2.40665015835519,1.58732381475094
+"cond.391","cond","variable:Food_type","(Intercept)","ASV0099:Bamboo",0.68150012963436,1.03819533668202
+"cond.392","cond","variable:Food_type","(Intercept)","ASV0099:Larval food",1.31771107231643,1.07692077658837
+"cond.393","cond","variable:Food_type","(Intercept)","ASV0100:Bamboo",-2.55842484386421,1.22983701548665
+"cond.394","cond","variable:Food_type","(Intercept)","ASV0100:Larval food",2.42297932543358,1.00779946951483
+"cond.395","cond","variable:Food_type","(Intercept)","ASV0102:Bamboo",-2.2223697473542,1.19868545967593
+"cond.396","cond","variable:Food_type","(Intercept)","ASV0102:Larval food",0.520673577227109,1.07936691293391
+"cond.397","cond","variable:Food_type","(Intercept)","ASV0109:Bamboo",0.72579820446889,1.1489725399397
+"cond.398","cond","variable:Food_type","(Intercept)","ASV0109:Larval food",-1.96377550278341,1.71249503102917
+"cond.399","cond","variable:Food_type","(Intercept)","ASV0125:Bamboo",2.21709354204047,1.04614237538969
+"cond.400","cond","variable:Food_type","(Intercept)","ASV0125:Larval food",-1.6077890380085,1.7366076649435
+"cond.401","cond","variable:Food_type","(Intercept)","ASV0130:Bamboo",0.839853919547429,1.01185092967183
+"cond.402","cond","variable:Food_type","(Intercept)","ASV0130:Larval food",1.14744098825715,1.06990218068326
+"cond.403","cond","variable:Food_type","(Intercept)","ASV0134:Bamboo",0.211422556006339,1.14819130552303
+"cond.404","cond","variable:Food_type","(Intercept)","ASV0134:Larval food",0.873679765648612,1.18292987736058
+"cond.405","cond","variable:Food_type","(Intercept)","ASV0138:Bamboo",0.684313169978442,1.02329384929129
+"cond.406","cond","variable:Food_type","(Intercept)","ASV0138:Larval food",-3.03086462685257,1.53466887987122
+"cond.407","cond","variable:Food_type","(Intercept)","ASV0149:Bamboo",1.73701272975536,0.938326886600663
+"cond.408","cond","variable:Food_type","(Intercept)","ASV0149:Larval food",-3.43160358352069,1.45198204922512
+"cond.409","cond","variable:Food_type","(Intercept)","ASV0150:Bamboo",-3.95822429548589,1.43919834971223
+"cond.410","cond","variable:Food_type","(Intercept)","ASV0150:Larval food",1.68887894275795,1.01341944027026
+"cond.411","cond","variable:Food_type","(Intercept)","ASV0152:Bamboo",1.17510779586172,1.11755694058793
+"cond.412","cond","variable:Food_type","(Intercept)","ASV0152:Larval food",-1.78247193072154,1.71656672244307
+"cond.413","cond","variable:Food_type","(Intercept)","ASV0164:Bamboo",0.524404605857701,0.997763009311013
+"cond.414","cond","variable:Food_type","(Intercept)","ASV0164:Larval food",-1.67438292602408,1.17284143436143
+"cond.415","cond","variable:Food_type","(Intercept)","ASV0210:Bamboo",-1.79879473242205,1.35659571491651
+"cond.416","cond","variable:Food_type","(Intercept)","ASV0210:Larval food",1.23603157926239,1.20508422010121
+"cond.417","cond","variable:Food_type","(Intercept)","ASV0212:Bamboo",0.75820799827656,1.14203635109556
+"cond.418","cond","variable:Food_type","(Intercept)","ASV0212:Larval food",-1.9737927830597,1.69796785304274
+"cond.419","cond","variable:Food_type","(Intercept)","ASV0218:Bamboo",-3.62946117891707,1.4887586378107
+"cond.420","cond","variable:Food_type","(Intercept)","ASV0218:Larval food",1.15578512592167,1.07553476380687
+"cond.421","cond","variable:Food_type","(Intercept)","ASV0220:Bamboo",1.02477224721894,1.18117063450192
+"cond.422","cond","variable:Food_type","(Intercept)","ASV0220:Larval food",-1.50712273951164,1.78695929030443
+"cond.423","cond","variable:Food_type","(Intercept)","ASV0225:Bamboo",0.524498055740866,1.16895060326383
+"cond.424","cond","variable:Food_type","(Intercept)","ASV0225:Larval food",-2.10304034764007,1.68835938792107
+"cond.425","cond","variable:Food_type","(Intercept)","ASV0262:Bamboo",-3.3567925106079,1.563563651184
+"cond.426","cond","variable:Food_type","(Intercept)","ASV0262:Larval food",1.11434800392728,1.16999159508268
+"cond.427","cond","variable:Food_type","(Intercept)","ASV0276:Bamboo",0.721862051301794,1.16753250141453
+"cond.428","cond","variable:Food_type","(Intercept)","ASV0276:Larval food",-2.04214067409024,1.69877731705533
+"cond.429","cond","variable:Food_type","(Intercept)","ASV0289:Bamboo",0.272937123659367,1.03683379635356
+"cond.430","cond","variable:Food_type","(Intercept)","ASV0289:Larval food",-3.43467945094704,1.52663058816023
+"cond.431","cond","variable:Food_type","(Intercept)","ASV0311:Bamboo",0.480734605640627,1.0338022105539
+"cond.432","cond","variable:Food_type","(Intercept)","ASV0311:Larval food",-3.159072240843,1.53509421746019

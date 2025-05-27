@@ -1,0 +1,442 @@
+---
+title: "Bamboo mesocosms experiment - squeezemeta analysis"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+ rmarkdown::html_document:
+    theme: cerulean
+    toc: yes
+    toc_float: yes
+    highlight: haddock
+    number_sections: true
+editor_options: 
+  chunk_output_type: console
+---
+
+# Setup
+
+```{r}
+library("SQMtools")
+library(data.table)
+library("phyloseq")
+library("ggplot2")
+```
+
+# Individual sqm objects
+
+Just to check stuff out
+
+```{r}
+setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/metagenomes/SQM_zips_3samps")
+
+lb5 <- loadSQM("LB5.zip")
+wb9 <- loadSQM("WB9.zip")
+ll11 <- loadSQM("LL11.zip")
+
+# plotTaxonomy(lb5)
+# plotTaxonomy(wb9)
+# plotTaxonomy(ll11)
+
+alltab.3samps <- combineSQMlite(lb5,wb9,ll11)
+
+alltab.tax <- alltab.3samps[["taxa"]]
+
+##Just bacteria:
+lb5.bac = subsetTax(lb5, "superkingdom", "Bacteria")
+wb9.bac = subsetTax(wb9, "superkingdom", "Bacteria")
+ll11.bac = subsetTax(ll11, "superkingdom", "Bacteria")
+
+bactab.3samps <- combineSQMlite(lb5.bac,wb9.bac,ll11.bac)
+```
+
+# Making a big taxa counts table for all samples & all taxa
+
+On the cluster, text within alltax.R:
+
+```{r, eval=F}
+library("SQMtools")
+
+setwd("/home/nicolagk/cmaiki_koastore/nicolagk/bamboomesos_metagnomes/mostsamps/rready/all_proc")
+#setwd("/home/nicolagk/cmaiki_koastore/nicolagk/bamboomesos_metagnomes/3samps/rready/allproc")
+
+zip_dir <- "/home/nicolagk/cmaiki_koastore/nicolagk/bamboomesos_metagnomes/mostsamps/rready"
+#zip_dir <- "/home/nicolagk/cmaiki_koastore/nicolagk/bamboomesos_metagnomes/3samps/rready"
+
+# Get a list of all .zip files
+zip_files <- list.files(zip_dir, pattern = "\\.zip$", full.names = TRUE)
+head(zip_files)
+
+# Loop through each .zip file
+for (zip_file in zip_files){
+  # Extract the base name (without extension) to use as the object name
+  obj_name <- tools::file_path_sans_ext(basename(zip_file))
+  # Assign the result of loadSQM() to a variable with the extracted name
+  assign(obj_name, loadSQM(zip_file), envir = .GlobalEnv)
+}
+
+##selecting my R objects that start with these 2 capital letters
+object_names <- ls(pattern = "^[LW]")
+object_names
+
+# Retrieve the actual objects using mget()
+object_list <- mget(object_names)
+
+# Combine them into one using combineSQMlite()
+allsamps <- do.call(combineSQMlite, object_list)
+
+saveRDS(allsamps, file="allsamps_alltax.rds")
+```
+
+Batch job
+
+```{bash, eval=F}
+nano alltax.slurm
+```
+
+Text within
+
+```
+#!/bin/bash
+#SBATCH --job-name=alltax
+#SBATCH --partition=shared
+##3 day max run time for public partitions, except 4 hour max runtime for the s>
+#SBATCH --time=0-24:00:00
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=10
+#SBATCH --mem=100G
+#SBATCH --error=%A.err
+#SBATCH --output=%A.out ##%A = filled with job id
+#SBATCH --mail-type=BEGIN,END,FAIL,REQUEUE,TIME_LIMIT_80
+#SBATCH --mail-user=nicolagk@hawaii.edu
+
+module load lang/R/4.2.1-foss-2022a
+Rscript alltax.R
+```
+
+```{bash, eval=F}
+sbatch alltax.slurm
+```
+
+# Basic info
+
+```{r}
+setwd("~/Library/CloudStorage/GoogleDrive-nicolagk@hawaii.edu/My Drive/Bamboo_mesos/metagenomes")
+
+alltab <- readRDS("allsamps_alltax.rds")
+
+fxn.counts <- data.frame(alltab[["functions"]][["KEGG"]][["abund"]])
+dim(fxn.counts) #13362 functions
+length(unique(row.names(fxn.counts)))
+
+fxn.names <- data.frame(gene_names=alltab.fxn[["KEGG_names"]])
+#12451.... where are the rest? I assume de-duplicated
+
+fxn.mismatch <- fxn.counts[!row.names(fxn.counts) %in% row.names(fxn.names),]
+
+alltab.fxn <- alltab[["misc"]]
+fxn.names <- data.frame(gene_names=alltab.fxn[["KEGG_names"]])
+
+##
+all.counts.sp <- data.frame(alltab.fxn[["species"]][["abund"]])
+#4869 taxa, 48 samples 
+```
+
+# Retrieving all kegg info separately
+
+I think when the sqm objects are combined, the duplicate gene names are removed, but they do have unique kegg ids, so I'm losing information because the counts table is not de-duplicated. Going to grab all the .sqm objects separately and make one big table with all the kegg info.
+
+Text within alltax_kegg.R:
+
+```{r, eval=F}
+library("SQMtools")
+
+setwd("/home/nicolagk/cmaiki_koastore/nicolagk/bamboomesos_metagnomes/mostsamps/rready/all_proc")
+#setwd("/home/nicolagk/cmaiki_koastore/nicolagk/bamboomesos_metagnomes/3samps/rready/allproc")
+#setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/metagenomes/SQM_zips_3samps")
+
+#zip_dir <- "~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/metagenomes/SQM_zips_3samps"
+zip_dir <- "/home/nicolagk/cmaiki_koastore/nicolagk/bamboomesos_metagnomes/mostsamps/rready"
+# zip_dir <- "/home/nicolagk/cmaiki_koastore/nicolagk/bamboomesos_metagnomes/3samps/rready"
+
+# Get a list of all .zip files
+zip_files <- list.files(zip_dir, pattern = "\\.zip$", full.names = TRUE)
+head(zip_files)
+
+# Create an empty list to store data frames
+fxn_list <- list()
+
+# Loop through each .zip file
+for (zip_file in zip_files) {
+  # Extract the base name (without extension) to use as the object name
+  obj_name <- tools::file_path_sans_ext(basename(zip_file))
+  
+  # Load the SQM object
+  sqm_obj <- loadSQM(zip_file)
+  
+  # Pull out the functional annotations
+  alltab_fxn <- sqm_obj[["misc"]]
+  
+  # Create a data frame extracting available KEGG info
+  fxn_names <- data.frame(
+    #sample = obj_name,
+    kegg_id = names(alltab_fxn[["KEGG_names"]]),
+    gene_name = alltab_fxn[["KEGG_names"]],
+    gene_path = alltab_fxn[["KEGG_paths"]]
+    #stringsAsFactors = FALSE
+  )
+  
+  # Store each data frame in the list
+  #fxn_list[[obj_name]] <- fxn_names
+  # Save each data frame into the global environment
+  assign(paste0(obj_name, "_fxndf"), fxn_names, envir = .GlobalEnv)
+}
+
+# Get all objects whose names end in "_fxndf"
+fxn_dfs <- mget(ls(pattern = "_fxndf"))
+
+stacked_df <- do.call(rbind, fxn_dfs)
+
+stacked_df2 <- stacked_df[!duplicated(stacked_df$kegg_id), ]
+
+write.csv(stacked_df2,file="allsamps_alltax_FULLkegginfo.csv")
+```
+
+Batch job, text within "alltax_kegg.slurm":
+
+```
+#!/bin/bash
+#SBATCH --job-name=alltax_kegg
+#SBATCH --partition=shared
+##3 day max run time for public partitions, except 4 hour max runtime for the s>
+#SBATCH --time=0-24:00:00
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=10
+#SBATCH --mem=100G
+#SBATCH --error=%A.err
+#SBATCH --output=%A.out ##%A = filled with job id
+#SBATCH --mail-type=BEGIN,END,FAIL,REQUEUE,TIME_LIMIT_80
+#SBATCH --mail-user=nicolagk@hawaii.edu
+module load lang/R/4.2.1-foss-2022a
+Rscript alltax_kegg.R
+```
+
+Submit
+
+```{bash, eval=F}
+sbatch alltax_kegg.slurm
+```
+
+That worked! Now I have the kegg ids, gene names, and pathways for 13k functions
+
+# Checking out taxa tables in R
+
+## Making a counts table
+
+Down to species I guess, I don't see the ORF ID as the unit
+
+```{r}
+setwd("~/Library/CloudStorage/GoogleDrive-nicolagk@hawaii.edu/My Drive/Bamboo_mesos/metagenomes")
+
+alltab <- readRDS("allsamps_alltax.rds")
+
+alltab.tax <- alltab[["taxa"]]
+
+##counts table
+all.counts.sp <- data.frame(alltab.tax[["species"]][["abund"]])
+#4869 taxa, 48 samples 
+```
+
+## Taxa table
+
+```{r}
+##taxa table 
+all.tax.names <- data.table(full_names=alltab[["misc"]][["tax_names_long"]][["species"]])
+
+# Split into multiple columns
+all.tax.names.exp <- all.tax.names[,tstrsplit(full_names, ";", fixed = TRUE)]
+head(all.tax.names.exp)
+##removing the first letter and the underscore
+all.tax.names.exp[, (names(all.tax.names.exp)) := lapply(.SD, function(x) gsub("^[a-zA-Z]_", "", x))]
+
+all.tax.names.exp <- data.frame(all.tax.names.exp)
+colnames(all.tax.names.exp) <- names(alltab.tax)
+row.names(all.tax.names.exp) <- all.tax.names.exp$species
+
+any(!row.names(all.tax.names.exp) %in% row.names(all.counts.sp))
+```
+
+## Sample data
+
+```{r}
+metadat <- read.csv("../Bamboo_mesos/bamboomesos_metadata_plusmgs.csv")
+row.names(metadat) <- metadat$Short_label
+
+##sample type to glom by
+metadat$sam_glom <- paste0()
+```
+
+## Phyloseq object
+
+```{r}
+ps <- phyloseq(otu_table(all.counts.sp,taxa_are_rows=T),
+         sample_data(metadat),
+         tax_table(as.matrix(all.tax.names.exp)))
+ps
+
+# otu_table()   OTU Table:         [ 4869 taxa and 48 samples ]
+# sample_data() Sample Data:       [ 48 samples by 25 sample variables ]
+# tax_table()   Taxonomy Table:    [ 4869 taxa by 7 taxonomic ranks ]
+
+
+
+ps.sampsum <- merge_samples(ps, "")
+
+ps.rel <- transform_sample_counts(ps, function(x) x / sum(x))
+ps.rel.king <- tax_glom(ps.rel,"superkingdom")
+
+plot_bar(ps.rel.king,fill="superkingdom")
+
+plot_bar(ps.rel.king,fill="superkingdom")+
+  facet_wrap(~superkingdom,scales="free")
+
+ps.rel.euk <- subset_taxa(ps.rel,superkingdom=="Eukaryota")
+
+plot_bar(ps.rel.euk,fill="phylum")
+```
+
+# Subsetting taxa-specific functions
+
+## Bacteria functions
+
+
+
+## Fungi functions (most complicated)
+
+## Virus functions
+
+```{r}
+library("SQMtools")
+
+setwd("/mnt/lustre/koa/koastore/cmaiki_group/nicolagk/bamboomesos_metagnomes/mostsamps/rready/vir_proc")
+zip_dir <- "/mnt/lustre/koa/koastore/cmaiki_group/nicolagk/bamboomesos_metagnomes/mostsamps/rready"
+
+# Get a list of all .zip files
+zip_files <- list.files(zip_dir, pattern = "\\.zip$", full.names = TRUE)
+head(zip_files)
+
+# Loop through each .zip file
+for (zip_file in zip_files){
+  # Extract the base name (without extension) to use as the object name
+  obj_name <- tools::file_path_sans_ext(basename(zip_file))
+  # Assign the result of loadSQM() to a variable with the extracted name
+  assign(obj_name, loadSQM(zip_file), envir = .GlobalEnv)
+}
+
+##selecting my R objects that start with these 2 capital letters
+object_names <- ls(pattern = "^[LW]")
+object_names
+
+for (obj in object_names) {
+  # Construct the new variable name
+  new_name <- paste0(obj, ".vir")
+  # Print the name for debugging
+  print(paste("Creating:", new_name))
+  # Use get() to retrieve the actual object
+  obj_data <- get(obj)
+  # Apply the function to the object
+  result <- subsetTax(obj_data, "superkingdom", "Viruses")
+  # Assign the result to a new variable with the dynamically created name
+  assign(new_name, result, envir = .GlobalEnv)
+}
+
+# Get all objects that end with ".vir" (matching our dynamically created ones)
+vir_objects <- ls(pattern = "\\.vir$")
+
+# Retrieve the actual objects using mget()
+vir_list <- mget(vir_objects)
+
+# Combine them into one using combineSQMlite()
+virtab.allsamps <- do.call(combineSQMlite, vir_list)
+
+saveRDS(virtab.allsamps, file="virtab.allsamps.rds")
+```
+
+Make job
+
+```{bash, eval=F}
+nano rproc_virus.slurm
+```
+
+Text within:
+
+```
+#!/bin/bash
+#SBATCH --job-name=rproc_virus
+#SBATCH --partition=shared
+##3 day max run time for public partitions, except 4 hour max runtime for the sandbox partition
+#SBATCH --time=0-24:00:00
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=20
+#SBATCH --mem=100G
+#SBATCH --error=%A.err
+#SBATCH --output=%A.out ##%A = filled with job id
+#SBATCH --mail-type=BEGIN,END,FAIL,REQUEUE,TIME_LIMIT_80
+#SBATCH --mail-user=nicolagk@hawaii.edu
+
+module load lang/R/4.2.1-foss-2022a
+Rscript rproc_virus.R
+```
+
+When I ran fungi before, I got an error when there weren't any fungi counts which makes sense, so might have to fix that again
+
+Potential fixing:
+
+```{r}
+library("SQMtools")
+
+setwd("/mnt/lustre/koa/koastore/cmaiki_group/nicolagk/bamboomesos_metagnomes/mostsamps/rready/vir_proc")
+zip_dir <- "/mnt/lustre/koa/koastore/cmaiki_group/nicolagk/bamboomesos_metagnomes/mostsamps/rready"
+
+# Get a list of all .zip files
+zip_files <- list.files(zip_dir, pattern = "\\.zip$", full.names = TRUE)
+head(zip_files)
+
+# Loop through each .zip file
+for (zip_file in zip_files){
+  # Extract the base name (without extension) to use as the object name
+  obj_name <- tools::file_path_sans_ext(basename(zip_file))
+  # Assign the result of loadSQM() to a variable with the extracted name
+  assign(obj_name, loadSQM(zip_file), envir = .GlobalEnv)
+}
+
+## Selecting R objects that start with these 2 capital letters
+object_names <- ls(pattern = "^[LW]")
+object_names
+
+for (obj in object_names) {
+  # Construct the new variable name
+  new_name <- paste0(obj, ".vir")
+  # Retrieve the object
+  obj_data <- get(obj)
+  # Check if "Viruses" is present in the superkingdom column
+  if (any(rownames(obj_data[["taxa"]][["superkingdom"]]$abun) == "Viruses")) {
+    print(paste("Processing:", obj, "→", new_name))
+    # Subset for viruses
+    result <- subsetTax(obj_data, "superkingdom", "Viruses")
+    # Assign result to a new variable
+    assign(new_name, result, envir = .GlobalEnv)
+  } else {
+    message(paste("No viruses found in", obj))
+  }
+}
+
+# Get all objects that end with ".vir" (matching our dynamically created ones)
+vir_objects <- ls(pattern = "\\.vir$")
+# Retrieve the actual objects using mget()
+vir_list <- mget(vir_objects)
+
+# Combine them into one using combineSQMlite()
+virtab.allsamps <- do.call(combineSQMlite, vir_list)
+
+saveRDS(virtab.allsamps, file="virtab.allsamps.rds")
+
+```

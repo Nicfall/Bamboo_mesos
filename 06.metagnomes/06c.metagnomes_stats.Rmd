@@ -1,0 +1,919 @@
+---
+title: "Metagenomes abundance analyses"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+ rmarkdown::html_document:
+    theme: cerulean
+    toc: yes
+    toc_float: yes
+    highlight: haddock
+    number_sections: true
+editor_options: 
+  chunk_output_type: console
+---
+
+# Setup
+
+## Libs
+
+```{r}
+#install.packages("remotes")
+#install.packages('TMB',source=TRUE) #didn't work on home laptop
+#remotes::install_github("glmmTMB/glmmTMB/glmmTMB")
+library("glmmTMB")
+#install.packages("BiocManager")
+#BiocManager::install("phyloseq")
+library("phyloseq")
+library("dplyr")
+# # #install.packages("reshape")
+# library("reshape")
+# # library("ggplot2")
+# # #install.packages("bbmle")
+library("bbmle")
+# # #install.packages("car")
+# # library("car")
+# library("DHARMa")
+# library("plyr")
+library("ggplot2")
+library("data.table")
+```
+
+## Re-read data
+
+```{r}
+setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/06.metagnomes/")
+
+bm.metadat <- read.csv("../bamboomesos_metadata_plusmgs.csv")
+row.names(bm.metadat) <- bm.metadat$Short_label
+
+bm.bactab <- read.csv("bactab.allsamps.counts.original.csv",row.names=1)
+
+bm.kegginfo <- read.csv("bactab.kegginfos.csv",row.names=1)
+row.names(bm.kegginfo) <- bm.kegginfo$KO
+
+#split the pathways column into multiple columns
+
+#strsplit(bm.kegginfo$Pathway, "; ", fixed = TRUE)
+# bm.kegginfo$kegg.path <- paste0(bm.kegginfo$KO,"; ", bm.kegginfo$Pathway)
+# bm.kegginfo.dt <- data.table(bm.kegginfo)
+# bm.kegginfo.expanded <- bm.kegginfo.dt[,tstrsplit(kegg.path, ";", fixed = TRUE)]
+#colnames(bm.kegginfo)[1] <- c("KO")
+#bm.kegginfo2 <- merge(bm.kegginfo.dt,bm.kegginfo.expanded,by="KO")
+```
+
+# Set up for mixed mods
+
+## Make phyloseq object
+
+Not really necessary, but I like how phyloseq kicks out all of the irrelevant data at once
+
+```{r}
+ps.fxn <- phyloseq(otu_table(bm.bactab,taxa_are_rows=T),
+         tax_table(as.matrix(bm.kegginfo)),
+         sample_data(bm.metadat))
+
+ps.fxn #9072 taxa, 48 samples
+```
+
+## Split by sample types
+
+```{r}
+ps.fxn.lar <- subset_samples(ps.fxn,Sample_type=="Larvae")
+ps.fxn.lar ##25 samples
+
+ps.fxn.wat <- subset_samples(ps.fxn,Sample_type=="Water")
+ps.fxn.wat ##23 samples
+```
+
+## Filter
+
+```{r}
+##Matt did 12%, so 5.76 samples out of 48
+##I'll be doing:
+#6/25 #0.24 for larvae
+#6/23 #0.26 for water
+
+##larvae
+ps.fxn.lar.trim <- filter_taxa(ps.fxn.lar, function(x) sum(x > 1) > (0.24*length(x)), TRUE)
+ps.fxn.lar.trim ##5748 taxa
+tail(sort(sample_sums(ps.fxn.lar.trim),decreasing=T))
+
+##water
+ps.fxn.wat.trim <- filter_taxa(ps.fxn.wat, function(x) sum(x > 1) > (0.26*length(x)), TRUE)
+ps.fxn.wat.trim ##7186 taxa
+tail(sort(sample_sums(ps.fxn.wat.trim),decreasing=T))
+```
+
+## Check zeroes levels
+
+```{r}
+##larvae - after trimming
+otu.fxn.lar.trim <- data.frame(ps.fxn.lar.trim@otu_table)
+sum(otu.fxn.lar.trim == 0) / (ncol(otu.fxn.lar.trim) * nrow(otu.fxn.lar.trim)) * 100
+#18.63535%
+
+##without trimming
+otu.fxn.lar <- data.frame(ps.fxn.lar@otu_table)
+sum(otu.fxn.lar == 0) / (ncol(otu.fxn.lar) * nrow(otu.fxn.lar)) * 100
+#46.17063%
+
+##water - after trimming
+otu.fxn.wat.trim <- data.frame(ps.fxn.wat.trim@otu_table)
+sum(otu.fxn.wat.trim == 0) / (ncol(otu.fxn.wat.trim) * nrow(otu.fxn.wat.trim)) * 100
+#14.39454%
+
+##without trimming
+otu.fxn.wat <- data.frame(ps.fxn.wat@otu_table)
+sum(otu.fxn.wat == 0) / (ncol(otu.fxn.wat) * nrow(otu.fxn.wat)) * 100
+#30.55556%
+
+##save if ready
+#saveRDS(ps.fxn.lar.trim,file="ps.fxn.lar.trim.rds")
+#saveRDS(ps.fxn.wat.trim,file="ps.fxn.wat.trim.rds")
+```
+
+## More formatting - long form
+
+```{r}
+otu.wat <- data.frame(t(ps.fxn.wat.trim@otu_table))
+otu.lar <- data.frame(t(ps.fxn.lar.trim@otu_table))
+
+#total read count colums
+otu.wat$sum <- rowSums(otu.wat)
+otu.lar$sum <- rowSums(otu.lar)
+
+otu.wat$Short_label <- row.names(otu.wat)
+otu.lar$Short_label <- row.names(otu.lar)
+
+#bring in the metadata again
+samdf.wat <- data.frame(ps.fxn.wat.trim@sam_data)
+samdf.lar <- data.frame(ps.fxn.lar.trim@sam_data)
+
+# #join the data sets by sample name
+df.water <- plyr::join(otu.wat, samdf.wat, by="Short_label", type="left")
+df.larv <- plyr::join(otu.lar, samdf.lar, by="Short_label", type="left")
+
+##getting rid of some irrelevant metadat
+colnames(df.water)
+df.water1 <- df.water %>%
+  dplyr::select(-Short_label,-Longer_name,-Sample_type,-Num_larvae,-Date_collected,-Exp_day,-Mesocosm_treatment,-Mesocosm_type,-Treatment_notes,-Notes,-Num_larvae_d00,-Num_larvae_d08,-Num_larvae_d34,-Num_larvae_d40,-Total_pupae,-Proportion_pupated,-Biomass_day30,-metagenomes,-SSU_raw_reads,-X16S_raw_reads,-MG_raw_reads)
+colnames(df.water1)
+
+df.water.long <- reshape2::melt(df.water1, id.vars=c("sum", "Mesocosm_id", "Microbe_treatment","Food_type", "Biomass_day40"))
+
+df.water.long$rowid <- 1:nrow(df.water.long)
+##165278 rows
+
+df.larv1 <- df.larv %>%
+  dplyr::select(-Short_label,-Longer_name,-Sample_type,-Num_larvae,-Date_collected,-Exp_day,-Mesocosm_treatment,-Mesocosm_type,-Treatment_notes,-Notes,-Num_larvae_d00,-Num_larvae_d08,-Num_larvae_d34,-Num_larvae_d40,-Total_pupae,-Proportion_pupated,-Biomass_day30,-metagenomes,-SSU_raw_reads,-X16S_raw_reads,-MG_raw_reads)
+colnames(df.larv1)
+
+df.larv.long <- reshape2::melt(df.larv1, id.vars=c("sum", "Mesocosm_id", "Microbe_treatment","Food_type", "Biomass_day40"))
+
+df.larv.long$rowid <- 1:nrow(df.larv.long)
+##143700 rows
+
+##save
+#saveRDS(df.water.long,file="df.water.long.rds")
+#saveRDS(df.larv.long,file="df.larv.long.rds")
+```
+
+# Running the statz{.tabset}
+
+Can start from here
+
+```{r}
+setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/06.metagnomes")
+
+df.water.long <- readRDS("df.water.long.rds")
+df.larv.long <- readRDS("df.larv.long.rds")
+```
+
+## Water
+
+Each model took around 10 minutes, ran them as background jobs "justmods_water.R" and "justmods_lar.R"
+
+```
+library("glmmTMB")
+library("bbmle")
+
+setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/06.metagnomes")
+
+df.water.long <- readRDS("df.water.long.rds")
+#df.larv.long <- readRDS("df.larv.long.rds")
+
+str(df.water.long)
+df.water.long$rowid <- as.factor(df.water.long$rowid)
+df.water.long$Microbe_treatment <- as.factor(df.water.long$Microbe_treatment)
+df.water.long$Food_type <- as.factor(df.water.long$Food_type)
+#df.water.long$food.microbes <- as.factor(df.water.long$food.microbes)
+df.water.long$Mesocosm_id <- as.factor(df.water.long$Mesocosm_id)
+str(df.water.long)
+
+water.mod.nb1 <- glmmTMB(value~offset(log(sum))+Microbe_treatment+Food_type+(1|variable)+(1|variable:Microbe_treatment)+(1|variable:Food_type),family=nbinom1,data=df.water.long)
+summary(water.mod.nb1)
+
+water.mod.nb2 <- glmmTMB(value~offset(log(sum))+Microbe_treatment+Food_type+(1|variable)+(1|variable:Microbe_treatment)+(1|variable:Food_type),family=nbinom2,data=df.water.long)
+summary(water.mod.nb2)
+
+AICtab(water.mod.nb1,water.mod.nb2)
+
+saveRDS(water.mod.nb1,file="water.mod.nb1.full.rds")
+saveRDS(water.mod.nb2,file="water.mod.nb2.full.rds")
+
+#water.mod.nb1 <- readRDS("water.mod.nb1.full.rds")
+
+water.mod.nb1.nomicr <- update(water.mod.nb1,.~.-(1|variable:Microbe_treatment))
+
+#anova(water.mod.nb1,water.mod.nb1.nomic)
+
+water.mod.nb1.nofood <- update(water.mod.nb1,.~.-(1|variable:Food_type))
+
+#anova(water.mod.nb1,water.mod.nb1.nomic)
+
+saveRDS(water.mod.nb1.nomicr,file="water.mod.nb1.nomicrobes.rds")
+saveRDS(water.mod.nb1.nofood,file="water.mod.nb1.nofood.rds")
+```
+
+### Assessing models
+
+```{r}
+setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/06.metagnomes")
+
+mod.water.nb2 <- readRDS("water.mod.nb2.full.rds")
+mod.water.nb1 <- readRDS("water.mod.nb1.full.rds")
+summary(mod.water.nb2)
+summary(mod.water.nb1)
+
+AICtab(mod.water.nb1,mod.water.nb2)
+##nbinom1 better as usual
+
+##reduced models
+mod.water.nb1.nomicr <- readRDS("water.mod.nb1.nomicrobes.rds")
+summary(mod.water.nb1.nomicr)
+
+anova(mod.water.nb1.nomicr,mod.water.nb1) ##2.2e-16
+
+mod.water.nb1.nofood <- readRDS("water.mod.nb1.nofood.rds")
+summary(mod.water.nb1.nofood)
+
+anova(mod.water.nb1.nofood,mod.water.nb1) ##2.2e-16
+
+###save conditional modes
+water.mod.ranef <- as.data.frame(ranef(mod.water.nb1))
+#43116 rows
+
+#write.csv(water.mod.ranef, "water.mod.ranef.csv")
+```
+
+## Larvae
+
+```
+library("glmmTMB")
+library("bbmle")
+
+setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/06.metagnomes")
+
+#df.larv.long <- readRDS("df.larv.long.rds")
+df.larv.long <- readRDS("df.larv.long.rds")
+
+str(df.larv.long)
+df.larv.long$rowid <- as.factor(df.larv.long$rowid)
+df.larv.long$Microbe_treatment <- as.factor(df.larv.long$Microbe_treatment)
+df.larv.long$Food_type <- as.factor(df.larv.long$Food_type)
+#df.larv.long$food.microbes <- as.factor(df.larv.long$food.microbes)
+df.larv.long$Mesocosm_id <- as.factor(df.larv.long$Mesocosm_id)
+str(df.larv.long)
+
+larv.mod.nb1 <- glmmTMB(value~offset(log(sum))+Microbe_treatment+Food_type+(1|variable)+(1|variable:Microbe_treatment)+(1|variable:Food_type),family=nbinom1,data=df.larv.long)
+summary(larv.mod.nb1)
+
+larv.mod.nb2 <- glmmTMB(value~offset(log(sum))+Microbe_treatment+Food_type+(1|variable)+(1|variable:Microbe_treatment)+(1|variable:Food_type),family=nbinom2,data=df.larv.long)
+summary(larv.mod.nb2)
+
+AICtab(larv.mod.nb1,larv.mod.nb2)
+
+saveRDS(larv.mod.nb1,file="larv.mod.nb1.full.rds")
+saveRDS(larv.mod.nb2,file="larv.mod.nb2.full.rds")
+
+larv.mod.nb1 <- readRDS("larv.mod.nb1.full.rds")
+
+larv.mod.nb1.nomicr <- update(larv.mod.nb1,.~.-(1|variable:Microbe_treatment))
+
+anova(larv.mod.nb1,larv.mod.nb1.nomic)
+
+larv.mod.nb1.nofood <- update(larv.mod.nb1,.~.-(1|variable:Food_type))
+
+anova(larv.mod.nb1,larv.mod.nb1.nomic)
+
+saveRDS(larv.mod.nb1.nomicr,file="larv.mod.nb1.nomicrobes.rds")
+saveRDS(larv.mod.nb1.nofood,file="larv.mod.nb1.nofood.rds")
+```
+
+### Assessing models
+
+```{r}
+mod.larv.nb2 <- readRDS("larv.mod.nb2.full.rds")
+mod.larv.nb1 <- readRDS("larv.mod.nb1.full.rds")
+
+summary(mod.larv.nb2)
+summary(mod.larv.nb1)
+
+AICtab(mod.larv.nb1,mod.larv.nb2)
+##nbinom1 better as usual
+
+mod.larv.nb1.nomicr <- readRDS("larv.mod.nb1.nomicrobes.rds")
+mod.larv.nb1.nofood <- readRDS("larv.mod.nb1.nofood.rds")
+
+##no microbes
+anova(mod.larv.nb1,mod.larv.nb1.nomicr) ##2.2e-16
+anova(mod.larv.nb1,mod.larv.nb1.nofood) ##2.2e-16
+
+##save conditional modes
+larv.mod.ranef <- as.data.frame(ranef(mod.larv.nb1))
+#write.csv(larv.mod.ranef, "larv.mod.ranef.csv")
+#34488 rows
+```
+
+# Plotting
+
+## Water
+
+```{r}
+library("stringr")
+library("tidyr")
+
+ps.fxn.wat.trim <- readRDS("ps.fxn.wat.trim.rds")
+
+table(water.mod.ranef$grpvar)
+
+water.ranef.food <- subset(water.mod.ranef, grpvar=="variable:Food_type")
+water.ranef.micr <- subset(water.mod.ranef, grpvar=="variable:Microbe_treatment")
+table(water.ranef.food$grpvar)
+table(water.ranef.micr$grpvar)
+
+water.ranef.food$id <- str_split_fixed(water.ranef.food$grp,":",n=2)[,1]
+water.ranef.food$food <- str_split_fixed(water.ranef.food$grp,":",n=2)[,2]
+
+water.ranef.micr$id <- str_split_fixed(water.ranef.micr$grp,":",n=2)[,1]
+water.ranef.micr$microbes <- str_split_fixed(water.ranef.micr$grp,":",n=2)[,2]
+
+##just the columns for stuff below:
+water.ranef.food.less <- water.ranef.food %>%
+  select(-component,-term,-grp,-condsd)
+
+water.ranef.micr.less <- water.ranef.micr %>%
+  select(-component,-term,-grp,-condsd)
+
+# Reshape the data frame to have the food types as two columns
+water.ranef.food.wide <- water.ranef.food.less %>%
+  pivot_wider(
+    names_from = food,   # Column to use for new column names
+    values_from = condval       # Column to fill the new columns
+  )
+
+water.ranef.micr.wide <- water.ranef.micr.less %>%
+  pivot_wider(
+    names_from = microbes,   # Column to use for new column names
+    values_from = condval       # Column to fill the new columns
+  )
+
+##add kegg info
+fxn.water.trim <- as.data.frame(ps.fxn.wat.trim@tax_table)
+fxn.water.trim$id <- fxn.water.trim$KO
+
+water.ranef.micr.wide.tax <- merge(water.ranef.micr.wide,fxn.water.trim,by="id")
+water.ranef.food.wide.tax <- merge(water.ranef.food.wide,fxn.water.trim,by="id")
+##more informative kegg ids
+water.ranef.micr.wide.tax$kegg.name <- paste0(water.ranef.micr.wide.tax$id,"_",water.ranef.micr.wide.tax$names)
+water.ranef.food.wide.tax$kegg.name <- paste0(water.ranef.food.wide.tax$id,"_",water.ranef.food.wide.tax$names)
+
+water.ranef.all1 <- merge(water.ranef.micr.wide.tax,water.ranef.food.wide.tax,by="kegg.name")
+any(water.ranef.all1$Pathway.x != water.ranef.all1$Pathway.y)
+
+# Remove perfectly duplicated columns (keep only one copy)
+water.ranef.all <- water.ranef.all1 %>%
+  select(!matches("\\.y$")) %>%                        # Remove .y columns (from the second df)
+  rename_with(~ sub("\\.x$", "", .x), ends_with(".x"))  # Remove .x suffix from first df
+
+water.ranef.all$BvL <- water.ranef.all$Bamboo-water.ranef.all$`Larval food`
+
+#write.csv(water.ranef.all,file="water.fxn.ranef.processed.csv")
+```
+
+# Top X% - water
+
+```{r}
+#top.mem <- subset(water.ranef.all, scale(MEM) > 2.326) #top 1%, one-tailed Z score test 
+#top.mmo <- subset(water.ranef.all, scale(MMO) > 2.326) #top 1%, one-tailed Z score test 
+#top.emo <- subset(water.ranef.all, scale(EMO) > 2.326) #top 1%, one-tailed Z score test 
+
+#top.wat.bam <- subset(water.ranef.all, scale(BvL) > 1.645) #top 5%, one-tailed Z score test 
+#top.wat.lar <- subset(water.ranef.all, scale(BvL) < -1.645) #top 5%, one-tailed Z score test 
+#top.lar <- subset(water.ranef.all, scale(BvL) > 0.842 | scale(BvL) < -0.842) #top 5%, one-tailed Z score test 
+#top.wat <- subset(water.ranef.all, scale(BvL) > 0.842 | scale(BvL) < -0.842) #top 5%, one-tailed Z score test 
+
+water.ranef.all$sBvL <- c(scale(water.ranef.all$BvL))
+
+Wbamboo <- subset(water.ranef.all,  sBvL > 1.28 & MEM > 0) #top 10%, one-tailed Z score test
+Wstandard <- subset(water.ranef.all,  sBvL < -1.28 & MMO > 0) #bottom 10%, one-tailed Z score test
+
+c(Wbamboo$kegg.name) %in% c(Lbamboo$kegg.name)
+
+##scale BvL column
+larv.ranef.all$sBvL <- scale(larv.ranef.all$BvL)
+
+top.lar <- subset(larv.ranef.all, scale(BvL) > 1.282 | scale(BvL) < -1.282) #top 10%, one-tailed Z score test 
+top.wat <- subset(larv.ranef.all, scale(BvL) > 1.282 | scale(BvL) < -1.282) #top 10%, one-tailed Z score test 
+Lbamboo <- subset(modes,  sBvL > 1.28 & sMEM>0) #top 10%, one-tailed Z score test
+Lstandard <- subset(modes,  sBvL < -1.28 & sMMO>0) #bottom 10%, one-tailed Z score test
+
+##Matt stuff:
+# Wbamboo <- subset(Wmaster,  scale(WaterBvL) > 1.645 & MEM>0) #top 5%, one-tailed Z score test
+# 
+# Llfood <- subset(Lmaster,  scale(LarvaeBvL) < -1.645 & MMO>0) #bottom 5%, one-tailed Z score test 
+# Wlfood <- subset(Wmaster,  scale(WaterBvL) < -1.645 & MMO>0) #bottom 5%, one-tailed Z score test
+```
+
+```{r}
+table(top.wat.bam$Pathway)
+head(top.wat.bam$Pathway)
+
+library(dplyr)
+library(ggplot2)
+
+# Step 1: Count the number of times each pathway appears
+top.wat.bam20 <- top.wat.bam %>%
+  count(Pathway) %>%
+  arrange(desc(n)) %>%
+  slice_head(n = 20)
+
+# Step 2: Reorder for plotting
+top.wat.bam20.form <- top.wat.bam20 %>%
+  mutate(Pathway = factor(Pathway, levels = rev(Pathway)))
+
+#top.wat.bam20 <- top.wat.bam21.form[top.wat.bam21.form$Pathway!="Not Included in Pathway or Brite; Unclassified: metabolism; Enzymes with EC numbers",]
+
+# Step 3: Plot
+ggplot(top.wat.bam20.form, aes(x = Pathway, y = n)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  coord_flip() +
+  labs(title = "Top 20 - water, bamboo diet",
+       x = "Pathway",
+       y = "Count (Number of Times Detected)") +
+  theme_minimal(base_size = 11) +
+  theme(axis.text.y = element_text(size = 7))
+
+top.wat.sta20 <- top.wat.lar %>%
+  count(Pathway) %>%
+  arrange(desc(n)) %>%
+  slice_head(n = 20)
+
+# Step 2: Reorder for plotting
+top.wat.sta20.form <- top.wat.sta20 %>%
+  mutate(Pathway = factor(Pathway, levels = rev(Pathway)))
+
+#top.wat.sta20 <- top.wat.sta21.form[top.wat.sta21.form$Pathway!="Not Included in Pathway or Brite; Unclassified: metabolism; Enzymes with EC numbers",]
+
+# Step 3: Plot
+ggplot(top.wat.sta20.form, aes(x = Pathway, y = n)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  coord_flip() +
+  labs(title = "Top 20 - water, standard diet",
+       x = "Pathway",
+       y = "Count (Number of Times Detected)") +
+  theme_minimal(base_size = 11) +
+  theme(axis.text.y = element_text(size = 7))
+
+
+
+```
+
+## Larvae
+
+```{r}
+ps.fxn.lar.trim <- readRDS("ps.fxn.lar.trim.rds")
+
+table(larv.mod.ranef$grpvar)
+
+larv.ranef.food <- subset(larv.mod.ranef, grpvar=="variable:Food_type")
+larv.ranef.micr <- subset(larv.mod.ranef, grpvar=="variable:Microbe_treatment")
+table(larv.ranef.food$grpvar)
+table(larv.ranef.micr$grpvar)
+
+larv.ranef.food$id <- str_split_fixed(larv.ranef.food$grp,":",n=2)[,1]
+larv.ranef.food$food <- str_split_fixed(larv.ranef.food$grp,":",n=2)[,2]
+
+larv.ranef.micr$id <- str_split_fixed(larv.ranef.micr$grp,":",n=2)[,1]
+larv.ranef.micr$microbes <- str_split_fixed(larv.ranef.micr$grp,":",n=2)[,2]
+
+##just the columns for stuff below:
+larv.ranef.food.less <- larv.ranef.food %>%
+  select(-component,-term,-grp,-condsd)
+
+larv.ranef.micr.less <- larv.ranef.micr %>%
+  select(-component,-term,-grp,-condsd)
+
+# Reshape the data frame to have the food types as two columns
+larv.ranef.food.wide <- larv.ranef.food.less %>%
+  pivot_wider(
+    names_from = food,   # Column to use for new column names
+    values_from = condval       # Column to fill the new columns
+  )
+
+larv.ranef.micr.wide <- larv.ranef.micr.less %>%
+  pivot_wider(
+    names_from = microbes,   # Column to use for new column names
+    values_from = condval       # Column to fill the new columns
+  )
+
+##add kegg info
+fxn.larv.trim <- as.data.frame(ps.fxn.lar.trim@tax_table)
+fxn.larv.trim$id <- fxn.larv.trim$KO
+
+larv.ranef.micr.wide.tax <- merge(larv.ranef.micr.wide,fxn.larv.trim,by="id")
+larv.ranef.food.wide.tax <- merge(larv.ranef.food.wide,fxn.larv.trim,by="id")
+##more informative kegg ids
+larv.ranef.micr.wide.tax$kegg.name <- paste0(larv.ranef.micr.wide.tax$id,"_",larv.ranef.micr.wide.tax$names)
+larv.ranef.food.wide.tax$kegg.name <- paste0(larv.ranef.food.wide.tax$id,"_",larv.ranef.food.wide.tax$names)
+
+larv.ranef.all1 <- merge(larv.ranef.micr.wide.tax,larv.ranef.food.wide.tax,by="kegg.name")
+any(larv.ranef.all1$Pathway.x != larv.ranef.all1$Pathway.y)
+
+# Remove perfectly duplicated columns (keep only one copy)
+larv.ranef.all <- larv.ranef.all1 %>%
+  select(!matches("\\.y$")) %>%                        # Remove .y columns (from the second df)
+  rename_with(~ sub("\\.x$", "", .x), ends_with(".x"))  # Remove .x suffix from first df
+
+larv.ranef.all$BvL <- larv.ranef.all$Bamboo-larv.ranef.all$`Larval food`
+
+#write.csv(larv.ranef.all,file="larvae.fxn.ranef.processed.csv")
+```
+
+## Top X% - larvae
+
+```{r}
+# top.mem.lar <- subset(larv.ranef.all, scale(MEM) > 2.326) #top 1%, one-tailed Z score test 
+# top.mmo.lar <- subset(larv.ranef.all, scale(MMO) > 2.326) #top 1%, one-tailed Z score test 
+# top.emo.lar <- subset(larv.ranef.all, scale(EMO) > 2.326) #top 1%, one-tailed Z score test 
+# 
+# top.bam.lar <- subset(larv.ranef.all, scale(BvL) > 1.645) #top 1%, one-tailed Z score test 
+# top.lar.lar <- subset(larv.ranef.all, scale(BvL) < -1.645) #top 1%, one-tailed Z score test 
+larv.ranef.all$sBvL <- c(scale(larv.ranef.all$BvL))
+
+Lbamboo <- subset(larv.ranef.all, sBvL > 1.28 & MEM > 0) #top 10%, one-tailed Z score test
+Lstandard <- subset(larv.ranef.all, sBvL < -1.28 & MMO > 0) #bottom 10%, one-tailed Z score test
+
+#larv.ranef.all$sMMO <- scale(larv.ranef.all$MMO)
+#larv.ranef.all$sMEM <- scale(larv.ranef.all$MEM)
+
+#Lstandard.1 <- subset(larv.ranef.all, sBvL < -1.282 & MMO > 0) #bottom 10%, one-tailed Z score test
+#Lstandard2.1 <- subset(larv.ranef.all, sBvL < -1.282 & MMO > 0  & MEM < 0) #bottom 10%, one-tailed Z score test
+#Lstandard$kegg.name == Lstandard.1$kegg.name
+
+#Lstandard <- subset(larv.ranef.all,  sBvL < -1.282 & MMO > 0) #bottom 10%, one-tailed Z score test
+Lstandard <- subset(larv.ranef.all,  sBvL < -1.282 & MMO > 0  & MEM < 0) #bottom 10%, one-tailed Z score test
+#Lbamboo <- subset(larv.ranef.all,  sBvL > 1.282 ) #bottom 10%, one-tailed Z score test
+
+Lbamboo <- subset(larv.ranef.all,  sBvL > 1.282 & MMO > 0  & MEM < 0) #bottom 10%, one-tailed Z score test
+
+
+# 
+# top.lar <- subset(larv.ranef.all, scale(BvL) > 1.282 | scale(BvL) < -1.282) #top 10%, one-tailed Z score test 
+# top.wat <- subset(larv.ranef.all, scale(BvL) > 1.282 | scale(BvL) < -1.282) #top 10%, one-tailed Z score test 
+# Lbamboo <- subset(modes,  sBvL > 1.28 & sMEM>0) #top 10%, one-tailed Z score test
+# Lstandard <- subset(modes,  sBvL < -1.28 & sMMO>0) #bottom 10%, one-tailed Z score test
+
+top.lar.mem <- subset(larv.ranef.all, scale(MEM) > 2.326) #top 1%, one-tailed Z score test 
+top.lar.mmo <- subset(larv.ranef.all, scale(MMO) > 2.326) #top 1%, one-tailed Z score test 
+top.lar.emo <- subset(larv.ranef.all, scale(EMO) > 2.326) #top 1%, one-tailed Z score test 
+
+top.lar.bam <- subset(larv.ranef.all, scale(Bamboo) > 2.326) #top 1%, one-tailed Z score test 
+top.lar.sta <- subset(larv.ranef.all, scale(`Larval food`) > 2.326) #top 1%, one-tailed Z score test 
+
+top.lar.uniq <- unique(c(top.lar.mem$kegg.name,top.lar.mmo$kegg.name,top.lar.emo$kegg.name,top.lar.bam$kegg.name))
+
+larv.top1p <- subset(larv.ranef.all, larv.ranef.all$kegg.name %in% top.lar.uniq)
+
+larv.top1p.sub <- larv.top1p[,c("kegg.name","MMO","EMO","MEM","Bamboo","Larval food")]
+
+#cond.all.df
+
+#subset(cond.df)
+
+row.names(larv.top1p.sub) <- larv.top1p.sub$kegg.name
+larv.top1p.sub2 <- larv.top1p.sub[,colnames(larv.top1p.sub)!="kegg.name"]
+cond.top1p.mat <- as.matrix(larv.top1p.sub2)
+
+library("pheatmap")
+##full thing
+pheatmap(cond.top1p.mat,
+         #color = my_palette,
+        #color = colorRampPalette(c("blue","white","red"))(100),
+         #breaks = breaks,
+        #color = colorRampPalette(brewer.pal(n=9,name="Purple-Blue"))(100)
+        color = colorRampPalette(rev(hcl.colors(n=10,"Vik")))(100),
+        scale="row",
+        show_rownames=F,
+        cluster_cols=F)
+```
+
+```{r}
+table(top.bam.lar$Pathway)
+head(top.bam.lar$Pathway)
+
+library(dplyr)
+library(ggplot2)
+
+# Step 1: Count the number of times each pathway appears
+top.lar.bam20 <- top.bam.lar %>%
+  count(Pathway) %>%
+  arrange(desc(n)) %>%
+  slice_head(n = 20)
+
+# Step 2: Reorder for plotting
+top.lar.bam20.form <- top.lar.bam20 %>%
+  mutate(Pathway = factor(Pathway, levels = rev(Pathway)))
+
+#top.lar.bam20 <- top.lar.bam21.form[top.lar.bam21.form$Pathway!="Not Included in Pathway or Brite; Unclassified: metabolism; Enzymes with EC numbers",]
+
+# Step 3: Plot
+ggplot(top.lar.bam20.form, aes(x = Pathway, y = n)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  coord_flip() +
+  labs(title = "Top 20 - larvae, bamboo diet",
+       x = "Pathway",
+       y = "Count (Number of Times Detected)") +
+  theme_minimal(base_size = 11) +
+  theme(axis.text.y = element_text(size = 7))
+
+top.lar.sta20 <- top.lar.lar %>%
+  count(Pathway) %>%
+  arrange(desc(n)) %>%
+  slice_head(n = 20)
+
+# Step 2: Reorder for plotting
+top.lar.sta20.form <- top.lar.sta20 %>%
+  mutate(Pathway = factor(Pathway, levels = rev(Pathway)))
+
+#top.lar.sta20 <- top.lar.sta21.form[top.lar.sta21.form$Pathway!="Not Included in Pathway or Brite; Unclassified: metabolism; Enzymes with EC numbers",]
+
+# Step 3: Plot
+ggplot(top.lar.sta20.form, aes(x = Pathway, y = n)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  coord_flip() +
+  labs(title = "Top 20 - larvae, standard diet",
+       x = "Pathway",
+       y = "Count (Number of Times Detected)") +
+  theme_minimal(base_size = 11) +
+  theme(axis.text.y = element_text(size = 7))
+
+```
+
+# Combining genes lists
+
+```{r}
+library(dplyr)
+
+# Get the unique kegg.names for each df
+Lbamboo_only <- Lbamboo %>%
+  filter(!(kegg.name %in% c(Lstandard$kegg.name)))
+
+Lstandard_only <- Lstandard %>%
+  filter(!(kegg.name %in% c(Lbamboo$kegg.name)))
+
+Lbamboo_only$food_indicator <- "Bamboo"
+Lstandard_only$food_indicator <- "Standard"
+
+Lboth.top <- rbind(Lbamboo_only,Lstandard_only)
+write.csv(Lboth.top,file="fxns.larvae.top.csv")
+
+Wbamboo_only <- Wbamboo %>%
+  filter(!(kegg.name %in% c(Lstandard$kegg.name,Lbamboo$kegg.name)))
+
+Wstandard_only <- Wstandard %>%
+  filter(!(kegg.name %in% c(Lstandard$kegg.name,Lbamboo$kegg.name)))
+
+Wbamboo_only$food_indicator <- "Bamboo"
+Wstandard_only$food_indicator <- "Standard"
+
+Wboth.top <- rbind(Wbamboo_only,Wstandard_only)
+
+Wbamboo$food_indicator <- "Bamboo"
+Wstandard$food_indicator <- "Standard"
+
+Wboth.top_notuniq <- rbind(Wstandard,Wbamboo)
+
+write.csv(Wboth.top_notuniq,file="fxns.water.top.csv")
+write.csv(Wboth.top,file="fxns.water.top_nosharing.csv")
+
+```
+
+# Checking out pathways
+
+## Larvae
+
+```{r}
+library(dplyr)
+
+top.lar2 <- top.lar %>%
+  separate_rows(Pathway, sep = "\\|")
+
+top.lar2$Pathway <- trimws(top.lar2$Pathway)
+
+top.lar.bam <- subset(top.lar2,BvL > 0)
+top.lar.sta <- subset(top.lar2,BvL < 0)
+
+top20.lar.bam <- top.lar.bam %>%
+  count(Pathway, sort = TRUE) %>%
+  slice_max(n, n = 20)
+
+ggplot(top20.lar.bam,aes(x=n,y=reorder(Pathway,n)))+
+  geom_bar(stat="identity")+
+  ggtitle("Larvae, bamboo diet")+
+  theme_cowplot()
+  #theme(axis.text.x=element_text(angle=90,hjust=1),axis.title.x=element_blank())
+
+top.lar.sta <- subset(top.lar2,BvL < 0)
+
+top20.lar.sta <- top.lar.sta %>%
+  count(Pathway, sort = TRUE) %>%
+  slice_max(n, n = 20)
+
+ggplot(top20.lar.sta,aes(x=n,y=reorder(Pathway,n)))+
+  geom_bar(stat="identity")+
+  ggtitle("Larvae, standard diet")+
+  theme_cowplot()
+  #theme(axis.text.x=element_text(angle=90,hjust=1),axis.title.x=element_blank())
+
+##plus looking at microbes
+top.lar.bam.mem <- subset(top.lar2,BvL > 0 & MEM > 0)
+top.lar.sta.mmo <- subset(top.lar2,BvL < 0 & MMO > 0)
+
+top20.lar.bam.mem <- top.lar.bam.mem %>%
+  count(Pathway, sort = TRUE) %>%
+  slice_max(n, n = 20)
+
+ggplot(top20.lar.bam.mem,aes(x=n,y=reorder(Pathway,n)))+
+  geom_bar(stat="identity")+
+  ggtitle("Larvae, bamboo diet, MEM > 0")+
+  theme_cowplot()
+  #theme(axis.text.x=element_text(angle=90,hjust=1),axis.title.x=element_blank())
+
+top20.lar.sta.mmo <- top.lar.sta.mmo %>%
+  count(Pathway, sort = TRUE) %>%
+  slice_max(n, n = 20)
+
+ggplot(top20.lar.sta.mmo,aes(x=n,y=reorder(Pathway,n)))+
+  geom_bar(stat="identity")+
+  ggtitle("Larvae, standard diet, MMO > 0")+
+  theme_cowplot()
+
+top.lar.sta <- subset(top.lar2,BvL < 0)
+
+top20.lar.sta <- top.lar.sta %>%
+  count(Pathway, sort = TRUE) %>%
+  slice_max(n, n = 20)
+
+ggplot(top20.lar.sta,aes(x=n,y=reorder(Pathway,n)))+
+  geom_bar(stat="identity")+
+  ggtitle("Larvae, standard diet")+
+  theme_cowplot()
+  #theme(axis.text.x=element_text(angle=90,hjust=1),axis.title.x=element_blank())
+
+
+
+mean_BvL_by_pathway_filtered <- mean_BvL_by_pathway %>%
+  filter(n_genes > 1)
+
+top.lar.bam <- subset(mean_BvL_by_pathway_filtered, scale(mean_BvL) > 1.645) #top 1%, one-tailed Z score test 
+top.lar.sta <- subset(mean_BvL_by_pathway_filtered, scale(mean_BvL) < -1.645) #top 1%, one-tailed Z score test 
+
+write.csv(mean_BvL_by_pathway_filtered,file="pathways.all.csv")
+
+
+write.csv(top.lar.bam,file="pathways.meanBvL.larvae.bamboo.csv")
+write.csv(top.lar.sta,file="pathways.meanBvL.larvae.standard.csv")
+
+
+top20.lar.bam <- top.lar.bam[order(-top.lar.bam$mean_BvL), ][1:20, ]
+top20.lar.bam
+
+ggplot(top20.lar.bam,aes(x=reorder(Pathway,mean_BvL),y=mean_BvL))+
+  geom_bar(stat="identity")+
+  theme(axis.text.x=element_text(angle=90,hjust=1))
+  
+top20.lar.sta <- top.lar.sta[order(-top.lar.sta$mean_BvL), ][1:20, ]
+top20.lar.sta
+```
+
+```{r}
+library(dplyr)
+
+larv.ranef.all2 <- larv.ranef.all %>%
+  separate_rows(Pathway, sep = "\\|")
+
+larv.ranef.all2$Pathway <- trimws(larv.ranef.all2$Pathway)
+
+mean_BvL_by_pathway <- larv.ranef.all2 %>%
+  filter(!is.na(Pathway) & Pathway != "") %>%
+  select(Pathway, BvL) %>%
+  group_by(Pathway) %>%
+  summarise(
+    mean_BvL = mean(BvL, na.rm = TRUE),
+    n_genes = n()
+  ) %>%
+  arrange(desc(mean_BvL))
+
+mean_BvL_by_pathway_filtered <- mean_BvL_by_pathway %>%
+  filter(n_genes > 1)
+
+top.lar.bam <- subset(mean_BvL_by_pathway_filtered, scale(mean_BvL) > 1.645) #top 1%, one-tailed Z score test 
+top.lar.sta <- subset(mean_BvL_by_pathway_filtered, scale(mean_BvL) < -1.645) #top 1%, one-tailed Z score test 
+
+write.csv(mean_BvL_by_pathway_filtered,file="pathways.all.csv")
+
+
+write.csv(top.lar.bam,file="pathways.meanBvL.larvae.bamboo.csv")
+write.csv(top.lar.sta,file="pathways.meanBvL.larvae.standard.csv")
+
+
+top20.lar.bam <- top.lar.bam[order(-top.lar.bam$mean_BvL), ][1:20, ]
+top20.lar.bam
+
+ggplot(top20.lar.bam,aes(x=reorder(Pathway,mean_BvL),y=mean_BvL))+
+  geom_bar(stat="identity")+
+  theme(axis.text.x=element_text(angle=90,hjust=1))
+  
+top20.lar.sta <- top.lar.sta[order(-top.lar.sta$mean_BvL), ][1:20, ]
+top20.lar.sta
+```
+
+# Heat map in the style of the other one
+
+```{r}
+##unique IDs with the name
+Lmaster$kegg.path <- paste0(Lmaster$KEGG_ID,"_",Lmaster$Name)
+
+cond.all.df <- Lmaster[,c("kegg.path","MMO","EMO","MEM","Bamboo","Larval.food")]
+
+#cond.all.df
+
+#subset(cond.df)
+
+row.names(cond.all.df) <- cond.all.df$kegg.path
+cond.all.df2 <- cond.all.df[,colnames(cond.all.df)!="kegg.path"]
+cond.all.mat <- as.matrix(cond.all.df2)
+
+library("pheatmap")
+##full thing
+pheatmap(cond.all.mat,
+         #color = my_palette,
+        #color = colorRampPalette(c("blue","white","red"))(100),
+         #breaks = breaks,
+        #color = colorRampPalette(brewer.pal(n=9,name="Purple-Blue"))(100)
+        color = colorRampPalette(rev(hcl.colors(n=10,"Vik")))(100),
+        #scale="row",
+        show_rownames=F,
+        cluster_cols=F)
+
+##need to rescale so 0 is in the middle
+
+# Actual data limits
+min_val <- min(cond.all.mat, na.rm = TRUE)
+max_val <- max(cond.all.mat, na.rm = TRUE)
+
+# Define number of colors on each side of 0 (you can adjust this)
+n_neg <- round(100 * abs(min_val) / (abs(min_val) + max_val))  # e.g., ~33
+n_pos <- 100 - n_neg                                           # e.g., ~67
+##Vik
+#neg_cols <- colorRampPalette(c(hcl.colors(n=10,"Vik")[1:5],"white"))(n_neg)
+#pos_cols <- colorRampPalette(c("white",hcl.colors(n=10,"Vik")[6:10]))(n_pos)
+
+neg_cols <- colorRampPalette(c("wheat4", "white"))(n_neg)
+pos_cols <- colorRampPalette(c("white","mediumorchid4","black"))(n_pos)
+#neg_cols <- colorRampPalette(rev(hcl.colors(10, "Temps"))[1:5])(n_neg)  # pink to white
+#pos_cols <- colorRampPalette(c("white",rev(hcl.colors(9, "BrwnYl"))))(n_pos)  # white to green
+my_palette <- c(neg_cols, pos_cols)
+##Geyser
+
+#neg_colors <- colorRampPalette(c("black", "white"))(n_neg)
+#pos_colors <- colorRampPalette(c("white","#967969","black"))(n_pos)
+#my_palette <- c(neg_colors, pos_colors)
+
+# Define breaks so that 0 falls exactly at the transition
+breaks <- seq(min_val, max_val, length.out = length(my_palette) + 1)
+
+# Draw the heatmap
+pheatmap(cond.all.mat,
+         color = my_palette,
+         #color = colorRampPalette(c("blue","white","red"))(100),
+         breaks = breaks,
+         #annotation_row = row.source,
+         #annotation_colors = ann_colors,
+         border_color = F,
+         show_rownames=F,
+         cluster_cols=F)
+
+```
+
