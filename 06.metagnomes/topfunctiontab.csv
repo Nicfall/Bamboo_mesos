@@ -1,0 +1,28 @@
+﻿,larvae-bamboo,water-bamboo,larvae-standard,water-standard,
+Monosaccharide/disaccharide metabolism and transport,0.167,0.065,0.035,0.055,0.003484834
+Polysaccharide metabolism and transport,0.097,0.063,0.015,0.030,0.001321823
+Aromatic compound metabolism,0.070,0.109,0.035,0.041,0.001135312
+Photosynthesis and carbon fixation metabolisms,0.010,0.036,0.000,0.003,0.000274061
+Sporulation/spore germination,0.006,0.006,0.015,0.060,0.000672451
+"Motility and orientation, including chemotaxis",0.010,0.004,0.116,0.049,0.002627171
+Antimicrobial metabolisms,0.035,0.048,0.045,0.041,3.31755E-05
+Nitrogen metabolism-denitrification and Nitrogen assimilation,0.006,0.002,0.030,0.041,0.000354085
+Nitrogen metabolism-purine/pyrimidine metabolism,0.037,0.010,0.025,0.022,0.000123512
+Protein/amino acid synthesis,0.029,0.014,0.020,0.030,5.74547E-05
+Protein/amino acid degradation,0.058,0.034,0.045,0.066,0.000191939
+Metal ion transport or chelation,0.037,0.016,0.010,0.022,0.00013458
+Steroid metabolism,0.006,0.012,0.010,0.011,6.58096E-06
+Detoxification,0.066,0.063,0.040,0.041,0.000187667
+"Vitamin, cofactor, or pigment metabolisms",0.029,0.044,0.025,0.036,7.13036E-05
+Methane metabolism,0.010,0.040,0.000,0.019,0.000293878
+"Biofilm formulation, quorum sensing, and adherence",0.019,0.038,0.090,0.049,0.000919812
+Cell wall integrity and cell surface structure,0.037,0.048,0.040,0.066,0.000164867
+Lipid and fatty acid metabolism,0.045,0.054,0.035,0.041,6.5683E-05
+Bacterial conjugation and DNA uptake mechanisms,0.000,0.026,0.065,0.027,0.000722942
+Sulfur metabolisms,0.006,0.010,0.005,0.014,1.55702E-05
+Virulence factor,0.012,0.046,0.085,0.027,0.00099765
+Stress response,0.019,0.018,0.005,0.033,0.000129433
+General cell function,0.132,0.103,0.151,0.126,0.000390384
+Other,0.056,0.089,0.055,0.049,0.000319784
+Total,1.00,1.00,1.00,1.00,
+Count,485,496,199,365,
