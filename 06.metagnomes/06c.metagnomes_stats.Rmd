@@ -494,8 +494,9 @@ library("pheatmap")
 topfuns <- read.csv("topfunctiontab.csv",row.names=1)
 ##get rid of count and sum for the heat map
 topfuns2 <- topfuns[row.names(topfuns)!="Count"&row.names(topfuns)!="Total",colnames(topfuns)!="X.1"]
+topfuns.mat <- as.matrix(topfuns2)
 
-pheatmap(topfuns2,
+pheatmap(topfuns.mat,
          scale="row",
          cluster_cols=F)
 ```
@@ -503,10 +504,10 @@ pheatmap(topfuns2,
 ## Nicer heat map
 
 ```{r}
-colnames(topfuns2) <- c("Larvae - bamboo","Water - bamboo", "Larvae - standard", "Water - standard")
+colnames(topfuns.mat) <- c("Larvae - bamboo","Water - bamboo", "Larvae - standard", "Water - standard")
 
 # Draw the heatmap
-pheat.topfuns <- pheatmap(topfuns2,
+pheatmap(topfuns.mat,
          #color = my_palette,
          scale="row",
          color = colorRampPalette(c("wheat4","white","mediumorchid4"))(100),
@@ -517,4 +518,21 @@ pheat.topfuns <- pheatmap(topfuns2,
          clustering_distance_rows = "maximum",
          border_color = F,
          cluster_cols = F)
+
+#saves as png
+gt <- pheatmap(topfuns.mat,
+         #color = my_palette,
+         scale="row",
+         color = colorRampPalette(c("wheat4","white","mediumorchid4"))(100),
+         #breaks = breaks,
+         #annotation_row = row.source,
+         #annotation_colors = ann_colors,
+         #scale="column",
+         clustering_distance_rows = "maximum",
+         border_color = F,
+         cluster_cols = F,
+         filename="heatmap_fxncats.png",
+         height=6,width=6)$gtable
+
 ```
+

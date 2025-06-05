@@ -15,13 +15,6 @@ editor_options:
 # Per sample raw reads
 
 ```{bash, eval=F}
-for file in *.fastq.gz
-do
-  echo $file > 
-  zcat $file.fastq.gz | wc -l
-  
-#!/bin/bash
-
 # Output file
 output="mgs_raw_read_counts.tsv"
 echo -e "Sample\tR1_reads\tR2_reads" > $output

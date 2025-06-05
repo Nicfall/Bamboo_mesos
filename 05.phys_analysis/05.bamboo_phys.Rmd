@@ -416,3 +416,8 @@ larval$microbe <- relevel(larval$microbe, ref="MEM")
 summary(lartweediefit1 <- glmmTMB(biomass~microbe*scale(day)+microbe*scale(I(day^2))+(1|mesocosmID), data=larval, family=tweedie()))
 ```
 
+# Version control
+
+```{r}
+sessionInfo()
+```
