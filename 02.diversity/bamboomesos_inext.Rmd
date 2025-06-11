@@ -22,10 +22,129 @@ library("iNEXT")
 library("ggplot2")
 ```
 
-```{r}
-data(spider)
+# Read in data
 
+```{r}
+setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/02.diversity")
+
+ps.clean <- readRDS("../01.process_asvs/bamboomesos_ps.lulu.clean.decontam.rds")
 ```
 
+# Ton of subsetting
+
+```{r}
+#need to make 20 subsets... 5 microbe treatments * 2 diets * 2 sample types
+ps.exp1 <- subset_samples(ps.clean, Mesocosm_type=="Experiment")
+ps.exp1
+ps.exp2 <- subset_samples(ps.exp1,Microbe_treatment!="AHK")
+ps.exp2
+ps.exp <- subset_samples(ps.exp2,Exp_day!=20)
+ps.exp
+
+##make a term to sum by
+ps.exp@sam_data$Food_type <- gsub("Larval food", "Standard", ps.exp@sam_data$Food_type)
+table(ps.exp@sam_data$Food_type)
+
+# ps.exp@sam_data$food.microbes <- paste0(ps.exp@sam_data$Food_type,"_",ps.exp@sam_data$Microbe_treatment)
+# table(ps.exp@sam_data$food.microbes)
+
+ps.lar <- subset_samples(ps.exp,Sample_type=="Larvae")
+ps.lar
+ps.lar.bam <- subset_samples(ps.lar,Food_type=="Bamboo")
+ps.lar.bam
+ps.lar.sta <- subset_samples(ps.lar,Food_type=="Standard")
+ps.lar.sta
+
+ps.wat <- subset_samples(ps.exp,Sample_type=="Water")
+ps.wat
+ps.wat.bam <- subset_samples(ps.wat,Food_type=="Bamboo")
+ps.wat.bam
+ps.wat.sta <- subset_samples(ps.wat,Food_type=="Standard")
+ps.wat.sta
+
+##sum by microbes
+ps.lar.bam.sum <- merge_samples(ps.lar.bam,"Microbe_treatment")
+ps.lar.sta.sum <- merge_samples(ps.lar.sta,"Microbe_treatment")
+ps.wat.bam.sum <- merge_samples(ps.wat.bam,"Microbe_treatment")
+ps.wat.sta.sum <- merge_samples(ps.wat.sta,"Microbe_treatment")
+
+##remove any with zeroes total
+ps.lar.bam.sum.no0 <- prune_taxa(taxa_sums(ps.lar.bam.sum)!=0,ps.lar.bam.sum)
+ps.lar.sta.sum.no0 <- prune_taxa(taxa_sums(ps.lar.sta.sum)!=0,ps.lar.sta.sum)
+ps.wat.bam.sum.no0 <- prune_taxa(taxa_sums(ps.wat.bam.sum)!=0,ps.wat.bam.sum)
+ps.wat.sta.sum.no0 <- prune_taxa(taxa_sums(ps.wat.sta.sum)!=0,ps.wat.sta.sum)
+
+otu.lar.bam.sum <- t(data.frame(ps.lar.bam.sum.no0@otu_table))
+otu.lar.sta.sum <- t(data.frame(ps.lar.sta.sum.no0@otu_table))
+otu.wat.bam.sum <- t(data.frame(ps.wat.bam.sum.no0@otu_table))
+otu.wat.sta.sum <- t(data.frame(ps.wat.sta.sum.no0@otu_table))
+
+# saveRDS(otu.lar.bam.sum,file="otu.lar.bam.sum.rds")
+# saveRDS(otu.lar.sta.sum,file="otu.lar.sta.sum.rds")
+# saveRDS(otu.wat.bam.sum,file="otu.wat.bam.sum.rds")
+# saveRDS(otu.wat.sta.sum,file="otu.wat.sta.sum.rds")
+```
+
+Ran this on the cluster 'cause it took forever
+
+```
+library("iNEXT")
+
+setwd("/home/nicolagk/bamboo_mesos/inext_bm")
+
+otu.lar.bam <- readRDS("otu.lar.bam.sum.rds")
+otu.lar.sta <- readRDS("otu.lar.sta.sum.rds")
+otu.wat.bam <- readRDS("otu.wat.bam.sum.rds")
+otu.wat.sta <- readRDS("otu.wat.sta.sum.rds")
+
+inext.lar.bam <- iNEXT(otu.lar.bam,datatype="abundance")
+inext.lar.sta <- iNEXT(otu.lar.sta,datatype="abundance")
+inext.wat.bam <- iNEXT(otu.wat.bam,datatype="abundance")
+inext.wat.sta <- iNEXT(otu.wat.sta,datatype="abundance")
+
+saveRDS(inext.lar.bam,"inext.lar.bam.rds")
+saveRDS(inext.lar.sta,"inext.lar.sta.rds")
+saveRDS(inext.wat.bam,"inext.wat.bam.rds")
+saveRDS(inext.wat.sta,"inext.wat.sta.rds")
+```
+
+Slurm job:
+
+```{bash, eval=F}
+#!/bin/bash
+#SBATCH --job-name=inext4
+#SBATCH --partition=shared
+##3 day max run time for public partitions, except 4 hour max runtime for the s>
+#SBATCH --time=0-24:00:00
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=10
+#SBATCH --mem=100G
+#SBATCH --error=%A.err
+#SBATCH --output=%A.out ##%A = filled with job id
+#SBATCH --mail-type=BEGIN,END,FAIL,REQUEUE,TIME_LIMIT_80
+#SBATCH --mail-user=nicolagk@hawaii.edu
+
+module load lang/R/4.2.1-foss-2022a
+Rscript inext4.R
+```
+
+# Plot output
+
+```{r}
+library(ggplot2)
+library("iNEXT")
+
+setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/02.diversity")
+
+inext.lar.bam <- readRDS("inext.lar.bam.rds")
+inext.lar.sta <- readRDS("inext.lar.sta.rds")
+inext.wat.bam <- readRDS("inext.wat.bam.rds")
+inext.wat.sta <- readRDS("inext.wat.sta.rds")
+
+ggiNEXT(inext.lar.bam)
+ggiNEXT(inext.lar.sta)
+ggiNEXT(inext.wat.bam)
+ggiNEXT(inext.wat.sta)
+```
 
 

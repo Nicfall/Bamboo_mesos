@@ -285,21 +285,151 @@ ps
 # otu_table()   OTU Table:         [ 4869 taxa and 48 samples ]
 # sample_data() Sample Data:       [ 48 samples by 25 sample variables ]
 # tax_table()   Taxonomy Table:    [ 4869 taxa by 7 taxonomic ranks ]
+#saveRDS(ps,file="ps.metags.all.rds")
+```
 
+## Bar plots
 
-#ps.sampsum <- merge_samples(ps, "")
+```{r}
+library(cowplot)
+library(ggplot2)
+library(ggpubr)
+
+ps <- readRDS("ps.metags.all.rds")
 
 ps.rel <- transform_sample_counts(ps, function(x) x / sum(x))
 ps.rel.king <- tax_glom(ps.rel,"superkingdom")
 
-plot_bar(ps.rel.king,fill="superkingdom")
+##the following groups were <0.01 total so not visible at all on the plots
+ps.rel.king.abun <- subset_taxa(ps.rel.king,superkingdom!="Archaea" & superkingdom!="No CDS" & superkingdom!="Viruses")
+ps.rel.king.abun
 
-plot_bar(ps.rel.king,fill="superkingdom")+
+##renaming stuff on x axis
+sam.rel.king.abun <- data.frame(ps.rel.king.abun@sam_data)
+sam.rel.king.abun$mesocosm_newlabs <- sam.rel.king.abun$Mesocosm_id
+sam.rel.king.abun$mesocosm_newlabs <- gsub("B_","",sam.rel.king.abun$mesocosm_newlabs)
+sam.rel.king.abun$mesocosm_newlabs <- gsub("L_","",sam.rel.king.abun$mesocosm_newlabs)
+sam.rel.king.abun$mesocosm_newlabs <- gsub("EMO","ENV",sam.rel.king.abun$mesocosm_newlabs)
+sam.rel.king.abun$mesocosm_newlabs <- gsub("MMO","MOS",sam.rel.king.abun$mesocosm_newlabs)
+sam.rel.king.abun$mesocosm_newlabs <- gsub("MEM","ENV+MOS",sam.rel.king.abun$mesocosm_newlabs)
+sam.rel.king.abun$Food_type <- gsub("Larval food","Standard diet",sam.rel.king.abun$Food_type)
+sam.rel.king.abun$Food_type <- gsub("Bamboo","Bamboo diet",sam.rel.king.abun$Food_type)
+ps.rel.king.abun@sam_data <- sample_data(sam.rel.king.abun)
+
+ps.rel.king.bam <- subset_samples(ps.rel.king.abun,Food_type=="Bamboo diet")
+ps.rel.king.sta <- subset_samples(ps.rel.king.abun,Food_type=="Standard diet")
+
+gg.rel.king.bam <- plot_bar(ps.rel.king.bam,fill="superkingdom",x="mesocosm_newlabs")+
+  scale_fill_manual(values=c("#FFE9EA","#cba079","#605f4c","#040404"))+
+  facet_wrap(Sample_type~Food_type,scales="free")+
+  theme_cowplot()+
+  theme(axis.text.x=element_text(angle=45,hjust=1))+
+  xlab("Mesocosm ID")+
+  facet_grid(Sample_type~Food_type)
+gg.rel.king.bam
+  #facet_wrap(~superkingdom,scales="free")
+
+gg.rel.king.sta <- plot_bar(ps.rel.king.sta,fill="superkingdom",x="mesocosm_newlabs")+
+  scale_fill_manual(values=c("#FFE9EA","#cba079","#605f4c","#040404"))+
+  facet_wrap(Sample_type~Food_type,scales="free")+
+  theme_cowplot()+
+  theme(axis.text.x=element_text(angle=45,hjust=1))+
+  xlab("Mesocosm ID")+
+  facet_grid(Sample_type~Food_type)
+gg.rel.king.sta
+
+ggarrange(gg.rel.king.bam,gg.rel.king.sta,common.legend=T,legend="right",labels=c("(a)","(b)"))
+
+#ggsave("gg.metags.superkingdom.bars.png",width=8.5,height=4)
+```
+
+## Calculating averages per sample types
+
+```{r}
+library("Rmisc")
+
+psm.king <- psmelt(ps.rel.king)
+
+psm.king.se <- summarySE(psm.king,measurevar="Abundance",groupvars=c("Sample_type","superkingdom"))
+
+psm.king.se
+
+ggplot(psm.king.se,aes(x=Sample_type,y=Abundance))+
+  #geom_boxplot()+
+  geom_point()+
+  geom_errorbar(aes(ymin=Abundance-se,ymax=Abundance+se),width=0.3)+
   facet_wrap(~superkingdom,scales="free")
+```
 
-ps.rel.euk <- subset_taxa(ps.rel,superkingdom=="Eukaryota")
+# Eukaryotes
 
-plot_bar(ps.rel.euk,fill="phylum")
+```{r}
+ps.euk <- subset_taxa(ps,superkingdom=="Eukaryota")
+ps.euk.rel1 <- transform_sample_counts(ps.euk, function(x) x / sum(x))
+ps.euk.rel <- tax_glom(ps.euk.rel1,"phylum")
+
+##top reps?
+# Replace with your actual object name
+ps <- ps.euk.rel1  
+# Get total abundance for each ASV
+asv_totals <- taxa_sums(ps)
+# Get taxonomy table as data frame
+tax_df <- as.data.frame(tax_table(ps))
+# Add ASV IDs and total counts
+tax_df$ASV <- taxa_names(ps)
+tax_df$TotalAbundance <- asv_totals
+# Group by Phylum and find the ASV with highest abundance in each
+top_asvs_by_phylum <- tax_df %>%
+  filter(!is.na(phylum)) %>%
+  group_by(phylum) %>%
+  slice_max(order_by = TotalAbundance, n = 1, with_ties = FALSE)
+
+# View the result
+top_asvs_by_phylum
+top_asvs_by_phylum <- top_asvs_by_phylum %>%
+  arrange(desc(TotalAbundance))
+head(top_asvs_by_phylum)
+
+##removing low abundance ones
+keep_taxa <- taxa_names(ps.euk.rel)[apply(otu_table(ps.euk.rel), 1, max) >= 0.01]
+ps.euk.rel.filt <- prune_taxa(keep_taxa, ps.euk.rel)
+ps.euk.rel.filt
+
+plot_bar(ps.euk.rel.filt,fill="phylum")
+##too many still
+
+# Total number of reads in the dataset
+total_reads <- sum(otu_table(ps.euk.rel))
+# Minimum number of reads corresponding to 1% of total
+min_reads <- total_reads * 0.01  
+# Compute total abundance of each ASV
+asv_totals <- taxa_sums(ps.euk.rel)
+# Keep only ASVs above the threshold
+keep_taxa <- names(asv_totals[asv_totals >= min_reads])
+# Prune low-abundance ASVs
+ps.euk.rel.filt <- prune_taxa(keep_taxa, ps.euk.rel)
+
+plot_bar(ps.euk.rel.filt,fill="phylum")+
+  theme_cowplot()+
+  facet_wrap(phylum~Food_type,scales="free")
+
+##sum by samples
+ps.euk@sam_data$sam_treat <- paste0(ps.euk@sam_data$Sample_type,"_",ps.euk@sam_data$Mesocosm_treatment)
+
+ps.euk.merge <- merge_samples(ps.euk,"sam_treat")
+ps.euk.merge.rel1 <- transform_sample_counts(ps.euk.merge, function(x) x / sum(x))
+ps.euk.merge.rel <- tax_glom(ps.euk.merge.rel1,"phylum")
+ps.euk.merge.rel
+
+#plot_bar(ps.euk.merge.rel,fill="phylum")
+
+keep_taxa <- taxa_names(ps.euk.merge.rel)[apply(otu_table(ps.euk.merge.rel), 2, max) >= 0.05]
+ps.euk.merge.rel.filt <- prune_taxa(keep_taxa, ps.euk.merge.rel)
+ps.euk.merge.rel.filt
+
+plot_bar(ps.euk.merge.rel.filt,fill="phylum")
+
+
 ```
 
 # Subsetting taxa-specific functions

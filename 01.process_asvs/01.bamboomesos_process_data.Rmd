@@ -717,6 +717,7 @@ tax.exp <- data.frame(ps.exp@tax_table)
 Doesn't make sense to rarefy a bunch of these samples
 
 ```{r, eval=F}
+setwd("~/Library/CloudStorage/GoogleDrive-nicolagk@hawaii.edu/My Drive/Bamboo_mesos/Bamboo_mesos/01.process_asvs")
 ps.clean.decontam <- readRDS("bamboomesos_ps.lulu.clean.decontam.rds")
 ps.clean.decontam #514 taxa, 169 samples
 

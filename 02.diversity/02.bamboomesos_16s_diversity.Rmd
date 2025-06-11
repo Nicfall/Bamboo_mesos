@@ -42,7 +42,7 @@ setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/0
 
 #ps.clean <- readRDS("../01.process_asvs/bamboomesos_ps.lulu.clean.decontam.rare11k.rds")
 #ps.clean #500 taxa, 156 samples
-ps.clean <- readRDS("../01.process_asvs/bamboomesos_ps.lulu.clean.decontam.rare6.9k.rds")
+#ps.clean <- readRDS("../01.process_asvs/bamboomesos_ps.lulu.clean.decontam.rare6.9k.rds")
 ps.clean #500 taxa, 157 samples
 
 #ps.clean.exp <- subset_samples(ps.clean,Mesocosm_type=="AHK")

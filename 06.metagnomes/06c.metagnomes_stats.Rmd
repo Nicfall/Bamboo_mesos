@@ -491,6 +491,7 @@ dim(Lstandard)
 ```{r}
 library("pheatmap")
 
+setwd("~/Library/CloudStorage/GoogleDrive-nicolagk@hawaii.edu/My Drive/Bamboo_mesos/Bamboo_mesos/06.metagnomes")
 topfuns <- read.csv("topfunctiontab.csv",row.names=1)
 ##get rid of count and sum for the heat map
 topfuns2 <- topfuns[row.names(topfuns)!="Count"&row.names(topfuns)!="Total",colnames(topfuns)!="X.1"]
@@ -499,6 +500,8 @@ topfuns.mat <- as.matrix(topfuns2)
 pheatmap(topfuns.mat,
          scale="row",
          cluster_cols=F)
+
+#ggplot(topfuns.mat,aes(x=))
 ```
 
 ## Nicer heat map
@@ -520,19 +523,22 @@ pheatmap(topfuns.mat,
          cluster_cols = F)
 
 #saves as png
-gt <- pheatmap(topfuns.mat,
-         #color = my_palette,
-         scale="row",
-         color = colorRampPalette(c("wheat4","white","mediumorchid4"))(100),
-         #breaks = breaks,
-         #annotation_row = row.source,
-         #annotation_colors = ann_colors,
-         #scale="column",
-         clustering_distance_rows = "maximum",
-         border_color = F,
-         cluster_cols = F,
-         filename="heatmap_fxncats.png",
-         height=6,width=6)$gtable
+# gt <- pheatmap(topfuns.mat,
+#          #color = my_palette,
+#          scale="row",
+#          color = colorRampPalette(c("wheat4","white","mediumorchid4"))(100),
+#          #breaks = breaks,
+#          #annotation_row = row.source,
+#          #annotation_colors = ann_colors,
+#          #scale="column",
+#          clustering_distance_rows = "maximum",
+#          border_color = F,
+#          cluster_cols = F,
+#          filename="heatmap_fxncats.png",
+#          height=6,width=6)$gtable
+
+##just checking scaled matrices
+scaled_rows <- t(apply(topfuns.mat, 1, scale))
 
 ```
 
