@@ -1,0 +1,265 @@
+---
+title: "Bamboo mesocosms experiment - fungi"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+ rmarkdown::html_document:
+    theme: cerulean
+    toc: yes
+    toc_float: yes
+    highlight: haddock
+    number_sections: true
+editor_options: 
+  chunk_output_type: console
+---
+
+# Raw .fastq processing
+
+Files are in their own folders.. copying them to one folder
+
+```{bash, eval=F}
+mkdir files_not_folders
+
+for dir in *L001*/
+do
+  cd $dir 
+  cp *.fastq.gz ../files_not_folders
+  cd ..
+done
+```
+
+# 18S analysis for fungal communities
+
+## Pre-processing
+
+All in UH's HPC. Also, moved reverse reads to a different folder otherwise you get an error in the first qiime step. 
+
+```{bash, eval=F}
+srun -p sandbox -c 5 --mem=8G -t 0-01:00:00 --pty /bin/bash
+
+module load bio/QIIME2
+
+#import
+qiime tools import \
+--type 'SampleData[SequencesWithQuality]' \
+--input-path raw_fastqs \
+--input-format CasavaOneEightSingleLanePerSampleDirFmt \
+--output-path bamboomesos_ssu_demux.qza
+
+#view
+qiime demux summarize \
+--i-data bamboomesos_ssu_demux.qza \
+--o-visualization bamboomesos_ssu_demux.qzv
+```
+
+^Use qiime2 viewer to view. For trimming, we did 230 previously but I'm going to try 280 because the quality looks pretty good
+
+```{bash, eval=F}
+#trim
+qiime dada2 denoise-single \
+--i-demultiplexed-seqs bamboomesos_ssu_demux.qza \
+--o-table bamboomesos_ssu_demux_table.qza \
+--o-representative-sequences bamboomesos_ssu_demux_repseqs.qza \
+--p-trunc-len 280 \
+--verbose \
+--o-denoising-stats bamboomesos_ssu_demux_stats.qza 
+```
+
+Some important output notes:
+
+```
+#run_dada.R --input_directory /tmp/q2-SingleLanePerSampleSingleEndFastqDirFmt-10u9142h --output_path /tmp/tmpdoaugr98/output.tsv.biom --output_track /tmp/tmpdoaugr98/track.tsv --filtered_directory /tmp/
+tmpdoaugr98 --truncation_length 230 --trim_left 0 --max_expected_errors 2.0 --truncation_quality_score 2 --max_length Inf --pooling_method independent --chimera_method consensus --min_parental_fold 1.0 --allow_
+one_off False --num_threads 1 --learn_min_reads 1000000 --homopolymer_gap_penalty NULL --band_size 16
+
+2) Filtering The filter removed all reads: /tmp/tmpsmy2emls/LL19_S47_L001_R1_001.fastq.gz not written.
+The filter removed all reads: /tmp/tmpsmy2emls/LL25_S179_L001_R1_001.fastq.gz not written.
+The filter removed all reads: /tmp/tmpsmy2emls/LL5_S64_L001_R1_001.fastq.gz not written.
+The filter removed all reads: /tmp/tmpsmy2emls/P1-NTC1_S92_L001_R1_001.fastq.gz not written.
+Some input samples had no reads pass the filter.
+```
+
+```{bash, eval=F}
+qiime feature-table summarize \
+--i-table bamboomesos_ssu_demux_table.qza \
+--o-visualization bamboomesos_ssu_demux_table.qzv
+
+qiime tools export \
+--input-path bamboomesos_ssu_demux_table.qza \
+--output-path bamboomesos_ssu_export
+
+biom convert \
+-i bamboomesos_ssu_export/feature-table.biom \
+-o bamboomesos_ssu_export/bamboomesos_ssu_otutable.tsv \
+--to-tsv
+cd bamboomesos_ssu_export
+sed -i '1d' bamboomesos_ssu_otutable.tsv
+sed -i 's/#OTU ID//' bamboomesos_ssu_otutable.tsv
+
+cd ..
+#notes from someone past: TAXONOMY. First is table, second is the reference sequences. I had a few here because I was trying out different databases. Download your database for qiime 2 and base them on your primer. For ITS use UNITE - 99% Eukaryote!
+
+qiime feature-classifier classify-consensus-blast \
+--i-query bamboomesos_ssu_demux_repseqs.qza \
+--i-reference-reads silva-138-99-seqs.qza \
+--i-reference-taxonomy silva-138-99-tax.qza \
+--output-dir bamboomesos_taxa
+
+#Output Taxonomy
+cd bamboomesos_taxa
+
+qiime tools export \
+--input-path classification.qza \
+--output-path tax2
+
+##output fasta file of sequences
+qiime tools export --input-path bamboomesos_ssu_demux_repseqs.qza --output-path ./export_fasta
+```
+
+# Reformat for phyloseq - back in R
+
+Collected taxonomy.tsv, bamboomesos_ssu_otutable.tsv, and dna-sequences.fasta from the output above
+
+## Libs
+
+```{r}
+# Install the required package
+#install.packages("readr")
+# Load the installed Package
+library(readr)
+library("stringr")
+library("phyloseq")
+```
+
+## Data in
+
+```{r}
+setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/ssu_analysis")
+
+counts.tab <- as.data.frame(read_tsv("./file_preprocessing/bamboomesos_ssu_otutable.tsv"))
+
+tax.tab <- as.data.frame(read_tsv("./file_preprocessing/taxonomy.tsv"))
+
+metadat <- read.csv("bamboomesos_metadata_fungi.csv")
+rownames(metadat) <- metadat$Short_label
+
+#900 ASVs
+#177 samples in counts table, 172 in metadata, which ones are missing:
+colnames(counts.tab)[!colnames(counts.tab) %in% row.names(metadat)]
+# "P1-NTC2"    "P1-NTC3"    "P1-PCRpos1" "P1-PCRpos2"
+#  [6] "P1-PCRpos3" "P2-NTC1"    "P2-NTC2"    "P2-NTC3"    "P2-PCRpos1"
+# [11] "P2-PCRpos2" "P2-PCRpos3"
+rownames(metadat)[!rownames(metadat) %in% colnames(counts.tab)]
+##fixed in Excel
+```
+
+### Reformat counts table
+
+```{r}
+dim(counts.tab)
+
+##make the stupid ID names less unwieldy
+asv.ids <- paste0("ASV",sprintf('%0.3d', 1:900))
+
+tax.ids <- counts.tab[,1]
+tax.ids.new <- data.frame(cbind(asv.ids,tax.ids))
+##saving for renaming stuff in the fasta file - doing in Excel with xlookup because I'm lazy
+#write.csv(tax.ids.new,file="bamboomesos_ssu_qiimeid2asv.csv")
+
+tax.ids.new$tax.ids == counts.tab$...1
+
+row.names(counts.tab) <- tax.ids.new$asv.ids
+
+##remove the unwieldy column
+counts.tab.new <- counts.tab[,2:ncol(counts.tab),drop=F]
+```
+
+### Reformat tax table
+
+```{r}
+tax.tab.split <- as.data.frame(cbind(tax.tab,str_split_fixed(as.character(tax.tab$Taxon), "; ",n=7)))
+
+colnames(tax.ids.new) <- c("asv.ids","Feature ID")
+
+tax.tab.newids <- merge(tax.tab.split,tax.ids.new,by="Feature ID",all=T)
+
+##rename rows with the better ID names
+row.names(tax.tab.newids) <- tax.tab.newids$asv.ids
+
+##make these more informative
+colnames(tax.tab.newids)[4:10]
+
+colnames(tax.tab.newids)[4:10] <- c("Domain","Phylum","Class","Order","Family","Genus","Species")
+
+colnames(tax.tab.newids)
+
+##now just want to get rid of "g__" etc.
+##make a copy before overwriting
+tax.tab.ref <- tax.tab.newids
+tax.tab.ref$Domain <- str_split_fixed(as.character(tax.tab.ref$Domain), "d__",n=2)[,2]
+tax.tab.ref$Phylum <- str_split_fixed(as.character(tax.tab.ref$Phylum), "p__",n=2)[,2]
+tax.tab.ref$Class <- str_split_fixed(as.character(tax.tab.ref$Class), "c__",n=2)[,2]
+tax.tab.ref$Order <- str_split_fixed(as.character(tax.tab.ref$Order), "o__",n=2)[,2]
+tax.tab.ref$Family <- str_split_fixed(as.character(tax.tab.ref$Family), "f__",n=2)[,2]
+tax.tab.ref$Genus <- str_split_fixed(as.character(tax.tab.ref$Genus), "g__",n=2)[,2]
+tax.tab.ref$Species <- str_split_fixed(as.character(tax.tab.ref$Species), "s__",n=2)[,2]
+
+##create a copy before overwriting
+tax <- tax.tab.ref
+
+tax.clean <- data.frame(row.names = row.names(tax),
+                        Kingdom = str_replace(tax[,4], "D_0__",""),
+                        Phylum = str_replace(tax[,5], "D_1__",""),
+                        Class = str_replace(tax[,6], "D_2__",""),
+                        Order = str_replace(tax[,7], "D_3__",""),
+                        Family = str_replace(tax[,8], "D_4__",""),
+                        Genus = str_replace(tax[,9], "D_5__",""),
+                        Species = str_replace(tax[,10], "D_6__",""),
+                        #Sequence = c(tax[,8]),
+                        asv.ids = c(tax[,11]),
+                        stringsAsFactors = FALSE)
+tax.clean[is.na(tax.clean)] <- ""
+
+for (i in 1:7){ tax.clean[,i] <- as.character(tax.clean[,i])}
+####### Fill holes in the tax table
+tax.clean[is.na(tax.clean)] <- ""
+for (i in 1:nrow(tax.clean)){
+  if (tax.clean[i,2] == ""){
+    kingdom <- paste("Kingdom_", tax.clean[i,1], sep = "")
+    tax.clean[i, 2:7] <- kingdom
+  } else if (tax.clean[i,3] == ""){
+    phylum <- paste("Phylum_", tax.clean[i,2], sep = "")
+    tax.clean[i, 3:7] <- phylum
+  } else if (tax.clean[i,4] == ""){
+    class <- paste("Class_", tax.clean[i,3], sep = "")
+    tax.clean[i, 4:7] <- class
+  } else if (tax.clean[i,5] == ""){
+    order <- paste("Order_", tax.clean[i,4], sep = "")
+    tax.clean[i, 5:7] <- order
+  } else if (tax.clean[i,6] == ""){
+    family <- paste("Family_", tax.clean[i,5], sep = "")
+    tax.clean[i, 6:7] <- family
+  } else if (tax.clean[i,7] == ""){
+    genus <- paste("Genus_", tax.clean[i,6], sep = "")
+    tax.clean[i, 7:7] <- genus
+  }
+}
+```
+
+
+
+```{r}
+tax.sort <- tax.clean[sort(rownames(tax.clean)),]
+
+row.names(tax.sort)==row.names(counts.tab.new)
+
+ps.object <- phyloseq(otu_table(as.matrix(counts.tab.new),taxa_are_rows=T),
+         tax_table(as.matrix(tax.sort)),
+         sample_data(metadat))
+
+ps.object
+##900 taxa, 176 samples
+
+##save tables
+write.csv(counts.tab.new,file="bamboomesos_fungi_counts.csv")
+write.csv(tax.sort,file="bamboomesos_fungi_taxa.csv")
+```
