@@ -27,6 +27,15 @@ do
 done
 ```
 
+Checking raw read counts
+
+```{bash, eval=F}
+for file in *R1_001.fastq.gz; do
+    reads=$(( $(gzcat "$file" | wc -l) / 4 ))
+    echo "$file $reads"
+done > raw_read_counts.txt
+```
+
 # 18S analysis for fungal communities
 
 ## Pre-processing
@@ -133,23 +142,26 @@ library("phyloseq")
 ## Data in
 
 ```{r}
-setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/ssu_analysis")
+setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/18S_fungi")
 
 counts.tab <- as.data.frame(read_tsv("./file_preprocessing/bamboomesos_ssu_otutable.tsv"))
+#row.names(counts.tab1) <- counts.tab1[,1]
+#counts.tab <- counts.tab1[,2:length(counts.tab1)]
 
 tax.tab <- as.data.frame(read_tsv("./file_preprocessing/taxonomy.tsv"))
+#row.names(tax.tab) <- tax.tab[,1]
 
-metadat <- read.csv("bamboomesos_metadata_fungi.csv")
+metadat <- read.csv("../bamboomesos_metadata_plusmgs.csv")
 rownames(metadat) <- metadat$Short_label
 
 #900 ASVs
 #177 samples in counts table, 172 in metadata, which ones are missing:
 colnames(counts.tab)[!colnames(counts.tab) %in% row.names(metadat)]
-# "P1-NTC2"    "P1-NTC3"    "P1-PCRpos1" "P1-PCRpos2"
-#  [6] "P1-PCRpos3" "P2-NTC1"    "P2-NTC2"    "P2-NTC3"    "P2-PCRpos1"
-# [11] "P2-PCRpos2" "P2-PCRpos3"
+##none missed
 rownames(metadat)[!rownames(metadat) %in% colnames(counts.tab)]
-##fixed in Excel
+##LL25 had 43 reads raw, so makes sense it's gone
+##LL19 had 294 reads
+##LL5 had 1333 reads
 ```
 
 ### Reformat counts table
@@ -245,7 +257,7 @@ for (i in 1:nrow(tax.clean)){
 }
 ```
 
-
+## Save files
 
 ```{r}
 tax.sort <- tax.clean[sort(rownames(tax.clean)),]
@@ -260,6 +272,6 @@ ps.object
 ##900 taxa, 176 samples
 
 ##save tables
-write.csv(counts.tab.new,file="bamboomesos_fungi_counts.csv")
-write.csv(tax.sort,file="bamboomesos_fungi_taxa.csv")
+#write.csv(counts.tab.new,file="bamboomesos_fungi_counts.csv")
+#write.csv(tax.sort,file="bamboomesos_fungi_taxa.csv")
 ```

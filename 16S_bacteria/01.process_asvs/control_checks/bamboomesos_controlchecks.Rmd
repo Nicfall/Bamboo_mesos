@@ -27,18 +27,16 @@ ps.clean.trim <- readRDS("../bamboomesos_ps.lulu.clean.decontam.rds")
 
 ##seeing if raw reads line up with expectations
 samdf.clean.trim <- ps.clean.trim@sam_data
-
-ggplot(samdf.clean.trim,aes(x=Short_label,y=lib_size_clean,color=Microbe_treatment))+
-  geom_point()+
-  facet_wrap(~Microbe_treatment,scales="free_x")
-
 samdf.clean.trim.no20 <- subset(samdf.clean.trim,Exp_day!=20)
 
-ggplot(samdf.clean.trim.no20,aes(x=Mesocosm_treatment,y=Raw_reads,color=Microbe_treatment))+
-  geom_boxplot()
+ggplot(samdf.clean.trim.no20,aes(x=Short_label,y=lib_size_clean,color=Microbe_treatment))+
+  geom_point()+
+  facet_wrap(~Microbe_treatment,scales="free_x")
 ```
 
 # Microbe stocks
+
+I looked at the ones that were trimmed <0.1% abundance before, but there are a ton that are unclear so checking less stringently which ones might be in MOS, ENV, or both
 
 ```{r}
 ps.stocks1 <- subset_samples(ps.clean.trim,Sample_type=="Microbe Stock")
@@ -65,26 +63,45 @@ envonly.untrim <- stocks.notrim[["Env. microbes"]]
 mosonly.untrim <- stocks.notrim[["Mosquito microbes"]]
 
 ##saving to add info to taxa file, which I will do manually in Excel
-write.table(mosonly.untrim,"mosonly.txt", sep="\t",col.names = FALSE, row.names = FALSE,quote=F)
-write.table(envonly.untrim,"envonly.txt", sep="\t",col.names = FALSE, row.names = FALSE,quote=F)
+#write.table(mosonly.untrim,"mosonly.txt", sep="\t",col.names = FALSE, row.names = FALSE,quote=F)
+#write.table(envonly.untrim,"envonly.txt", sep="\t",col.names = FALSE, row.names = FALSE,quote=F)
 #envmos.untrim <- stocks.notrim
 
-plot_bar(ps.stocks.notrim)
-
 ##others to check out:
-# > stocks.notrim[["E. coli__Env. microbes__Mosquito microbes"]]
+#stocks.notrim[["E. coli__Env. microbes__Mosquito microbes"]]
 # [1] "ASV0003"  "ASV0007"
-# > stocks.notrim[["E. coli__Env. microbes"]]
+#stocks.notrim[["E. coli__Env. microbes"]]
 # [1] "ASV0005" "ASV0008" "ASV0009" "ASV0132"
-# > stocks.notrim[["E. coli__Mosquito microbes"]]
+#stocks.notrim[["E. coli__Mosquito microbes"]]
 # [1] "ASV0001" = definitely from E. coli
-# > stocks.notrim[["Env. microbes__Mosquito microbes"]]
+#stocks.notrim[["Env. microbes__Mosquito microbes"]]
 # [1] "ASV0006" "ASV0053" "ASV0136" "ASV0149" "ASV0525" "ASV0989" "ASV1146"
+
+##asv0003
+ps.trim.asv3.1 <- subset_taxa(ps.clean.trim, id=="ASV0003")
+ps.trim.asv3 <- prune_taxa(taxa_sums(ps.trim.asv3.1)!=0,ps.trim.asv3.1)
+
+plot_bar(ps.trim.asv3,fill="id")+
+  facet_wrap(Sample_type~Microbe_treatment,scales="free")
+##hard to tell - will mark as both
+
+##asv0007
+ps.trim.asv7.1 <- subset_taxa(ps.clean.trim, id=="ASV0007")
+ps.trim.asv7 <- prune_taxa(taxa_sums(ps.trim.asv7.1)!=0,ps.trim.asv7.1)
+##hard to tell - will mark as both
+
+plot_bar(ps.trim.asv7,fill="id")+
+  facet_wrap(Sample_type~Microbe_treatment,scales="free")
+
+##asv0005 = clearly ENV
+ps.trim.asv5.1 <- subset_taxa(ps.clean.trim, id=="ASV0008")
+ps.trim.asv5 <- prune_taxa(taxa_sums(ps.trim.asv5.1)!=0,ps.trim.asv5.1)
+
+plot_bar(ps.trim.asv5,fill="id")+
+  facet_wrap(Sample_type~Microbe_treatment,scales="free")
 ```
 
 # Checking where microbes came from
-
-I looked at the ones that were trimmed <0.1% abundance before, but there are a ton that are unclear so checking less stringently which ones might be in MOS, ENV, or both
 
 ```{r}
 otu.trim <- data.frame(ps.clean.trim@otu_table)
@@ -97,6 +114,7 @@ what2 <- otu.notrim[!row.names(otu.notrim) %in% row.names(otu.trim),]
 
 rowSums(what)
 rowSums(what2)
+##just negatives, and WB39 which is a day 20 sample
 ```
 
 ## Hatching flask & lab water
