@@ -31,7 +31,7 @@ done
 
 ## Libs
 
-```{r}
+```{r, eval=F}
 #installing/loading packages:
 #if (!requireNamespace("BiocManager", quietly = TRUE))
 #  install.packages("BiocManager")
@@ -233,7 +233,7 @@ head(track)
 tail(track)
 
 ##where to save
-setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/01.process_asvs")
+setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/16S_bacteria/01.process_asvs")
 #write.csv(track,file="./raw_data/bamboomesos_readstats.csv",row.names=TRUE,quote=FALSE)
 #saveRDS(seqtab.nochim,file="./raw_data/bamboomesos_seqtab.nochim.rds")
 seqtab.nochim <- readRDS("./raw_data/bamboomesos_seqtab.nochim.rds")
@@ -244,7 +244,7 @@ seqtab.nochim <- readRDS("./raw_data/bamboomesos_seqtab.nochim.rds")
 
 Renaming with ASV IDs which will be easier to work with
 
-```{r}
+```{r, eval=F}
 library("dada2")
 
 asv.ids <- paste0("ASV",sprintf('%0.4d', 1:length(colnames(seqtab.nochim))))
@@ -314,8 +314,8 @@ seqtab.nochim.lulu <- data.frame(t(curated_result$curated_table),check.names=FAL
 
 ## Setup
 
-```{r}
-setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/01.process_asvs")
+```{r, eval=F}
+setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/16S_bacteria/01.process_asvs")
 
 seqtab.lulu <- readRDS("bamboomesos_seqtab.nochim.lulu.rds")
 #172 samples, 1957 ASVs
@@ -360,7 +360,7 @@ module avail lang/R/
 
 SLURM job for taxonomy
 
-```{bash}
+```{bash, eval=F}
 nano assign_tax.slurm
 ```
 
@@ -383,7 +383,7 @@ Rscript assign_tax.R
 
 Quit & save. Then make the R script. Note: I have the fasta file but want to make it a .csv so I can read it in easily. There's a lovely resource here: https://cdcgov.github.io/CSV2FASTA/
 
-```{bash}
+```{bash, eval=F}
 nano assign_tax.R
 ```
 
@@ -482,7 +482,7 @@ library(ShortRead)
 library(decontam)
 library("dplyr")
 
-setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/01.process_asvs")
+setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/16S_bacteria/01.process_asvs")
 ```
 
 ## Removing singletons
@@ -551,7 +551,7 @@ tail(sort(colSums(seqtab.trimmed2),decreasing=T),500)
 ```{r}
 taxa <- read.csv("bamboomesos_taxa.csv",row.names=1)
 
-samdf <- read.csv("../bamboomesos_metadata_plusmgs.csv")
+samdf <- read.csv("../../bamboomesos_metadata_plusmgs.csv")
 ##the underscore gets changed somewhere for no reason
 #samdf$Short_label <- gsub("PCR_NEG_","PCR-NEG-",samdf$Short_label)
 #samdf$Short_label <- gsub("PCR_POS_","PCR-POS-",samdf$Short_label)
@@ -688,121 +688,7 @@ countstab <- data.frame(ps.all@otu_table)
 write.csv(countstab,file="./bamboomesos_processed_data/bamboomesos_countstab.csv")
 taxatab <- data.frame(ps.all@tax_table)
 write.csv(taxatab,file="./bamboomesos_processed_data/bamboomesos_taxtab.csv")
-
-
 ```
 
-## ASVs left after quality filtering to subset from fasta - didn't do yet
-
-```{r}
-ps.exp1 <- subset_samples(ps.clean,Mesocosm_type=="Experiment")
-ps.exp1
-ps.exp2 <- subset_samples(ps.exp1,Exp_day!=20)
-ps.exp2
-ps.exp3 <- subset_samples(ps.exp2,Microbe_treatment!="AHK")
-ps.exp3
-ps.exp <- prune_taxa(taxa_sums(ps.exp3)!=0,ps.exp3)
-ps.exp
-otu.exp <- data.frame(ps.exp@otu_table)
-
-otu.exp.list <- colnames(otu.exp)
-#write.table(otu.exp.list, file="otus.experiment.clean.txt", append = FALSE, sep = "/n", row.names = FALSE, col.names = FALSE,quote=FALSE)
-
-tax.exp <- data.frame(ps.exp@tax_table)
-#write.csv(tax.exp,file="otus.experiment.taxa.csv")
-```
-
-# Rarefy
-
-Doesn't make sense to rarefy a bunch of these samples
-
-```{r, eval=F}
-setwd("~/Library/CloudStorage/GoogleDrive-nicolagk@hawaii.edu/My Drive/Bamboo_mesos/Bamboo_mesos/01.process_asvs")
-ps.clean.decontam <- readRDS("bamboomesos_ps.lulu.clean.decontam.rds")
-ps.clean.decontam #514 taxa, 169 samples
-
-sample_data(ps.clean.decontam)$lib_size_clean <- sample_sums(ps.clean.decontam)
-
-samdf.clean <- data.frame(ps.clean.decontam@sam_data)
-#write.csv(samdf.clean,file="samdf.clean.csv")
-
-samdf.low <- subset(samdf.clean,lib_size_clean<20000)
-samdf.low
-
-ggplot(data=samdf.low, aes(x=Longer_name, y=lib_size_clean, color=Mesocosm_type))+
-  geom_point()+
-  theme(axis.text.x=element_text(angle=45,hjust=1))
-##all the lowest ones that aren't controls are in the E. coli only treatment which makes sense
-
-df <- data.frame(ps.clean.decontam@otu_table) # Put sample_data into a ggplot-friendly data.frame
-df$libsize <- rowSums(df)
-
-df2 <- df[order(df$libsize),]
-
-df2$Index <- seq(nrow(df2))
-##all of them:
-ggplot(data=df2, aes(x=Index, y=libsize))+
-  geom_point()
-
-head(df2$libsize,n=25) 
-tail(df2$libsize,n=50)
-
-##higher ones
-ggplot(data=df2, aes(x=Index, y=libsize))+
-  geom_point()+
-  ylim(120000,270000)+
-  xlim(130,173)
-#there's definitely a natural break between 130950 and 144273
-#10% of that would be 13,095
-#or between 166362 and 195031
-#so 10% of that would be 16k
-
-##lower ones
-ggplot(data=df2, aes(x=Index, y=libsize))+
-  geom_point()+
-  ylim(0,50000)+
-  xlim(0,50)
-
-set.seed(2939)
-
-#ps.rare <- rarefy_even_depth(ps.clean.decontam,sample.size=10999,replace=FALSE)
-#saveRDS(ps.rare,"bamboomesos_ps.lulu.clean.decontam.rare11k.rds")
-##7 samples removed, 6 OTUs removed
-
-ps.rare <- rarefy_even_depth(ps.clean.decontam,sample.size=6950,replace=FALSE)
-#saveRDS(ps.rare,"bamboomesos_ps.lulu.clean.decontam.rare6.9k.rds")
-##12 samples removed, 14 OTUs removed
-
-##removing the same samples from the other ps object for continuity with comparisons
-#ps.rare <- readRDS("bamboomesos_ps.lulu.clean.decontam.rare11k.rds")
-#ps.rare #156 samples, 500 taxa
-
-ps.clean.decontam
-
-samdf.clean <- data.frame(ps.clean.decontam@sam_data)
-
-#samdf.low <- subset(samdf.clean,lib_size_clean<10999)
-samdf.low <- subset(samdf.clean,lib_size_clean<6950)
-
-samdf.low
-rownames(samdf.low)
-
-otu.clean <- data.frame(ps.clean.decontam@otu_table)
-
-otu.less <- subset(otu.clean,!rownames(otu.clean)%in% c(rownames(samdf.low)))
-ps.clean.decontam.copy <- ps.clean.decontam
-ps.clean.decontam.copy@otu_table <- otu_table(otu.less,taxa_are_rows = F)
-ps.clean.decontam.copy
-
-ps.less1 <- phyloseq(otu_table(otu.less, taxa_are_rows=FALSE), 
-               sample_data(samdf.clean), 
-               tax_table(as.matrix(taxa)))
-ps.less1
-
-ps.less <- prune_taxa(taxa_sums(ps.less1)>0,ps.less1)
-ps.less #500 taxa, 157 samples
-
-#saveRDS(ps.less,"bamboomesos_ps.lulu.clean.decontam.less.rds")
-```
 
 

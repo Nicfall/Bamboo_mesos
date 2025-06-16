@@ -1,0 +1,26 @@
+Files, loosely in order of when they were generated in the process:
+
+01.bamboomesos_process_data.Rmd = the script that has it all
+
+/raw_data folder
+- readstats.csv = read counts straight out of the dada2 pipeline
+- seqtab.rds = raw sequence table from dada2
+- seqtab.nochim = sequence table from dada2 without chimeras and without trimming to ~250bp
+
+main folder
+- bamboomesos_seqtab.nochim.ids.rds = R object with the sequence table with new ASV id names
+- bamboomesos_seqtab.nochim.fasta = fasta file with the new ASV id names
+
+/lulu_things folder
+- bamboomesos_seqtab.nochim_copy.fasta = same fasta as above but wanted to move it to this folder to keep all the blast files in there 
+- match_list.txt = output from blast matches to itself
+
+main folder 
+- bamboomesos_seqtab.nochim.lulu.rds = sequence table after LULU curation
+- asvids.lulu.txt = ASV ids to keep in the fasta file after LULU curation
+- bamboomesos_seqtab.nochim.lulu.fasta = the fasta file with just the LULU curated ASVs
+- bamboomesos_seqtab.nochim.lulu.fasta.csv = silly thing I did where I converted fasta file into .csv file so I could read it into a script for assigning taxonomy on the supercomputing cluster, I'm sure I missed an easier way to do this
+- bamboomesos_taxav138.1.rds = taxonomy assignment results
+- bamboomesos_taxa.csv = taxa assignment results, but with all the fields filled out (i.e. "Family_X" filled in to lower levels when things below family were not assigned)
+- bamboomesos_ps.lulu.clean.decontam = phyloseq object that's gone through decontam and trimming steps
+- bamboomesos_ps.lulu.clean.notrim.decontam = phyloseq object that went through everything except trimming so I can check out better what ASVs came from where (control_checks folder)

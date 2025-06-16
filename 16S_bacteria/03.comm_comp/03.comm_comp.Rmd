@@ -1,5 +1,5 @@
 ---
-title: "Bamboo mesos community composition"
+title: "Bamboo mesos bacterial community compositions"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
  rmarkdown::html_document:
@@ -30,7 +30,7 @@ library("ggpubr")
 ## Dater
 
 ```{r}
-setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/03.comm_comp")
+setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/16S_bacteria/03.comm_comp")
 
 ps.clean <- readRDS("../01.process_asvs/bamboomesos_ps.lulu.clean.decontam.rds")
 #ps.clean <- readRDS("../01.process_asvs/bamboomesos_ps.lulu.clean.decontam.rare11k.rds")
@@ -245,7 +245,7 @@ new.plot
 #cvdPlot(new.plot)
 ```
 
-# Microbe stocks
+# Microbe stocks bar plot
 
 ## Setup
 
@@ -267,15 +267,13 @@ ps.stocks.rel <- transform_sample_counts(ps.stocks, function(x) x / sum(x))
 plot_bar(ps.stocks.rel,fill="Order")
 ```
 
-
-
 ## Top phyla prep
 
 ```{r}
 ##Who are the top taxa for microshades
 # Merges ASVs that have the same taxonomy rank
 ## Phylum ##
-ps.stocks.rel.phy <- tax_glom(ps.stocks.rel, taxrank = "Phylum") 
+ps.stocks.rel.phy <- tax_glom(ps.stocks.rel, taxrank = "Class") 
 ps.stocks.rel.phy #8 total
 
 # Calculate taxa sum
@@ -287,6 +285,11 @@ top5
 #Firmicutes
 #Acidobacteriota
 #Bacteroidota
+
+##Gammaprot
+##Alphaprot
+##Bacilli
+#Negativ
 ```
 
 ## Phyla microshades plotting 
@@ -295,7 +298,8 @@ top5
 mdf.stocks <- prep_mdf(ps.stocks.rel,subgroup_level="Genus")
 
 # Create a color object for the specified data
-col.mdf.stocks <- create_color_dfs(mdf.stocks, top_orientation = F,group_level="Phylum",subgroup_level="Genus",selected_groups=c("Proteobacteria","Firmicutes","Acidobacteriota","Bacteroidota"),cvd=TRUE)
+#col.mdf.stocks <- create_color_dfs(mdf.stocks, top_orientation = F,group_level="Phylum",subgroup_level="Genus",selected_groups=c("Proteobacteria","Firmicutes","Acidobacteriota","Bacteroidota"),cvd=TRUE)
+col.mdf.stocks <- create_color_dfs(mdf.stocks, top_orientation = F,group_level="Class",subgroup_level="Genus",selected_groups=c("Gammaproteobacteria","Alphaproteobacteria","Bacilli","Negativicutes"),cvd=TRUE)
 
 #Extract
 col.mdf.stocks.m <- col.mdf.stocks$mdf
@@ -311,52 +315,6 @@ plot_microshades(col.mdf.stocks.m, col.mdf.stocks.c)+
   xlab("Microbe stock")+
   #ggtitle("Mosquitoes")+
   guides(color=guide_legend("Phylum-Family"),fill=guide_legend("Phylum-Family"))
-```
-
-## Top classes
-
-```{r}
-## Class ##
-ps.stocks.rel.cla <- tax_glom(ps.stocks.rel, taxrank = "Class") 
-ps.stocks.rel.cla #12
-
-# Calculate taxa sum
-top5 = head(sort(colSums(otu_table(ps.stocks.rel.cla)), decreasing = TRUE), 10)
-# Combine count and taxonomyTable
-top5 = cbind(as.data.frame(tax_table(ps.stocks.rel.cla)[names(top5),]), Count = top5)
-top5
-#Gammaproteobacteria
-#Alphaproteobacteria
-#Bacilli
-#Negativicutes
-#Bacteroidia
-```
-
-## Microshades plotting
-
-```{r}
-mdf.stocks <- prep_mdf(ps.stocks.rel,subgroup_level="Family")
-
-# Create a color object for the specified data
-col.mdf.stocks <- create_color_dfs(mdf.stocks, top_orientation = F,group_level="Class",subgroup_level="Family",selected_groups=c("Gammaproteobacteria","Alphaproteobacteria","Bacilli","Negativicutes"),cvd=TRUE)
-
-#Extract
-col.mdf.stocks.m <- col.mdf.stocks$mdf
-col.mdf.stocks.c <- col.mdf.stocks$cdf
-
-##default plot
-plot_microshades(col.mdf.stocks.m, col.mdf.stocks.c)+
-  #facet_wrap(scales="free")+
-  theme_cowplot()+
-  #facet_wrap(~infusion,scales="free")+
-  scale_x_discrete(labels=c("LAB","MOS","ENV"))+
-  #theme(axis.text.x=element_text(angle=45,vjust=1,hjust=1))+
-  xlab("Microbe stock")+
-  ylab("Relative abundance")+
-  #ggtitle("Mosquitoes")+
-  guides(color=guide_legend("Class-Family"),fill=guide_legend("Class-Family"))
-
-#ggsave("microshades.stocks.class.fam.pdf",width=7,height=5)
 ```
 
 # Sample types summed
@@ -818,30 +776,4 @@ plot_bar(ps.exp.asv.sereco,fill="asv",x="Microbe_treatment")+
   ggtitle("ASV1-Serratia?; ASV30-E.coli?")
 ```
 
-## Distance from center for metagenomics
 
-```{r}
-library("dplyr")
-
-df.segs <- segs %>%
-  group_by(all.trts) %>%
-  mutate(distance_from_center = sqrt((NMDS1 - oNMDS1)^2 + (NMDS2 - oNMDS2)^2))
-
-df.segs
-
-df.outliers <- df.segs %>%
-  group_by(all.trts) %>%
-  slice(which.max(distance_from_center))
-
-##checking the outliers are true visually
-ggplot(df.gg.exp.nmds.horn, aes(x=NMDS1, y=NMDS2,shape=sample.food,color=Microbe_treatment,label=Short_label))+
-  scale_shape_manual(values=c(17,15,24,22),name="Sample type - diet",labels=c("Larvae - bamboo","Larvae - standard","Water - bamboo","Water - standard"))+
-  theme_cowplot()+
-  geom_segment(data=segs, mapping = aes(xend = oNMDS1, yend = oNMDS2),alpha=0.5)+ # spiders
-  geom_point(size=2,fill="white")+
-  scale_color_manual(values=new.colors,name="Microbes",labels=c("Lab","Mos.","Env.","Mos.+Env.","Mos.+Env.+Lab"))+
-  annotate("text",x=-1.8,y=-1.9,label="2D stress = 0.15")+
-  geom_text(vjust=0,hjust=0)
-
-write.csv(df.outliers,file="comp.outliers.csv")
-```
