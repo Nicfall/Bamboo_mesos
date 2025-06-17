@@ -19,13 +19,14 @@ Following [this page](https://cran.r-project.org/web/packages/iNEXT/vignettes/In
 ```{r}
 #install.packages("iNEXT")
 library("iNEXT")
+library("phyloseq")
 library("ggplot2")
 ```
 
 # Read in data
 
 ```{r}
-setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/02.diversity")
+setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/16S_bacteria/02.diversity")
 
 ps.clean <- readRDS("../01.process_asvs/bamboomesos_ps.lulu.clean.decontam.rds")
 ```
@@ -85,7 +86,13 @@ otu.wat.sta.sum <- t(data.frame(ps.wat.sta.sum.no0@otu_table))
 # saveRDS(otu.wat.sta.sum,file="otu.wat.sta.sum.rds")
 ```
 
-Ran this on the cluster 'cause it took forever
+Ran this on the cluster because it took forever
+
+```{bash, eval=F}
+nano inext4.R
+```
+
+Text wtihin inext4.R
 
 ```
 library("iNEXT")
@@ -128,23 +135,59 @@ module load lang/R/4.2.1-foss-2022a
 Rscript inext4.R
 ```
 
-# Plot output
+# Plot output in R
 
 ```{r}
 library(ggplot2)
 library("iNEXT")
+library("cowplot")
+library("ggpubr")
 
-setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/02.diversity")
+setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/16S_bacteria/02.diversity")
 
 inext.lar.bam <- readRDS("inext.lar.bam.rds")
 inext.lar.sta <- readRDS("inext.lar.sta.rds")
 inext.wat.bam <- readRDS("inext.wat.bam.rds")
 inext.wat.sta <- readRDS("inext.wat.sta.rds")
 
-ggiNEXT(inext.lar.bam)
-ggiNEXT(inext.lar.sta)
-ggiNEXT(inext.wat.bam)
-ggiNEXT(inext.wat.sta)
+new.colors <- c("#7D0112","#C6A947","#84D1B5","#0085A6","#1F28A2")
+
+gg.inext.lar.bam <- ggiNEXT(inext.lar.bam)+
+  theme_cowplot()+
+  ggtitle("Larvae - bamboo diet")+
+  scale_shape_manual(values=c(19,4,18,9,10),breaks=c("ECO","MMO","EMO","MEM","ALL"),labels=c("LAB","MOS","ENV","MOS+ENV","MOS+ENV+LAB"))+
+  scale_fill_manual(values=new.colors,breaks=c("ECO","MMO","EMO","MEM","ALL"),labels=c("LAB","MOS","ENV","MOS+ENV","MOS+ENV+LAB"))+
+  scale_color_manual(values=new.colors,breaks=c("ECO","MMO","EMO","MEM","ALL"),labels=c("LAB","MOS","ENV","MOS+ENV","MOS+ENV+LAB"))+
+  theme(legend.key.width = unit(1, "cm")) # Adjust the value as needed
+gg.inext.lar.bam
+
+gg.inext.lar.sta <- ggiNEXT(inext.lar.sta)+
+  theme_cowplot()+
+  ggtitle("Larvae - standard diet")+
+  scale_shape_manual(values=c(19,4,18,9,10),breaks=c("ECO","MMO","EMO","MEM","ALL"),labels=c("LAB","MOS","ENV","MOS+ENV","MOS+ENV+LAB"))+
+  scale_fill_manual(values=new.colors,breaks=c("ECO","MMO","EMO","MEM","ALL"),labels=c("LAB","MOS","ENV","MOS+ENV","MOS+ENV+LAB"))+
+  scale_color_manual(values=new.colors,breaks=c("ECO","MMO","EMO","MEM","ALL"),labels=c("LAB","MOS","ENV","MOS+ENV","MOS+ENV+LAB"))+
+  theme(legend.key.width = unit(1, "cm")) # Adjust the value as needed
+
+gg.inext.wat.bam <- ggiNEXT(inext.wat.bam)+
+  theme_cowplot()+
+  ggtitle("Water - bamboo diet")+
+  scale_shape_manual(values=c(19,4,18,9,10),breaks=c("ECO","MMO","EMO","MEM","ALL"),labels=c("LAB","MOS","ENV","MOS+ENV","MOS+ENV+LAB"))+
+  scale_fill_manual(values=new.colors,breaks=c("ECO","MMO","EMO","MEM","ALL"),labels=c("LAB","MOS","ENV","MOS+ENV","MOS+ENV+LAB"))+
+  scale_color_manual(values=new.colors,breaks=c("ECO","MMO","EMO","MEM","ALL"),labels=c("LAB","MOS","ENV","MOS+ENV","MOS+ENV+LAB"))+
+  theme(legend.key.width = unit(1, "cm")) # Adjust the value as needed
+
+gg.inext.wat.sta <- ggiNEXT(inext.wat.sta)+
+  theme_cowplot()+
+  ggtitle("Water - standard diet")+
+  scale_shape_manual(values=c(19,4,18,9,10),breaks=c("ECO","MMO","EMO","MEM","ALL"),labels=c("LAB","MOS","ENV","MOS+ENV","MOS+ENV+LAB"))+
+  scale_fill_manual(values=new.colors,breaks=c("ECO","MMO","EMO","MEM","ALL"),labels=c("LAB","MOS","ENV","MOS+ENV","MOS+ENV+LAB"))+
+  scale_color_manual(values=new.colors,breaks=c("ECO","MMO","EMO","MEM","ALL"),labels=c("LAB","MOS","ENV","MOS+ENV","MOS+ENV+LAB"))+
+  theme(legend.key.width = unit(1, "cm")) # Adjust the value as needed
+
+ggarrange(gg.inext.lar.bam,gg.inext.lar.sta,gg.inext.wat.bam,gg.inext.wat.sta,labels=c("(a)","(b)","(c)","(d)"),common.legend=T,legend="right")
+
+#ggsave("inext.plots.png",width=9,height=5.6)
 ```
 
 

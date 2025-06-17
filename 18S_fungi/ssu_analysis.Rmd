@@ -28,24 +28,23 @@ library("phyloseq")
 ## Data in
 
 ```{r}
-setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/ssu_analysis")
-#setwd("C:/Users/Renee/Desktop/Lab/Thesis/Real_Data")
+setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/18S_fungi")
 
 counts.tab <- read.csv("bamboomesos_fungi_counts.csv", row.names=1, check.names=FALSE)
 
-tax.tab <- read.csv("bamboomesos_fungi_taxa.csv", row.names=1, check.names=FALSE)
+tax.tab <- read.csv("bamboomesos_fungi_taxa_wseqs.csv", row.names=1, check.names=FALSE)
 
-metadata <- read.csv("bamboomesos_metadata_fungi.csv", row.names=1, check.names=FALSE)
+metadata <- read.csv("../bamboomesos_metadata_plusmgs.csv", row.names=1, check.names=FALSE)
 
 row.names(tax.tab)==row.names(counts.tab)
 
-list.bad <- c("P1-NTC2","P1-NTC3","P2-NTC1","P2-NTC2")
-metadata2 <- metadata[!row.names(metadata) %in% list.bad,]
+#list.bad <- c("P1-NTC2","P1-NTC3","P2-NTC1","P2-NTC2")
+#metadata2 <- metadata[!row.names(metadata) %in% list.bad,]
 
 ps.object <- phyloseq(otu_table(as.matrix(counts.tab),taxa_are_rows=T),
                       tax_table(as.matrix(tax.tab)),
-                      sample_data(metadata2))
-ps.object #900 taxa
+                      sample_data(metadata))
+ps.object #900 taxa, 176 samples
 ```
 
 # Cleaning
@@ -75,11 +74,18 @@ list.keep <- c("Basidiomycota","Ascomycota","Blastocladiomycota","Chytridiomycot
 #need to assign the Kingdom_Eukaryota taxa that we're keeping to their BLAST IDs
 ps.fungi <- subset_taxa(ps.clean, Phylum %in% list.keep)
 ps.fungi #408 taxa
-#blast.list <- c("Kingdom_Eukaryota")
-#ps.blast <- subset_taxa(ps.clean, Phylum %in% blast.list)
-#ps.blast #12 taxa
+blast.list <- c("Kingdom_Eukaryota")
+ps.blast <- subset_taxa(ps.clean, Phylum %in% blast.list)
+ps.blast #12 taxa
+ps.blast@tax_table
+
 ps.final <- subset_taxa(ps.fungi, !(asv.ids %in% c("ASV216", "ASV611")))
 ps.final #406 taxa, removed two that did not come back as Fungi in BLAST
+
+##Renee blasted the following, so just need to replace the taxa info 
+taxa.blast12 <- read.csv("bamboomesos_fungi_taxa_wseqs_blast12.csv",row.names=1)
+ps.final@tax_table <- tax_table(as.matrix(taxa.blast12))
+ps.final
 ```
 
 ## Decontam
@@ -118,9 +124,133 @@ ps.final.clean <- prune_taxa(!contamdf.prev05$contaminant,ps.final)
 ps.final.clean #398
 ps.final.clean2 <- prune_samples(sample_sums(ps.final.clean)!=0,ps.final.clean)
 ps.final.clean2
+##don't use these samples:
+#ps.fin <- subset_samples(ps.final.clean2,Exp_day!=20)
+ps.fin <- subset_samples(ps.final.clean2, is.na(Exp_day) | Exp_day != 20)
+ps.fin
+ps.fin@sam_data$Sample_type
+
+##raw reads for trimming levels below
+seqtab.fin.sums <- data.frame(t(ps.fin@otu_table))
+seqtab.fin.sums$sums <- rowSums(seqtab.fin.sums)
+sample.sums.df <- seqtab.fin.sums[,"sums", drop=FALSE]
+```
+
+## Extra look at positive & neg controls
+
+```{r}
+ps.fin.pos1 <- subset_samples(ps.fin,Sample_type=="Positive")
+
+ps.fin.pos <- prune_taxa(taxa_sums(ps.fin.pos1)!=0,ps.fin.pos1)
+otu.pos <- data.frame(ps.fin.pos@otu_table)
+#ASV5 and 24 are the true positives
+#background reads is highest 20 in 62265 = 0.0003212077
+#or 13 in 37764 = 0.0003442432
+#will trim 0.0005, which is <0.05%
+```
+
+## Removing singletons
+
+```{r}
+# Convert to presence/absence
+ps_pa <- transform_sample_counts(ps.final, function(abund) 1*(abund>0))
+
+# Count samples per taxon
+sample_counts_per_taxon <- taxa_sums(ps_pa)
+
+# Identify taxa present in more than one sample
+taxa_multi_sample <- names(sample_counts_per_taxon[sample_counts_per_taxon > 1])
+
+# Filter the original object
+ps.nosing <- prune_taxa(taxa_multi_sample, ps.fin)
+ps.nosing
+```
+
+## Trimming <0.05% abundance per sample 
+
+Decided on this threshold by examining the results of the positive control reads
+
+```{r}
+seqtab.nosing <- data.frame(t(ps.nosing@otu_table))
+
+##checking the sample sums line up with the current otu table
+row.names(seqtab.nosing)==row.names(sample.sums.df)
+
+for (i in 1:nrow(seqtab.nosing)) {
+  #row_sum <- sum(seqtab.trimmed[i,])
+  threshold <- sample.sums.df[i,] * 0.0005
+  #print(threshold)
+  seqtab.nosing[i,seqtab.nosing[i,] <= threshold] <- 0
+}
+
+tail(sort(colSums(seqtab.nosing),decreasing=T),500)
+##remove 0s
+seqtab.nosing2 <- seqtab.nosing[,colSums(seqtab.nosing)>0]
+##52 ASVs
+tail(sort(colSums(seqtab.nosing2),decreasing=T),500)
+
+##put new seqtab back into phyloseq object
+ps.fin.trim1 <- ps.nosing
+ps.fin.trim1@otu_table <- otu_table(seqtab.nosing2,taxa_are_rows=F)
+ps.fin.trim1
+##remove missing taxa
+ps.fin.trim <- prune_taxa(taxa_sums(ps.fin.trim1)!=0,ps.fin.trim1)
+ps.fin.trim
+##removing missing samples
+# ps.fin.trim <- prune_samples(sample_sums(ps.fin.trim2)!=0,ps.fin.trim2)
+# ps.fin.trim
+##52 taxa, 101 samples
+##saving counts table for filtered read counts
+otu.trim.fin <- data.frame(ps.fin.trim@otu_table)
+#write.csv(otu.trim.fin,file="otutab.filtered.csv")
 ```
 
 # Bar plots
+
+## E. coli investigations - stock
+
+```{r}
+ps.stocks1 <- subset_samples(ps.fin.trim,Mesocosm_type=="Microbe stock")
+ps.stocks <- prune_taxa(taxa_sums(ps.stocks1) > 0, ps.stocks1)
+ps.stocks
+
+ps.stocks.rel <- transform_sample_counts(ps.stocks, function(x) x / sum(x))
+
+plot_bar(ps.stocks.rel,fill="Order")
+plot_bar(ps.stocks,fill="Order")
+ps.stocks@otu_table
+
+##before I removed singletons, E. coli stock had the following singletons:
+# ##to check out: asvs 057, 123, 132
+# 
+# asv57.1 <- subset_taxa(ps.final.clean2,asv.ids=="ASV057")
+# asv57 <- prune_samples(sample_sums(asv57.1)!=0,asv57.1)
+# plot_bar(asv57)
+# ##well that's convenient - just the E. coli stock
+# asv123.1 <- subset_taxa(ps.fin,asv.ids=="ASV123")
+# asv123 <- prune_samples(sample_sums(asv123.1)!=0,asv123.1)
+# plot_bar(asv123)
+# ##same 
+# asv132.1 <- subset_taxa(ps.fin,asv.ids=="ASV132")
+# asv132 <- prune_samples(sample_sums(asv132.1)!=0,asv132.1)
+# plot_bar(asv132,fill="asv.ids")
+# ##same
+```
+
+## Samples
+
+```{r}
+ps.eco1 <- subset_samples(ps.fin.trim, Microbe_treatment=="ECO")
+ps.eco2 <- prune_taxa(taxa_sums(ps.eco1)!=0,ps.eco1)
+ps.eco <- prune_samples(sample_sums(ps.eco2)!=0,ps.eco2)
+ps.eco
+ps.eco@sam_data$Mesocosm_treatment
+
+plot_bar(ps.eco,fill="Genus")
+
+plot_bar(ps.fin.trim)+
+  facet_wrap(~Microbe_treatment,scales="free")
+```
 
 ## Controls
 

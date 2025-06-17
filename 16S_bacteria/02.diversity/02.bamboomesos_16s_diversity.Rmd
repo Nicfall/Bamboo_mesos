@@ -38,19 +38,22 @@ library("dplyr")
 ## Data
 
 ```{r}
-setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/02.diversity")
+setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/16S_bacteria/02.diversity")
 
 #ps.clean <- readRDS("../01.process_asvs/bamboomesos_ps.lulu.clean.decontam.rare11k.rds")
 #ps.clean #500 taxa, 156 samples
 #ps.clean <- readRDS("../01.process_asvs/bamboomesos_ps.lulu.clean.decontam.rare6.9k.rds")
-ps.clean #500 taxa, 157 samples
+ps.clean1 <- readRDS("../01.process_asvs/bamboomesos_ps.lulu.clean.decontam.rds")
+ps.clean1 #514 taxa, 169 samples
 
 #ps.clean.exp <- subset_samples(ps.clean,Mesocosm_type=="AHK")
 
 # ps.clean.exp.noahk1 <- subset_samples(ps.clean,Microbe_treatment!="AHK")
 # ps.clean.exp.noahk <- prune_taxa(taxa_sums(ps.clean.exp.noahk1) > 0, ps.clean.exp.noahk1)
 
-sample_sums(ps.clean)
+ps.clean <- subset_samples(ps.clean1,Exp_day!=20)
+ps.clean
+#sample_sums(ps.clean)
 
 samdf <- data.frame(ps.clean@sam_data)
 ```
@@ -85,7 +88,7 @@ Messy plot
 
 ```{r}
 ggplot(df.all.div,aes(x=Microbe_treatment,y=Observed,color=Microbe_treatment))+
-  facet_wrap(Sample_type+Food_type~Mesocosm_type*Exp_day,scales="free")+
+  facet_wrap(Sample_type+Food_type~Mesocosm_type,scales="free")+
   #scale_color_manual(values=stock.colors)+
   geom_boxplot()
 ```
