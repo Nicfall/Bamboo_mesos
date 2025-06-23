@@ -1,0 +1,778 @@
+---
+title: "Bamboo mesos_fungi analysis"
+date: "`r Sys.Date()`"
+output:
+ rmarkdown::html_document:
+    theme: cerulean
+    toc: yes
+    toc_float: yes
+    highlight: haddock
+    number_sections: true
+editor_options: 
+  chunk_output_type: console
+---
+
+# Setup
+  
+## Libraries
+  
+```{r}
+# Install the required package
+#install.packages("readr")
+# Load the installed Package
+library(readr)
+library("stringr")
+library("phyloseq")
+```
+
+## Data in
+
+```{r}
+setwd("~/nicolagk@hawaii.edu - Google Drive/My Drive/Bamboo_mesos/Bamboo_mesos/18S_fungi")
+
+counts.tab <- read.csv("bamboomesos_fungi_counts.csv", row.names=1, check.names=FALSE)
+
+tax.tab <- read.csv("bamboomesos_fungi_taxa_wseqs.csv", row.names=1, check.names=FALSE)
+
+metadata <- read.csv("../bamboomesos_metadata_plusmgs.csv", row.names=1, check.names=FALSE)
+
+row.names(tax.tab)==row.names(counts.tab)
+
+#list.bad <- c("P1-NTC2","P1-NTC3","P2-NTC1","P2-NTC2")
+#metadata2 <- metadata[!row.names(metadata) %in% list.bad,]
+
+ps.object <- phyloseq(otu_table(as.matrix(counts.tab),taxa_are_rows=T),
+                      tax_table(as.matrix(tax.tab)),
+                      sample_data(metadata))
+ps.object #900 taxa, 176 samples
+```
+
+# Cleaning
+
+## Filtering non-fungi
+
+```{r}
+#ps.mito <- subset_taxa(ps.object, Family=="Mitochondria")
+#ps.mito #0 taxa to remove (no mitochondria)
+#ps.chlor <- subset_taxa(ps.object, Order=="Chloroplast")
+#ps.chlor #0 taxa to remove
+ps.noteuk <- subset_taxa(ps.object, Kingdom!="Eukaryota")
+ps.noteuk #232 taxa to remove
+
+# ps.nomito <- subset_taxa(ps.object, Family!="Mitochondria")
+# ps.nomito 
+# ps.nochlor <- subset_taxa(ps.nomito, Order!="Chloroplast")
+# ps.nochlor
+ps.clean <- subset_taxa(ps.object, Kingdom=="Eukaryota")
+ps.clean #668 taxa
+Taxonomy <- as.data.frame(ps.clean@tax_table)
+phyla.list <- unique(Taxonomy$Phylum)
+phyla.list
+
+### Keeping only Fungi
+list.keep <- c("Basidiomycota","Ascomycota","Blastocladiomycota","Chytridiomycota","Cryptomycota","LKM15","Kingdom_Eukaryota")
+#need to assign the Kingdom_Eukaryota taxa that we're keeping to their BLAST IDs
+ps.fungi <- subset_taxa(ps.clean, Phylum %in% list.keep)
+ps.fungi #408 taxa
+blast.list <- c("Kingdom_Eukaryota")
+ps.blast <- subset_taxa(ps.clean, Phylum %in% blast.list)
+ps.blast #12 taxa
+ps.blast@tax_table
+
+ps.final <- subset_taxa(ps.fungi, !(asv.ids %in% c("ASV216", "ASV611")))
+ps.final #406 taxa, removed two that did not come back as Fungi in BLAST
+
+##Renee blasted the following, so just need to replace the taxa info 
+taxa.blast12 <- read.csv("bamboomesos_fungi_taxa_wseqs_blast12.csv",row.names=1)
+ps.final@tax_table <- tax_table(as.matrix(taxa.blast12))
+ps.final
+```
+
+## Decontam
+
+```{r}
+# if (!requireNamespace("BiocManager", quietly = TRUE))
+#   install.packages("BiocManager")
+# 
+# BiocManager::install("decontam")
+library(phyloseq); packageVersion("phyloseq")
+library(ggplot2); packageVersion("ggplot2")
+#install.packages("decontam")
+library(decontam); packageVersion("decontam")
+
+head(sample_data(ps.final))
+df <- as.data.frame(sample_data(ps.final))
+df$LibrarySize <- sample_sums(ps.final)
+df <- df[order(df$LibrarySize),]
+df$Index <- seq(nrow(df))
+ggplot(data=df, aes(x=Index, y=LibrarySize, color=Sample_type)) + geom_point()
+
+sample_data(ps.final)$is.neg <- sample_data(ps.final)$Sample_type == "Negative"
+otu_table(ps.final)[is.na(otu_table(ps.final))] <- 0 #replacing all the NA with 0
+contamdf.prev05 <- isContaminant(ps.final, method="prevalence", neg="is.neg", threshold=0.5)
+table(contamdf.prev05$contaminant) #398 False, 8 True
+ps.pa <- transform_sample_counts(ps.final, function(abund) 1*(abund>0))
+ps.pa.neg <- prune_samples(sample_data(ps.pa)$Sample_type == "Negative", ps.pa)
+ps.pa.pos <- prune_samples(sample_data(ps.pa)$Sample_type != "Negative", ps.pa)
+df.pa <- data.frame(pa.pos=taxa_sums(ps.pa.pos), pa.neg=taxa_sums(ps.pa.neg),
+                    contaminant=contamdf.prev05$contaminant)
+ggplot(data=df.pa, aes(x=pa.neg, y=pa.pos, color=contaminant)) + geom_point() +
+  xlab("Prevalence (Negative Controls)") + ylab("Prevalence (True Samples)")
+
+##Getting rid of contaminants
+ps.final.clean <- prune_taxa(!contamdf.prev05$contaminant,ps.final)
+ps.final.clean #398
+ps.final.clean2 <- prune_samples(sample_sums(ps.final.clean)!=0,ps.final.clean)
+ps.final.clean2
+##don't use these samples:
+#ps.fin <- subset_samples(ps.final.clean2,Exp_day!=20)
+ps.fin <- subset_samples(ps.final.clean2, is.na(Exp_day) | Exp_day != 20)
+ps.fin
+ps.fin@sam_data$Sample_type
+
+##raw reads for trimming levels below
+seqtab.fin.sums <- data.frame(t(ps.fin@otu_table))
+seqtab.fin.sums$sums <- rowSums(seqtab.fin.sums)
+sample.sums.df <- seqtab.fin.sums[,"sums", drop=FALSE]
+```
+
+## Extra look at positive & neg controls
+
+```{r}
+ps.fin.pos1 <- subset_samples(ps.fin,Sample_type=="Positive")
+
+ps.fin.pos <- prune_taxa(taxa_sums(ps.fin.pos1)!=0,ps.fin.pos1)
+otu.pos <- data.frame(ps.fin.pos@otu_table)
+#ASV5 and 24 are the true positives
+#background reads is highest 20 in 62265 = 0.0003212077
+#or 13 in 37764 = 0.0003442432
+#will trim 0.0005, which is <0.05%
+```
+
+## Removing singletons
+
+```{r}
+# Convert to presence/absence
+ps_pa <- transform_sample_counts(ps.final, function(abund) 1*(abund>0))
+
+# Count samples per taxon
+sample_counts_per_taxon <- taxa_sums(ps_pa)
+
+# Identify taxa present in more than one sample
+taxa_multi_sample <- names(sample_counts_per_taxon[sample_counts_per_taxon > 1])
+
+# Filter the original object
+ps.nosing <- prune_taxa(taxa_multi_sample, ps.fin)
+ps.nosing
+
+otu.nosing <- data.frame(ps.nosing@otu_table)
+#write.csv(otu.nosing,file="otutab.nosingletons.filtered.csv")
+```
+
+## Trimming <0.05% abundance per sample 
+
+Decided on this threshold by examining the results of the positive control reads
+
+```{r}
+seqtab.nosing <- data.frame(t(ps.nosing@otu_table))
+
+##checking the sample sums line up with the current otu table
+row.names(seqtab.nosing)==row.names(sample.sums.df)
+
+for (i in 1:nrow(seqtab.nosing)) {
+  #row_sum <- sum(seqtab.trimmed[i,])
+  threshold <- sample.sums.df[i,] * 0.0005
+  #print(threshold)
+  seqtab.nosing[i,seqtab.nosing[i,] <= threshold] <- 0
+}
+
+tail(sort(colSums(seqtab.nosing),decreasing=T),500)
+##remove 0s
+seqtab.nosing2 <- seqtab.nosing[,colSums(seqtab.nosing)>0]
+##52 ASVs
+tail(sort(colSums(seqtab.nosing2),decreasing=T),500)
+
+##put new seqtab back into phyloseq object
+ps.fin.trim1 <- ps.nosing
+ps.fin.trim1@otu_table <- otu_table(seqtab.nosing2,taxa_are_rows=F)
+ps.fin.trim1
+##remove missing taxa
+ps.fin.trim <- prune_taxa(taxa_sums(ps.fin.trim1)!=0,ps.fin.trim1)
+ps.fin.trim
+##removing missing samples
+#ps.fin.trim <- prune_samples(sample_sums(ps.fin.trim2)!=0,ps.fin.trim2)
+#ps.fin.trim
+##52 taxa, 101 samples
+##saving counts table for filtered read counts
+#otu.trim.fin <- data.frame(ps.fin.trim@otu_table)
+#write.csv(otu.trim.fin,file="otutab.filtered.csv")
+```
+
+# Bar plots
+
+## E. coli investigations - stock
+
+```{r}
+#ps.stocks1 <- subset_samples(ps.nosing,Mesocosm_type=="Microbe stock")
+ps.stocks1 <- subset_samples(ps.fin.trim,Mesocosm_type=="Microbe stock")
+ps.stocks <- prune_taxa(taxa_sums(ps.stocks1) > 0, ps.stocks1)
+ps.stocks
+
+ps.stocks.rel <- transform_sample_counts(ps.stocks, function(x) x / sum(x))
+
+plot_bar(ps.stocks.rel,fill="Order")
+plot_bar(ps.stocks,fill="Order")
+ps.stocks@otu_table
+
+##before I removed singletons, E. coli stock had the following singletons:
+# ##to check out: asvs 057, 123, 132
+# 
+# asv57.1 <- subset_taxa(ps.final.clean2,asv.ids=="ASV057")
+# asv57 <- prune_samples(sample_sums(asv57.1)!=0,asv57.1)
+# plot_bar(asv57)
+# ##well that's convenient - just the E. coli stock
+# asv123.1 <- subset_taxa(ps.fin,asv.ids=="ASV123")
+# asv123 <- prune_samples(sample_sums(asv123.1)!=0,asv123.1)
+# plot_bar(asv123)
+# ##same 
+# asv132.1 <- subset_taxa(ps.fin,asv.ids=="ASV132")
+# asv132 <- prune_samples(sample_sums(asv132.1)!=0,asv132.1)
+# plot_bar(asv132,fill="asv.ids")
+# ##same
+```
+
+## E. coli samples
+
+```{r}
+ps.eco1 <- subset_samples(ps.fin.trim, Microbe_treatment=="ECO")
+ps.eco2 <- prune_taxa(taxa_sums(ps.eco1)!=0,ps.eco1)
+ps.eco <- prune_samples(sample_sums(ps.eco2)!=0,ps.eco2)
+ps.eco
+ps.eco@sam_data$Mesocosm_treatment
+
+plot_bar(ps.eco,fill="Genus")
+
+plot_bar(ps.fin.trim)+
+  facet_wrap(~Microbe_treatment,scales="free")
+```
+
+## Controls
+
+- Hatch_flask
+- Lab_water
+
+```{r}
+ps.trim.ctrls1 <- subset_samples(ps.fin.trim,Mesocosm_treatment=="Hatch_flask" | Mesocosm_treatment=="Lab_water")
+ps.trim.ctrls1
+
+ps.trim.ctrls <- prune_taxa(taxa_sums(ps.trim.ctrls1)!=0,ps.trim.ctrls1)
+ps.trim.ctrls
+
+plot_bar(ps.trim.ctrls,fill="asv.ids")+
+  facet_wrap(~Genus,scales="free")
+##take with caution:
+##ASV0005 [Saccharomyces]
+##ASV010 [Malassezia]
+##ASV034 [Malassezia]
+##ASV012 [Family_Phaseosphaeriaceae]
+```
+
+## Experiment samples
+
+```{r}
+#install.packages("remotes")
+#remotes::install_github("KarstensLab/microshades", dependencies = TRUE)
+#remotes::install_github("mikemc/speedyseq")
+library("speedyseq")
+library("microshades")
+ps.mem <- subset_samples(ps.final.clean2, Exp_day != 20)
+ps.mem
+ps.mem2 <- subset_samples(ps.mem, Microbe_treatment == "MMO" | Microbe_treatment == "EMO" | Microbe_treatment == "MEM")
+ps.mem2
+table(ps.mem2@sam_data$Treatment_notes)
+mdf_prep <- prep_mdf(ps.mem2, subgroup_level = "Genus",remove_na = TRUE)
+
+ps.mem2 <- subset_samples(ps.mem, Microbe_treatment %in% c("MMO","EMO","MEM") & Mesocosm_type=="Experiment")
+ps.mem2
+
+ps.mem.order <- tax_glom(ps.mem2, taxrank = "Order") #
+
+# Calculate taxa sum
+sort(rowSums(data.frame(ps.mem.order@otu_table)),decreasing=TRUE)
+# Combine count and taxonomyTable
+#top5 = cbind(as.data.frame(tax_table(ps.mem.order)[names(top5),]), Count = top5)
+#top5
+color_objs_GP <- create_color_dfs(mdf_prep, group_level= "Order", subgroup_level = "Genus",
+                                  selected_groups = 
+                                    c("Saccharomycetales", "Malasseziales", "Chytridiales", "Cantharellales") ,cvd = TRUE)
+
+# Extract
+mdf_GP <- color_objs_GP$mdf
+cdf_GP <- color_objs_GP$cdf
+
+#plot 
+#table()
+plot_microshades(mdf_GP, cdf_GP) +
+  facet_wrap(Treatment_notes~Sample_type,scales="free", ncol=2)
+
+otu.tab <- t(data.frame(ps.final.clean2@otu_table))
+library("vegan")
+
+otu.tab20plus <- otu.tab[rowSums(otu.tab)>20000,]
+
+rarecurve(otu.tab20plus,step=100,cex=0.5,xlim=c(20000,100000),main=">20k")
+
+#otu.rarecurve <- rarecurve(otu.tab,step=100,cex=0.5)
+
+##10-20
+otu.tab1020 <- otu.tab[rowSums(otu.tab)<20000 & rowSums(otu.tab)>10000,]
+
+rarecurve(otu.tab1020,step=100,cex=0.5,xlim=c(10000,20000),main="10-20k")
+
+##5-10
+otu.tab510 <- otu.tab[rowSums(otu.tab)<10000 & rowSums(otu.tab)>5000,]
+
+rarecurve(otu.tab510,step=100,cex=0.5,xlim=c(5000,10000),main="5-10k")
+
+##2-5k
+otu.tab25 <- otu.tab[rowSums(otu.tab)<5000 & rowSums(otu.tab)>2000,]
+
+rarecurve(otu.tab25,step=100,cex=0.5,xlim=c(2000,5000),main="2-5k")
+
+##0-2k
+otu.tab25 <- otu.tab[rowSums(otu.tab)<2000 & rowSums(otu.tab)>0,]
+
+rarecurve(otu.tab25,step=100,cex=0.5,xlim=c(0,2000),main="0-2k")
+
+otu.rareslope<- rareslope(otu.tab,sample=1000)
+otu.rareslope[otu.rareslope>0.001]
+
+otu.rarecurve <- rarecurve(otu.tab,step=10,cex=0.5,xlim=c(0,200))
+
+saturation_check <- sapply(otu.rarecurve, function(x) {
+  length_x <- length(x)
+  if (length_x > 2) {
+    slope <- (x[length_x] - x[length_x - 1]) / 100  # Change in species per step
+    return(slope)
+  } else {
+    return(NA)
+  }
+})
+
+saturated_samples <- names(saturation_check[saturation_check < 0.01])  # Threshold for saturation
+saturated_samples
+
+
+##Negative controls
+negative_control <- subset_samples(ps.final.clean2, Sample_type == "Negative")
+negative_control #406 taxa
+taxa_sums(negative_control)
+negative_control2 <- prune_taxa(taxa_sums(negative_control) !=0, negative_control)
+negative_control2
+plot_bar(negative_control2, fill="Genus")
+
+##Positive Controls
+positive_control <- subset_samples(ps.final.clean2, Sample_type == "Positive")
+positive_control #406 taxa
+positive_control2 <- prune_taxa(taxa_sums(positive_control) !=0, positive_control)
+positive_control2 #5 taxa
+plot_bar(positive_control2, fill="Genus")
+```
+
+## Microbe stocks
+
+```{r}
+ps.clean.rel  = transform_sample_counts(ps.final.clean2, function(x) x / sum(x) )
+ps.clean.rel
+microbe_stock <- subset_samples(ps.clean.rel,Sample_type == "Microbe Stock")
+microbe_stock #398 taxa
+microbe_stock2 <- prune_taxa(taxa_sums(microbe_stock)!=0,microbe_stock)
+microbe_stock2 #64 taxa
+plot_bar(microbe_stock2, fill="Phylum")
+
+custom_palette <- c("Basidiomycota" = "#56B4E9", "Kingdom_Eukaryota" = "#E69F00", "Ascomycota" = "#009E73", 
+                    "Cryptomycota" = "#cc79A7", "Blastocladiomycota" = "#F0E442", "Chytridiomycota" = "#999999","LKM15" = "#0072B2")
+new_x_labels <- c("M1" = "E.coli Treatment", "M2" = "Mosquito Microbes", 
+                  "M3" = "Environmental Microbes")
+plot_bar(microbe_stock2, fill="Phylum") +
+  scale_fill_manual(values=custom_palette) +
+  scale_x_discrete(labels = new_x_labels) +
+  theme(axis.text.x = element_text(angle = 0, hjust = 0.5),plot.title = element_text(size = 14, face = "bold", hjust = 0.5, 
+                                                                                     margin = margin(t = 10, b = 20))) +
+  xlab("Microbe Treatments") +
+  ggtitle("Relative abundance of fungal taxa across different microbe treatments")
+
+##different version with the black bars gone
+microbe_stock_alt <- tax_glom(microbe_stock2,"Phylum")
+
+plot_bar(microbe_stock_alt, fill="Phylum") +
+  scale_fill_manual(values=custom_palette) +
+  scale_x_discrete(labels = new_x_labels) +
+  theme(axis.text.x = element_text(angle = 0, hjust = 0.5),plot.title = element_text(size = 14, face = "bold", hjust = 0.5, 
+                                                                                     margin = margin(t = 10, b = 20))) +
+  xlab("Microbe Treatments") +
+  ggtitle("Relative abundance of fungal taxa across different microbe treatments")
+```
+
+## Experiment samples
+
+```{r}
+ps.exp.samps <- subset_samples(ps.clean.rel,Exp_day!=20 & Exp_day!=0 & Microbe_treatment!= "AHK" & Mesocosm_type=="Experiment")
+
+##just larvae
+ps.exp.lar1 <- subset_samples(ps.exp.samps,Sample_type=="Larvae")
+ps.exp.lar <- prune_taxa(taxa_sums(ps.exp.lar1)>0,ps.exp.lar1)
+ps.exp.lar
+
+plot_bar(ps.exp.lar, fill="Phylum")+
+  facet_wrap(Treatment_notes~Sample_type,scales="free")+
+  scale_fill_manual(values=custom_palette)
+  
+##just water
+ps.exp.wat1 <- subset_samples(ps.exp.samps,Sample_type=="Water")
+ps.exp.wat <- prune_taxa(taxa_sums(ps.exp.wat1)>0,ps.exp.wat1)
+ps.exp.wat
+
+plot_bar(ps.exp.wat, fill="Phylum")+
+  facet_wrap(Treatment_notes~Sample_type,scales="free")+
+  scale_fill_manual(values=custom_palette)
+  
+```
+
+# Alpha Diversity
+
+## Water & larvae samples
+
+```{r}
+# theme_set(theme_bw())
+# pal = "Set1"
+# scale_colour_discrete <- function(palname=pal, ...){scale_colour_brewer(palette=palname, ...)}
+# scale_fill_discrete <- function(palname=pal, ...){scale_fill_brewer(palette=palname, ...)}
+
+plot_richness(ps.final.clean2,x="Sample_type", measures=c("Chao1", "Shannon"))
+
+df.all <- data.frame(estimate_richness(ps.final.clean2, split=TRUE, measures=c("Shannon","InvSimpson", "Observed","Chao1")))
+df.all$Short_label <- rownames(df.all)
+metadata2$Short_label <- rownames(metadata2)
+df.all.div <- merge(df.all,metadata2,by="Short_label")
+df.div.stocks <- subset(df.all.div,Mesocosm_type!="Additional control")
+ggplot(df.div.stocks,aes(x=Microbe_treatment,y=Observed))+
+  facet_wrap(Sample_type+Food_type~Mesocosm_type,scales="free")+
+  #scale_color_manual(values=stock.colors)+
+  geom_boxplot()
+
+## Box Plots Microbe Treatments vs Larvae/water vs Diet type
+#install.packages("RColorBrewer")  # For better colors
+#library(ggplot2)
+#library(RColorBrewer)
+theme_set(theme_bw())
+#pal ="Set1"
+cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+#scale_colour_discrete <- function(palname=pal, ...){scale_colour_brewer(palette=palname, ...)}
+#scale_fill_discrete <- function(palname=pal, ...){scale_fill_brewer(palette=palname, ...)}
+df.div.new <- subset(df.div.stocks, 
+                        !Microbe_treatment %in% c("Microbe stock", "Negative","AHK") & 
+                          !Food_type %in% c("Hatching flask", "Lab water", "Microbe stock", "Negative"))
+
+ggplot(df.div.new, aes(x = Microbe_treatment, y = Observed, fill = Microbe_treatment)) +
+  geom_boxplot() +  
+  facet_grid(Sample_type ~ Food_type, labeller = labeller(Food_type = c("Larval food" = "Lab Diet", "Bamboo" = "Bamboo Powder"))) +  # Splits by Water/Larvae and Diet
+  scale_fill_manual(values=cbPalette, labels = c("All treatments","E. coli only","Environmental microbes only","Mosquito & Environmental microbes","Mosquito microbes only")) + #Color Blind Friendly palette
+  xlab("Microbe Treatments") +
+  theme(plot.title = element_text(size = 14, face = "bold", hjust = 0.5,
+                                  margin = margin(t = 20, b = 20)))+
+  ggtitle("Observed fungal taxa across microbe treatments and diet types for larvae and water samples")
+  #scale_fill_brewer(palette = "Set2")  # Pastel colors
+
+
+```
+
+## Microbe stocks plot
+
+```{r}
+df.div.ms <- subset(df.div.stocks, 
+                     Mesocosm_treatment %in% c("Microbe_stock_ecoli","Microbe_stock_mosq","Microbe_stock_brom"))
+ggplot(df.div.ms, aes(x = Mesocosm_treatment, y = Observed, fill = Mesocosm_treatment)) +
+  geom_bar(stat="identity") +  
+  #facet_grid(Sample_type ~ Food_type) +  # Splits by Water/Larvae and Diet
+  theme(legend.position="none")+
+  scale_fill_manual(values=c("#009E73","#56B4E9","#0072B2"))
+
+```
+
+## Stats (mosquitoes)
+
+```{r}
+df.div.mos <- subset(df.div.new, 
+                     Sample_type == "Larvae" & Microbe_treatment != "AHK")
+##Histogram
+hist(df.div.mos$Observed) #log was worse for Observed
+##ANOVA even though not normally distributed (first assumption violated)
+two.way <- aov(Observed ~ Microbe_treatment + Food_type, data=df.div.mos)
+summary(two.way) #food type is significant, microbe treatment not
+interaction <- aov(Observed ~ Microbe_treatment * Food_type, data=df.div.mos)
+summary(interaction)
+#install.packages('car')
+library('car')
+library('ggplot2')
+##Levene Test for Homogeneity in Variance
+leveneTest(Observed ~ Microbe_treatment * Food_type, data=df.div.mos) #variance is not too bad (bad variance would produce a significant P value)
+ggplot(df.div.mos, aes(x = Microbe_treatment, y = Observed, fill = Microbe_treatment)) +
+  geom_boxplot() 
+ggplot(df.div.mos, aes(x = Food_type, y = Observed, fill = Food_type)) +
+  geom_boxplot() 
+```
+
+## More advanced stats
+
+### Richness - larvae
+
+```{r}
+library('stats')
+
+glm <- glm(Observed ~ Microbe_treatment * Food_type, data=df.div.mos, family = poisson)
+summary(glm)
+glm.normal <- glm(Observed ~ Microbe_treatment * Food_type, data=df.div.mos) #without family=poisson, assumes gaussian distribution
+summary(glm.normal)
+AIC(glm,glm.normal) #compares the two and tells which fits the data better, lower AIC fits better
+#glm has AIC 132.9 glm.normal has AIC 138.8
+#install.packages('MASS')
+library('MASS')
+glm.nb <- glm.nb(Observed ~ Microbe_treatment * Food_type, data=df.div.mos) #checking negative binomial
+summary(glm.nb)
+AIC(glm,glm.normal,glm.nb) #poisson is still best fit, nb is better than normal
+
+glm <- glm(Observed ~ Microbe_treatment * Food_type, data=df.div.mos, family = poisson)
+summary(glm)
+glm.plus <- glm(Observed ~ Microbe_treatment + Food_type, data=df.div.mos, family = poisson)
+summary(glm.plus)
+AIC(glm,glm.plus)
+anova(glm,glm.plus) #glm.plus is final model because no significant interaction (*)
+
+glm.plus.nomicrobes <- glm(Observed ~ Food_type, data=df.div.mos, family = poisson)
+AIC(glm.plus,glm.plus.nomicrobes)
+anova(glm.plus.nomicrobes,glm.plus) #P value = 0.1256 Not significant
+
+glm.plus.nofood <- glm(Observed ~ Microbe_treatment, data=df.div.mos, family = poisson)
+AIC(glm.plus,glm.plus.nofood)
+anova(glm.plus,glm.plus.nofood) #P value = 0.001969 Significant
+```
+
+### Shannon - larvae
+
+```{r}
+df.div.mos.mem <- subset(df.div.mos,Microbe_treatment %in% c("EMO","MMO","MEM"))
+##Repeat for Shannon for larvae
+##include 239-249 lines for shannon
+
+glm.shan <- glm(Shannon ~ Microbe_treatment * Food_type, data=df.div.mos.mem, family = poisson)
+summary(glm.shan)
+glm.shan.normal <- glm(Shannon ~ Microbe_treatment * Food_type, data=df.div.mos.mem) #without family=poisson, assumes gaussian distribution
+summary(glm.shan.normal)
+AIC(glm.shan,glm.shan.normal) #compares the two and tells which fits the data better, lower AIC fits better
+#glm.shan has AIC Inf glm.shan.normal has AIC 30.43396
+#install.packages('MASS')
+library('MASS')
+glm.shan.nb <- glm.nb(Shannon ~ Microbe_treatment * Food_type, data=df.div.mos.mem) #checking negative binomial
+summary(glm.shan.nb)
+AIC(glm.shan,glm.shan.normal,glm.shan.nb) #lowest AIC is glm.shan.normal at 30.43396
+
+glm.shan.plus <- glm(Shannon ~ Microbe_treatment + Food_type, data = df.div.mos.mem)
+summary(glm.shan.plus)
+AIC(glm.shan.normal,glm.shan.plus) #glm.shan.plus is final model for Shannon, no significant interaction again
+anova(glm.shan.normal,glm.shan.plus)#P value = 0.275
+
+glm.shan.plus.nomic <- glm(Shannon ~ Food_type, data=df.div.mos.mem)
+AIC(glm.shan.plus,glm.shan.plus.nomic)
+anova(glm.shan.plus,glm.shan.plus.nomic) #P value = 0.153
+
+glm.plus.shan.nofood  <- glm(Shannon ~ Microbe_treatment, data=df.div.mos.mem)
+AIC(glm.shan.plus, glm.plus.shan.nofood) #glm.plus.shan.nofood
+anova(glm.shan.plus,glm.plus.shan.nofood) #P value 0.2161
+
+glm.shan.plus.em <- emmeans(glm.shan.plus, ~Food_type+Microbe_treatment)
+
+summary(glm.shan.plus.em)
+
+glm.shan.plus.em.cld <- cld(glm.shan.plus.em,Letters=letters)
+summary(glm.shan.plus.em.cld)
+```
+
+### Richness - water
+
+```{r}
+df.div.wat <- subset(df.div.new, 
+                     Sample_type == "Water" & Microbe_treatment != "AHK" & Exp_day!=20)
+
+##code here
+```
+
+### Shannon - water
+
+```{r}
+df.div.wat.mem.mem <- subset(df.div.wat.mem,Microbe_treatment %in% c("EMO","MMO","MEM"))
+##Repeat for Shannon for larvae
+##include 239-249 lines for shannon
+
+glm.shan <- glm(Shannon ~ Microbe_treatment * Food_type, data=df.div.wat.mem.mem, family = poisson)
+summary(glm.shan)
+glm.shan.normal <- glm(Shannon ~ Microbe_treatment * Food_type, data=df.div.wat.mem) #without family=poisson, assumes gaussian distribution
+summary(glm.shan.normal)
+AIC(glm.shan,glm.shan.normal) #compares the two and tells which fits the data better, lower AIC fits better
+#glm.shan has AIC Inf glm.shan.normal has AIC 30.43396
+#install.packages('MASS')
+library('MASS')
+glm.shan.nb <- glm.nb(Shannon ~ Microbe_treatment * Food_type, data=df.div.wat.mem) #checking negative binomial
+summary(glm.shan.nb)
+AIC(glm.shan,glm.shan.normal,glm.shan.nb) #lowest AIC is glm.shan.normal at 30.43396
+
+glm.shan.plus <- glm(Shannon ~ Microbe_treatment + Food_type, data = df.div.wat.mem)
+summary(glm.shan.plus)
+AIC(glm.shan.normal,glm.shan.plus) #glm.shan.plus is final model for Shannon, no significant interaction again
+anova(glm.shan.normal,glm.shan.plus)#P value = 0.275
+
+glm.shan.plus.nomic <- glm(Shannon ~ Food_type, data=df.div.wat.mem)
+AIC(glm.shan.plus,glm.shan.plus.nomic)
+anova(glm.shan.plus,glm.shan.plus.nomic) #P value = 0.153
+
+glm.plus.shan.nofood  <- glm(Shannon ~ Microbe_treatment, data=df.div.wat.mem)
+AIC(glm.shan.plus, glm.plus.shan.nofood) #glm.plus.shan.nofood
+anova(glm.shan.plus,glm.plus.shan.nofood) #P value 0.2161
+
+glm.shan.plus.em <- emmeans(glm.shan.plus, ~Microbe_treatment)
+
+summary(glm.shan.plus.em)
+
+pairs(glm.shan.plus.em)
+
+glm.shan.plus.em.cld <- cld(glm.shan.plus.em,Letters=letters)
+summary(glm.shan.plus.em.cld)
+
+
+
+library("")
+simulateResiduals(glm.shan.plus)
+```
+
+# Fitness from the treatments
+
+## Boxplot
+
+```{r}
+ggplot(data=df.div.wat,aes(x=Microbe_treatment,y=Biomass_day40,fill=Microbe_treatment))+
+  geom_boxplot()+
+  scale_fill_manual(values=cbPalette)+
+  facet_wrap(~Food_type)
+```
+
+### Stats
+
+```{r}
+library("emmeans")
+library("multcomp")
+
+metadat.fit <- subset(metadata2,Mesocosm_type=="Experiment"&Sample_type=="Water"&Microbe_treatment!="AHK"&Exp_day!=20)
+
+##just need 1 biomass number per mesocosm
+metadat.fit$Mesocosm_id
+
+hist(metadat.fit$Biomass_day40)
+
+ggplot(metadat.fit,aes(x=Microbe_treatment,y=Biomass_day40))+
+  geom_point()+
+  facet_wrap(~Food_type)
+
+glm.biomass <- glm(Biomass_day40 ~ Microbe_treatment * Food_type, data=metadat.fit)
+summary(glm.biomass)
+
+glm.biomass.plus <- glm(Biomass_day40 ~ Microbe_treatment + Food_type, data=metadat.fit)
+summary(glm.biomass.plus)
+
+anova(glm.biomass,glm.biomass.plus) #sig interaction between microbe treatment and food type - affects output biomass
+
+```
+
+## Alpha diversity correlation with fitness?
+
+### Larvae
+
+```{r}
+library("glmmTMB")
+
+corr.lar.int <- glmmTMB(Biomass_day40~Observed*Food_type+(1|Microbe_treatment),data=df.div.mos)
+summary(corr.lar.int)
+
+corr.lar.noint <- glmmTMB(Biomass_day40~Observed+Food_type+(1|Microbe_treatment),data=df.div.mos)
+summary(corr.lar.noint) #just food type which we already knew about
+
+anova(corr.lar.int,corr.lar.noint) #not sig
+
+ggplot(df.div.mos,aes(x=Observed,y=Biomass_day40, color=Food_type,shape=Microbe_treatment))+
+  geom_point()+
+  geom_smooth(method="lm",aes(group=Food_type))
+```
+
+### Water
+
+```{r}
+corr.wat.int <- glmmTMB(Biomass_day40~Observed*Food_type+(1|Microbe_treatment),data=df.div.wat)
+summary(corr.wat.int)
+
+corr.wat.noint <- glmmTMB(Biomass_day40~Observed+Food_type+(1|Microbe_treatment),data=df.div.wat)
+summary(corr.wat.noint) #just food type which we already knew about
+
+anova(corr.wat.int,corr.wat.noint) #not sig
+
+ggplot(df.div.wat,aes(x=Observed,y=Biomass_day40, color=Food_type,shape=Microbe_treatment))+
+  geom_point()+
+  scale_color_manual(values=c())
+  geom_smooth(method="lm",aes(group=Food_type))
+```
+
+# PCoA/NMDS
+
+```{r}
+table(ps.clean.rel@sam_data$Sample_type)
+table(ps.clean.rel@sam_data$Exp_day)
+
+ps.exp.samps <- subset_samples(ps.clean.rel,Exp_day!=20 & Exp_day!=0 & Microbe_treatment!= "AHK" & Mesocosm_type=="Experiment")
+ps.exp.samps
+
+table(ps.exp.samps@sam_data$Sample_type)
+table(ps.exp.samps@sam_data$Microbe_treatment)
+
+ord.exp <- ordinate(ps.exp.samps, "NMDS", "bray")
+
+plot_ordination(ps.exp.samps,ord.exp,color="Sample_type",label="Microbe_treatment")
+
+ord.exp <- ordinate(ps.exp.samps, "NMDS", "jaccard")
+
+plot_ordination(ps.exp.samps,ord.exp,color="Sample_type",label="Microbe_treatment")
+
+ord.exp <- ordinate(ps.exp.samps, "PCoA", "bray")
+
+library("ggpubr")
+
+p1 <- plot_ordination(ps.exp.samps,ord.exp,color="Food_type",shape="Microbe_treatment")
+
+p2 <- plot_ordination(ps.exp.samps,ord.exp,color="Food_type",shape="Sample_type")
+
+ggarrange(p1,p2)
+```
+
+## Community distance stats 
+
+```{r}
+library('vegan')
+
+dist.bray <- phyloseq::distance(ps.exp.samps, method = "bray")
+
+sampledf <- data.frame(sample_data(ps.exp.samps))
+
+adonis2(dist.bray ~ Sample_type+Microbe_treatment+Food_type, data = sampledf,by="margin")
+
+adonis2(dist.bray ~ Sample_type+Microbe_treatment*Food_type, data = sampledf,by="margin")
+
+##significant interaction between microbe treatment and food type, no effect of sample type (meaning no differences between larvae & water communities which is very different from what we see in bacteria which is kind of cool)
+
+```

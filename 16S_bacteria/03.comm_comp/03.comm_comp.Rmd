@@ -44,7 +44,7 @@ ps.clean.exp <- prune_taxa(taxa_sums(ps.clean.exp3) > 0, ps.clean.exp3)
 ps.clean.exp #257 taxa, 100 samples
 ```
 
-### Check where microbes came from 
+# Check where microbes came from 
 
 ```{r}
 ##quick check
@@ -193,7 +193,24 @@ ggarrange(ggbar.eco.sta,ggbar.mmo.sta,ggbar.emo.sta,ggbar.mem.sta,ggbar.all.sta,
 #ggsave("barplot.sources.png",width=13,height=4)
 ```
 
-# PCoA
+## Some E. coli stuff looks weird
+
+```{r}
+ps.lar.bam.eco1 <- subset_samples(ps.clean.exp,Microbe_treatment=="ECO" & Food_type=="Bamboo")
+ps.lar.bam.eco1
+ps.lar.bam.eco <- prune_taxa(taxa_sums(ps.lar.bam.eco1)!=0,ps.lar.bam.eco1)
+ps.lar.bam.eco
+
+plot_bar(ps.lar.bam.eco,fill="Genus")
+
+ps.meth1 <- subset_taxa(ps.clean.exp,Genus=="Methylobacterium-Methylorubrum")
+ps.meth <- prune_samples(sample_sums(ps.meth1)!=0,ps.meth1)
+ps.meth
+plot_bar(ps.meth,fill="id")+
+  facet_wrap(~Microbe_treatment,scales="free")
+```
+
+# NMDS
 
 ## All
 
@@ -206,7 +223,7 @@ ord.exp.nmds.horn[["stress"]] #0.1501527
 #colorz <- c("#30123B","#AF1801","#22C5E2","#46F884","#E1DD37")
 
 ##unformatted
-gg.exp.nmds.horn <- plot_ordination(ps.clean.exp, ord.exp.nmds.horn,color="Microbe_treatment",shape="Sample_type")+
+gg.exp.nmds.horn <- plot_ordination(ps.clean.exp, ord.exp.nmds.horn,color="Food_type",shape="Sample_type")+
   #stat_ellipse()+
   theme_cowplot()
 gg.exp.nmds.horn
@@ -227,7 +244,7 @@ segs <- merge(df.gg.exp.nmds.horn, setNames(cent, c('all.trts','oNMDS1','oNMDS2'
 
 ##re-order
 df.gg.exp.nmds.horn$Microbe_treatment <- factor(df.gg.exp.nmds.horn$Microbe_treatment,levels=c("ECO","MMO","EMO","MEM","ALL"))
-df.gg.exp.nmds.horn$sample.food <- factor(df.gg.exp.nmds.horn$sample.food,levels=c("Larvae_Bamboo","Larvae_Larval food","Water_Bamboo","Water_Larval food"))
+df.gg.exp.nmds.horn$sample.food <- factor(df.gg.exp.nmds.horn$sample.food,levels=c("Larvae_Larval food","Larvae_Bamboo","Water_Larval food","Water_Bamboo"))
 
 new.colors <- c("#7D0112","#C6A947","#84D1B5","#0085A6","#1F28A2")
 
@@ -243,6 +260,436 @@ new.plot
 #ggsave("nmds.horn.exp.pdf",width=5.5,height=3.5)
 
 #cvdPlot(new.plot)
+
+##"final" iteration?
+
+new.colors <- c("#7D0112","#C6A947","#84D1B5","#0085A6","#1F28A2")
+
+#segs$Microbe_treatment <- factor(segs$Microbe_treatment,levels=c("ECO","MMO","EMO","MEM","ALL"))
+##reorder
+#df.gg.exp.nmds.horn$sample.food <- factor(df.gg.exp.nmds.horn$sample.food,levels=c("Larvae_Bamboo","Larvae_Larval food","Water_Bamboo","Water_Larval food"))
+
+##switching the filled in stuff
+gg.nmds <- ggplot(df.gg.exp.nmds.horn, aes(x=NMDS1, y=NMDS2,shape=sample.food,color=Microbe_treatment))+
+  #scale_shape_manual(values=c(24,17,22,15),name="Sample type - diet",labels=c("Larvae - bamboo","Larvae - standard","Water - bamboo","Water - standard"))+
+  scale_shape_manual(values=c(17,24,15,22),name="Sample type - diet",labels=c("Larvae - standard","Larvae - bamboo","Water - standard","Water - bamboo"))+
+  theme_cowplot()+
+  geom_segment(data=segs, mapping = aes(xend = oNMDS1, yend = oNMDS2),alpha=0.5)+ # spiders
+  geom_point(size=2,fill="white")+
+  scale_color_manual(values=new.colors,name="Microbiota",labels=c("LAB","MOS","ENV","MOS+ENV","MOS+ENV+LAB"))+
+  annotate("text",x=-1,y=-1.9,label="2D stress = 0.15")+
+  theme(plot.margin = margin(b = 60,t=20))
+gg.nmds
+
+# gg.nmds.noleg <- ggplot(df.gg.exp.nmds.horn, aes(x=NMDS1, y=NMDS2,shape=sample.food,color=Microbe_treatment))+
+#   scale_shape_manual(values=c(24,17,22,15),name="Sample type - diet",labels=c("Larvae - bamboo","Larvae - standard","Water - bamboo","Water - standard"))+
+#   theme_cowplot()+
+#   geom_segment(data=segs, mapping = aes(xend = oNMDS1, yend = oNMDS2),alpha=0.5)+ # spiders
+#   geom_point(size=2,fill="white")+
+#   scale_color_manual(values=new.colors,name="Microbiota",labels=c("LAB","MOS","ENV","MOS+ENV","MOS+ENV+LAB"))+
+#   #guides(fill="none",color="none",shape="none")+
+#   annotate("text",x=-1.8,y=-1.9,label="2D stress = 0.15")
+#   #theme(plot.margin = margin(b = 60))
+# gg.nmds.noleg
+#ggsave("nmds.horn.exp.pdf",width=5.5,height=3.5)
+```
+
+## NMDS + diversity
+
+```{r}
+# gg.rich.nmds <- ggarrange(gg.richness.all,gg.nmds,ncol=2)
+# gg.rich.nmds
+
+gg.rich.nmds <- ggarrange(gg.richness.all,gg.nmds,ncol=2,widths=c(1,0.8),labels=c(" ","(c)"))
+gg.rich.nmds
+```
+
+# Community compositions
+
+## Sample types summed for plotting
+
+```{r}
+ps.expstock1 <- subset_samples(ps.clean,Mesocosm_type=="Experiment"|Mesocosm_type=="Microbe stock")
+ps.expstock2 <- subset_samples(ps.expstock1,Exp_day!=20)
+ps.expstock3 <- subset_samples(ps.expstock2,Microbe_treatment!="AHK")
+ps.expstock <- prune_taxa(taxa_sums(ps.expstock3) > 0, ps.expstock3)
+ps.expstock #298 taxa, 103 samples
+
+##initial relative abundance per sample
+ps.expstock.rel <- transform_sample_counts(ps.expstock, function(x) x / sum(x))
+
+##make the variable to sum by
+samdf.expstock <- data.frame(ps.expstock.rel@sam_data)
+##just renaming some stuff
+samdf.expstock$Microbe_treatment <- sub("E. coli","ECO",samdf.expstock$Microbe_treatment)
+samdf.expstock$Microbe_treatment <- sub("Mosquito microbes","MMO",samdf.expstock$Microbe_treatment)
+samdf.expstock$Microbe_treatment <- sub("Env. microbes","EMO",samdf.expstock$Microbe_treatment)
+##start the summing
+samdf.expstock$glom <- paste0(substr(samdf.expstock$Sample_type,1,5),"_",substr(samdf.expstock$Food_type,1,5),"_",samdf.expstock$Microbe_treatment)
+samdf.expstock$glom
+##replace the old sample data with the new one
+ps.expstock.rel@sam_data <- sample_data(samdf.expstock)
+##merge by the new variable "glom"
+ps.expstock.rel.glom <- merge_samples(ps.expstock.rel, "glom")
+##take relative abundance of the new sample type
+ps.expstock.rel.glom.rel <- transform_sample_counts(ps.expstock.rel.glom, function(x) x / sum(x))
+
+plot_bar(ps.expstock.rel.glom.rel,fill="Order")
+```
+
+## Top taxa calculations
+
+Need this info for plotting
+
+```{r}
+##Who are the top taxa for microshades
+# Merges ASVs that have the same taxonomy rank
+ps.expstock.rel.glom.rel.taxglom <- tax_glom(ps.expstock.rel.glom.rel, taxrank = "Order") 
+ps.expstock.rel.glom.rel.taxglom 
+
+# Calculate taxa sum
+top.phy = head(sort(colSums(otu_table(ps.expstock.rel.glom.rel.taxglom)), decreasing = TRUE), 15)
+# Combine count and taxonomyTable
+top.phy = cbind(as.data.frame(tax_table(ps.expstock.rel.glom.rel.taxglom)[names(top.phy),]), Count = top.phy)
+top.phy
+##PHYLA:
+#Proteobacteria
+#Bacteroidota
+#Firmicutes
+#Actinobacteriota
+##ORDER:
+#Enterobacterales
+#Rhizobiales
+#Pseudomonadales
+#Burkholderiales
+##CLASS:
+#Gammaproteobacteria
+#Alphaproteobacteria
+#Bacteroidia
+#Clostridia
+##FAMILY:
+#Yersiniaceae
+#Beijerinckiaceae
+#Moraxellaceae
+#Sphingomonadaceae
+#Chromobacteriaceae
+#Kaistiaceae
+#Comamonadaceae
+#Enterobacteriaceae
+#Sphingobacteriaceae
+#Weeksellaceae
+```
+
+## Microshades plotting
+
+```{r}
+mdf.expstock <- prep_mdf(ps.expstock.rel.glom.rel,subgroup_level="Genus")
+
+# Create a color object for the specified data
+#col.mdf.expstock <- create_color_dfs(mdf.expstock, top_orientation = F,group_level="Phylum",subgroup_level="Genus",selected_groups=c("Proteobacteria","Bacteroidota","Firmicutes","Actinobacteriota"),cvd=TRUE)
+#col.mdf.expstock <- create_color_dfs(mdf.expstock, top_orientation = F,group_level="Class",subgroup_level="Genus",selected_groups=c("Gammaproteobacteria","Alphaproteobacteria","Bacteroidia","Clostridia"),cvd=TRUE)
+col.mdf.expstock <- create_color_dfs(mdf.expstock, top_orientation = F,group_level="Order",subgroup_level="Genus",selected_groups=c("Enterobacterales","Rhizobiales","Burkholderiales","Pseudomonadales"),cvd=TRUE)
+# col.mdf.expstock <- create_color_dfs(mdf.expstock, top_orientation = F,group_level="Family",subgroup_level="Genus",selected_groups=c("Yersiniaceae","Beijerinckiaceae","Sphingomonadaceae","Moraxellaceae"),cvd=TRUE)
+#Yersiniaceae
+#Beijerinckiaceae
+#Moraxellaceae
+#Sphingomonadaceae
+#Extract
+col.mdf.expstock.m <- col.mdf.expstock$mdf
+col.mdf.expstock.c <- col.mdf.expstock$cdf
+
+##only the sample names were retained during the sample_glom stuff, so have to make new metadata
+col.mdf.expstock.m$Sample_type <- substr(col.mdf.expstock.m$Sample,1,5)
+col.mdf.expstock.m$Sample_type
+col.mdf.expstock.m$Food_type <- substr(col.mdf.expstock.m$Sample,7,11)
+col.mdf.expstock.m$Food_type
+col.mdf.expstock.m$Microbe_treatment <- substr(col.mdf.expstock.m$Sample,13,16)
+col.mdf.expstock.m$Microbe_treatment
+
+##reorder for plotting
+col.mdf.expstock.m$Microbe_treatment <- factor(col.mdf.expstock.m$Microbe_treatment,levels=c("ECO","EMO","MMO","MEM","ALL"))
+
+##default plot
+plot_microshades(col.mdf.expstock.m, col.mdf.expstock.c)+
+  facet_grid(.~Microbe_treatment,scales="free")+
+  theme_cowplot()+
+  #facet_wrap(~Sample_type*Microbe_treatment,scales="free",nrow=1)+
+  #scale_x_discrete(labels=c("LAB","MOS","ENV"))+
+  #theme(axis.text.x=element_blank())+
+  theme(axis.text.x=element_text(angle=45,vjust=1,hjust=1))+
+  #xlab("Microbe stock")+
+  ylab("Relative abundance")+
+  #ggtitle("Mosquitoes")+
+  guides(color=guide_legend("Class-Genus"),fill=guide_legend("Class-Genus"))
+
+##reassign colors
+col.mdf.expstock.c.new <- color_reassign(col.mdf.expstock.c,
+                          group_assignment = c("Enterobacterales","Rhizobiales","Burkholderiales","Pseudomonadales"),
+                          color_assignment = c("micro_cvd_purple","micro_cvd_orange","micro_cvd_blue","micro_cvd_green"),group_level="Order")
+
+##removing a bunch that aren't visible
+df_tmp <- as.data.frame(col.mdf.expstock.m)
+df_tmp$group <- as.character(df_tmp$group)
+
+aggregate(Abundance ~ group, data = df_tmp, FUN = sum)
+
+##replace pseus in the m data
+col.mdf.expstock.m$group <- gsub("Pseudomonadales-Pseudomonas","Pseudomonadales-Other",col.mdf.expstock.m$group)
+col.mdf.expstock.m$group <- gsub("Pseudomonadales-Alkanindiges","Pseudomonadales-Other",col.mdf.expstock.m$group)
+col.mdf.expstock.m$group <- gsub("Pseudomonadales-Cavicella","Pseudomonadales-Other",col.mdf.expstock.m$group)
+# col.mdf.expstock.m$group <- gsub("Pseudomonadales-Other","Other-Other",col.mdf.expstock.m$group)
+##replace pseus in the c data
+col.mdf.expstock.c.new$group <- gsub("Pseudomonadales-Pseudomonas","Pseudomonadales-Other",col.mdf.expstock.c.new$group)
+col.mdf.expstock.c.new$group <- gsub("Pseudomonadales-Alkanindiges","Pseudomonadales-Other",col.mdf.expstock.c.new$group)
+col.mdf.expstock.c.new$group <- gsub("Pseudomonadales-Cavicella","Pseudomonadales-Other",col.mdf.expstock.c.new$group)
+# col.mdf.expstock.c.new$group <- gsub("Pseudomonadales-Other","Other-Other",col.mdf.expstock.c.new$group)
+
+dput(as.character(unique(col.mdf.expstock.c.new$group)))
+
+##desired order of legend
+desired.order <- c("Enterobacterales-Serratia", "Enterobacterales-Escherichia-Shigella","Enterobacterales-Yersinia", 
+"Enterobacterales-Order_Enterobacterales",  
+"Enterobacterales-Other", "Pseudomonadales-Acinetobacter","Pseudomonadales-Other", "Burkholderiales-Aquitalea", 
+"Burkholderiales-Curvibacter", "Burkholderiales-Comamonas", "Burkholderiales-Family_Comamonadaceae", 
+"Burkholderiales-Other", "Rhizobiales-Rhodoblastus", "Rhizobiales-Kaistia", 
+"Rhizobiales-Methylobacterium-Methylorubrum", "Rhizobiales-Roseiarcus", 
+"Rhizobiales-Other", "Other-Sphingomonas", "Other-Novosphingobium", 
+"Other-Chryseobacterium", "Other-Sphingobacterium", "Other-Other"
+)
+
+col.mdf.expstock.c.new$group <- factor(col.mdf.expstock.c.new$group, levels = desired.order)
+
+desired.order.plot <- rev(c("Enterobacterales-Serratia", "Enterobacterales-Escherichia-Shigella","Enterobacterales-Yersinia", 
+"Enterobacterales-Order_Enterobacterales",  
+"Enterobacterales-Other", "Pseudomonadales-Acinetobacter","Pseudomonadales-Other", "Burkholderiales-Aquitalea", 
+"Burkholderiales-Curvibacter", "Burkholderiales-Comamonas", "Burkholderiales-Family_Comamonadaceae", 
+"Burkholderiales-Other", "Rhizobiales-Rhodoblastus", "Rhizobiales-Kaistia", 
+"Rhizobiales-Methylobacterium-Methylorubrum", "Rhizobiales-Roseiarcus", 
+"Rhizobiales-Other", "Other-Sphingomonas", "Other-Novosphingobium", 
+"Other-Chryseobacterium", "Other-Sphingobacterium", "Other-Other"
+))
+
+col.mdf.expstock.m$group <- factor(col.mdf.expstock.m$group, levels = desired.order.plot)
+
+##replace missing colors
+#col.mdf.expstock.c.new$hex <- gsub("#6D9F06","#F5F5F5",col.mdf.expstock.c.new$hex)
+
+plot_microshades(col.mdf.expstock.m, col.mdf.expstock.c.new)+
+  facet_grid(.~Microbe_treatment+Food_type,scales="free")+
+  theme_cowplot()+
+  #facet_wrap(~Sample_type*Microbe_treatment,scales="free",nrow=1)+
+  #scale_x_discrete(labels=c("LAB","MOS","ENV"))+
+  #theme(axis.text.x=element_blank())+
+  theme(axis.text.x=element_text(angle=45,vjust=1,hjust=1))+
+  #xlab("Microbe stock")+
+  ylab("Relative abundance")+
+  #ggtitle("Mosquitoes")+
+  guides(color=guide_legend("Class-Genus"),fill=guide_legend("Class-Genus"))+
+  scale_fill_manual(
+  values = setNames(col.mdf.expstock.c.new$hex, col.mdf.expstock.c.new$group),
+  breaks = desired.order)+
+  scale_color_manual(
+  values = setNames(col.mdf.expstock.c.new$hex, col.mdf.expstock.c.new$group),
+  breaks = desired.order)
+
+##changing more colors
+library(dplyr)
+
+# Get the hex codes you want to swap
+hex2 <- "#A1527F" 
+hex3 <- "#CC79A7"  
+hex4 <- "#E794C1" 
+
+col.mdf.expstock.c.new.edits <- col.mdf.expstock.c.new %>%
+  mutate(hex = case_when(
+    group == "Enterobacterales-Escherichia-Shigella" ~ hex2,
+    group == "Enterobacterales-Yersinia" ~ hex3,
+    group == "Enterobacterales-Order_Enterobacterales" ~ hex4,
+    group == "Pseudomonadales-Other" ~ "#BDEC6F",
+    TRUE ~ hex
+  ))
+
+plot_microshades(col.mdf.expstock.m, col.mdf.expstock.c.new.edits)+
+  facet_grid(.~Microbe_treatment+Food_type,scales="free")+
+  theme_cowplot()+
+  #facet_wrap(~Sample_type*Microbe_treatment,scales="free",nrow=1)+
+  #scale_x_discrete(labels=c("LAB","MOS","ENV"))+
+  #theme(axis.text.x=element_blank())+
+  theme(axis.text.x=element_text(angle=45,vjust=1,hjust=1))+
+  #xlab("Microbe stock")+
+  ylab("Relative abundance")+
+  #ggtitle("Mosquitoes")+
+  guides(color=guide_legend("Class-Genus"),fill=guide_legend("Class-Genus"))+
+  scale_fill_manual(
+  values = setNames(col.mdf.expstock.c.new.edits$hex, col.mdf.expstock.c.new.edits$group),
+  breaks = desired.order)+
+  scale_color_manual(
+  values = setNames(col.mdf.expstock.c.new.edits$hex, col.mdf.expstock.c.new.edits$group),
+  breaks = desired.order)
+```
+
+## "Final" plots
+
+```{r}
+##renaming the microbes
+col.mdf.expstock.m$Microbe_treatment <- gsub("ECO","LAB",col.mdf.expstock.m$Microbe_treatment)
+col.mdf.expstock.m$Microbe_treatment <- gsub("MMO","MOS",col.mdf.expstock.m$Microbe_treatment)
+col.mdf.expstock.m$Microbe_treatment <- gsub("EMO","ENV",col.mdf.expstock.m$Microbe_treatment)
+col.mdf.expstock.m$Microbe_treatment <- gsub("MEM","M+E",col.mdf.expstock.m$Microbe_treatment)
+col.mdf.expstock.m$Microbe_treatment <- gsub("ALL","M+E+L",col.mdf.expstock.m$Microbe_treatment)
+#col.mdf.expstock.m$Microbe_treatment <- gsub("ALL","MOS+ENV+LAB",col.mdf.expstock.m$Microbe_treatment)
+
+col.mdf.expstock.m$Microbe_treatment <- factor(col.mdf.expstock.m$Microbe_treatment,levels=c("LAB","MOS","ENV","M+E","M+E+L"))
+
+#col.mdf.expstock.m$Food_type <- factor(col.mdf.expstock.m$Food_type,levels=c("Larva","Bambo"))
+#have to make sample names alphabetical for plotting
+col.mdf.expstock.m$Sample <- sub("Bambo","zBambo",col.mdf.expstock.m$Sample)
+```
+
+### Larvae
+
+```{r}
+col.mdf.larv <- subset(col.mdf.expstock.m,Sample_type=="Larva")
+
+ms.larv <- plot_microshades(col.mdf.larv, col.mdf.expstock.c.new.edits)+
+  facet_grid(.~Microbe_treatment,scales="free")+
+  theme_cowplot()+
+  #facet_wrap(~Sample_type*Microbe_treatment,scales="free",nrow=1)+
+  scale_x_discrete(labels=rep(c("Standard","Bamboo",5)))+
+  #theme(axis.text.x=element_blank())+
+  theme(axis.text.x=element_text(angle=45,vjust=1,hjust=1),legend.position="none")+
+  ggtitle("Larvae samples")+
+  xlab("Diet")+
+  ylab("Relative abundance")
+  # #ggtitle("Mosquitoes")+
+  # guides(color=guide_legend("Class-Genus"),fill=guide_legend("Class-Genus"))+
+  # scale_fill_manual(
+  # values = setNames(col.mdf.expstock.c.new.edits$hex, col.mdf.expstock.c.new.edits$group),
+  # breaks = desired.order)+
+  # scale_color_manual(
+  # values = setNames(col.mdf.expstock.c.new.edits$hex, col.mdf.expstock.c.new.edits$group),
+  # breaks = desired.order)+
+ms.larv
+```
+
+### Water
+
+```{r}
+col.mdf.water <- subset(col.mdf.expstock.m,Sample_type=="Water")
+
+ms.water <- plot_microshades(col.mdf.water, col.mdf.expstock.c.new.edits)+
+  facet_grid(.~Microbe_treatment,scales="free")+
+  theme_cowplot()+
+  #facet_wrap(~Sample_type*Microbe_treatment,scales="free",nrow=1)+
+  scale_x_discrete(labels=rep(c("Standard","Bamboo",5)))+
+  theme(axis.text.x=element_text(angle=45,vjust=1,hjust=1),axis.text.y=element_blank(),legend.position="none")+
+  ylab("")+
+  xlab("Diet")+
+  ggtitle("Water samples")
+# 
+#   guides(color=guide_legend("Class-Genus"),fill=guide_legend("Class-Genus"))+
+#   scale_fill_manual(
+#   values = setNames(col.mdf.expstock.c.new.edits$hex, col.mdf.expstock.c.new.edits$group),
+#   breaks = desired.order)+
+#   scale_color_manual(
+#   values = setNames(col.mdf.expstock.c.new.edits$hex, col.mdf.expstock.c.new.edits$group),
+#   breaks = desired.order)+
+
+ms.water
+```
+
+### Inocula stocks
+
+```{r}
+col.mdf.stox <- subset(col.mdf.expstock.m,Sample_type=="Micro")
+
+##reorder
+col.mdf.stox$Sample <- factor(col.mdf.stox$Sample,levels=c("Micro_Micro_ECO","Micro_Micro_MMO","Micro_Micro_EMO"))
+
+ms.stox <- plot_microshades(col.mdf.stox, col.mdf.expstock.c.new.edits)+
+  #facet_grid(.~Microbe_treatment,scales="free")+
+  theme_cowplot()+
+  #facet_wrap(~Sample_type*Microbe_treatment,scales="free",nrow=1)+
+  scale_x_discrete(labels=c("LAB","MOS","ENV"))+
+  #theme(axis.text.x=element_blank())+
+  theme(axis.text.x=element_text(angle=45,vjust=1,hjust=1),legend.position="none",plot.margin = margin(t=20,b = 20))+
+  ylab("Relative abundance")+
+  ggtitle("Inocula")+
+  xlab("")
+ms.stox
+```
+
+### All together
+
+```{r}
+#col.mdf.expstock.m$Top_Order <- factor(col.mdf.expstock.m$Top_Order,levels=c("Enterobacterales","Pseudomonadales","Burkholderiales","Rhizobiales","Other"))
+#col.mdf.expstock.m$Order <- factor(col.mdf.expstock.m$Order,levels=c("Enterobacterales","Pseudomonadales","Burkholderiales","Rhizobiales","Other"))
+col.mdf.expstock.c.new.edits$Top_Order <- factor(col.mdf.expstock.c.new.edits$Top_Order,levels=c("Enterobacterales","Pseudomonadales","Burkholderiales","Rhizobiales","Other"))
+
+col.mdf.expstock.c.new.edits$Top_Genus <- gsub("Cavicella","test", col.mdf.expstock.c.new.edits$Top_Genus) 
+col.mdf.expstock.c.new.edits$Top_Genus <- gsub("Pseudomonas", "test", col.mdf.expstock.c.new.edits$Top_Genus)
+col.mdf.expstock.c.new.edits$Top_Genus <- gsub("Alkanindiges", "test", col.mdf.expstock.c.new.edits$Top_Genus)
+
+# dput(col.mdf.expstock.c.new.edits$Top_Genus)
+# col.mdf.expstock.c.new.edits$Top_Genus <- factor(col.mdf.expstock.c.new.edits$Top_Genus,levels=c("Acinetobacter", "pseu1", "pseu2", "pseu3", "Other", 
+# "Aquitalea", "Curvibacter", "Comamonas", "Family_Comamonadaceae", 
+# "Other", "Rhodoblastus", "Kaistia", "Methylobacterium-Methylorubrum", 
+# "Roseiarcus", "Other", "Serratia","Escherichia-Shigella", "Yersinia", "Order_Enterobacterales", 
+# "Other", "Sphingomonas", "Novosphingobium", 
+# "Chryseobacterium", "Sphingobacterium", "Other"))
+
+df <- col.mdf.expstock.c.new.edits
+
+# Your data frame (replace with your actual df name)
+df <- col.mdf.expstock.c.new.edits
+
+# Find target row
+target_row <- which(df$Top_Genus == "Escherichia-Shigella")
+
+# Calculate new position (don't go below 1)
+new_position <- max(1, target_row - 2)
+
+# Extract the target row
+target_data <- df[target_row, ]
+
+# Remove the target row from df
+df_without_target <- df[-target_row, ]
+
+# Split df_without_target into two parts: before and after new_position
+df_before <- df_without_target[1:(new_position - 1), ]
+df_after <- df_without_target[new_position:nrow(df_without_target), ]
+
+# Recombine: rows before new position + target row + rows after
+df_new <- rbind(df_before, target_data, df_after)
+
+# Check new order
+df_new$Top_Genus
+                # combine into new data frame
+
+legend_1 <- custom_legend(col.mdf.expstock.m, df_new,group_level="Order",subgroup_level="Genus",legend_key_size = 1, legend_text_size = 13,legend_orientation = "horizontal")
+legend_1
+#"#BDEC6F"
+
+ms.all3 <- ggarrange(ms.stox,ms.larv,ms.water,ncol=3,legend="none",widths=c(0.4,1,1),labels=c("(d)","(e)","(f)"))
+
+# # output the plot and custom legend
+#plot_grid(ms.all3, legend_1, rel_widths=c(3,1))  
+gg.barplots.all <- plot_grid(ms.all3, legend_1, nrow=2,rel_heights=c(1,0.25)) 
+gg.barplots.all
+```
+
+### Now with diversity and nmds
+
+```{r}
+#ggarrange(gg.richness.all, gg.nmds, gg.barplots.all, nrow=3)
+
+bac.massive <- ggarrange(gg.rich.nmds,ms.all3,nrow=2,heights=c(1,0.9))
+bac.massive
+#ggsave("gg.massivebacfig.png",height=7.1,width=10)
+
+plot_grid(bac.massive, legend_1, nrow=2,rel_heights=c(1,0.2)) 
+#ggsave("gg.massivebacfig.png",height=8.4,width=10)
+
 ```
 
 # Microbe stocks bar plot
@@ -299,7 +746,8 @@ mdf.stocks <- prep_mdf(ps.stocks.rel,subgroup_level="Genus")
 
 # Create a color object for the specified data
 #col.mdf.stocks <- create_color_dfs(mdf.stocks, top_orientation = F,group_level="Phylum",subgroup_level="Genus",selected_groups=c("Proteobacteria","Firmicutes","Acidobacteriota","Bacteroidota"),cvd=TRUE)
-col.mdf.stocks <- create_color_dfs(mdf.stocks, top_orientation = F,group_level="Class",subgroup_level="Genus",selected_groups=c("Gammaproteobacteria","Alphaproteobacteria","Bacilli","Negativicutes"),cvd=TRUE)
+# col.mdf.stocks <- create_color_dfs(mdf.stocks, top_orientation = F,group_level="Class",subgroup_level="Genus",selected_groups=c("Gammaproteobacteria","Alphaproteobacteria","Bacilli","Negativicutes"),cvd=TRUE)
+col.mdf.stocks <- create_color_dfs(mdf.stocks, top_orientation = F,group_level="Order",subgroup_level="Genus",selected_groups=c("Enterobacterales","Rhizobiales","Burkholderiales","Pseudomonadales"),cvd=TRUE)
 
 #Extract
 col.mdf.stocks.m <- col.mdf.stocks$mdf
@@ -317,112 +765,39 @@ plot_microshades(col.mdf.stocks.m, col.mdf.stocks.c)+
   guides(color=guide_legend("Phylum-Family"),fill=guide_legend("Phylum-Family"))
 ```
 
-# Sample types summed
+
+
+## Just larvae first
 
 ```{r}
-ps.expstock1 <- subset_samples(ps.clean,Mesocosm_type=="Experiment"|Mesocosm_type=="Microbe stock")
-ps.expstock2 <- subset_samples(ps.expstock1,Exp_day!=20)
-ps.expstock3 <- subset_samples(ps.expstock2,Microbe_treatment!="AHK")
-ps.expstock <- prune_taxa(taxa_sums(ps.expstock3) > 0, ps.expstock3)
-ps.expstock #298 taxa, 103 samples
+col.mdf.expstock.m
+col.mdf.expstock.c.new
 
-##initial relative abundance per sample
-ps.expstock.rel <- transform_sample_counts(ps.expstock, function(x) x / sum(x))
+col.mdf.larv <- subset(col.mdf.expstock.m,Sample_type=="Larva")
 
-##make the variable to glom by
-samdf.expstock <- data.frame(ps.expstock.rel@sam_data)
-samdf.expstock$Microbe_treatment <- sub("E. coli","ECO",samdf.expstock$Microbe_treatment)
-samdf.expstock$Microbe_treatment <- sub("Mosquito microbes","MMO",samdf.expstock$Microbe_treatment)
-samdf.expstock$Microbe_treatment <- sub("Env. microbes","EMO",samdf.expstock$Microbe_treatment)
-samdf.expstock$Sample_type <- sub("Microbe Stock","aMicro",samdf.expstock$Sample_type)
-samdf.expstock$glom <- paste0(substr(samdf.expstock$Sample_type,1,5),"_",substr(samdf.expstock$Food_type,1,5),"_",samdf.expstock$Microbe_treatment)
-##changing the order:
-#samdf.expstock$glom <- paste0(substr(samdf.expstock$Sample_type,1,5),"_",substr(samdf.expstock$Food_type,1,5),"_",)
-samdf.expstock$glom
-ps.expstock.rel@sam_data <- sample_data(samdf.expstock)
+plot_microshades(col.mdf.larv,col.mdf.expstock.c.new)+
+  facet_grid(.~Microbe_treatment,scales="free_x")
 
-ps.expstock.rel.glom <- merge_samples(ps.expstock.rel, "glom")
-ps.expstock.rel.glom.rel <- transform_sample_counts(ps.expstock.rel.glom, function(x) x / sum(x))
-
-plot_bar(ps.expstock.rel.glom.rel,fill="Phylum")
-
-##Who are the top taxa for microshades
-# Merges ASVs that have the same taxonomy rank
-## Phylum ##
-ps.expstock.rel.glom.rel.phy <- tax_glom(ps.expstock.rel.glom.rel, taxrank = "Phylum") 
-ps.expstock.rel.glom.rel.phy #10 total
-
-# Calculate taxa sum
-top.phy = head(sort(colSums(otu_table(ps.expstock.rel.glom.rel.phy)), decreasing = TRUE), 10)
-# Combine count and taxonomyTable
-top.phy = cbind(as.data.frame(tax_table(ps.expstock.rel.glom.rel.phy)[names(top.phy),]), Count = top.phy)
-top.phy
-#Proteobacteria
-#Bacteroidota
-#Firmicutes
-#Actinobacteriota
-
-##microshades plotting
-mdf.expstock <- prep_mdf(ps.expstock.rel.glom.rel,subgroup_level="Order")
-
-# Create a color object for the specified data
-col.mdf.expstock <- create_color_dfs(mdf.expstock, top_orientation = F,group_level="Phylum",subgroup_level="Order",selected_groups=c("Proteobacteria","Bacteroidota","Firmicutes","Actinobacteriota"),cvd=TRUE)
-
-#Extract
-col.mdf.expstock.m <- col.mdf.expstock$mdf
-col.mdf.expstock.c <- col.mdf.expstock$cdf
-
-col.mdf.expstock.m$Sample_type <- substr(col.mdf.expstock.m$Sample,1,5)
-col.mdf.expstock.m$Sample_type
-col.mdf.expstock.m$Food_type <- substr(col.mdf.expstock.m$Sample,7,11)
-col.mdf.expstock.m$Food_type
-col.mdf.expstock.m$Microbe_treatment <- substr(col.mdf.expstock.m$Sample,13,16)
-col.mdf.expstock.m$Microbe_treatment
-
-#unique(col.mdf.expstock.m$Sample)
-
-# col.mdf.expstock.m$Sample <- factor(col.mdf.expstock.m$Sample,levels=c("Micro_Micro_ECO","Water_Larva_ECO","Larva_Larva_ECO","Water_Bambo_ECO","Larva_Bambo_ECO","Micro_Micro_MMO","Water_Larva_MMO","Larva_Larva_MMO","Water_Bambo_MMO","Larva_Bambo_MMO","Micro_Micro_EMO","Water_Larva_EMO","Larva_Larva_EMO","Water_Bambo_EMO","Larva_Bambo_EMO","Water_Larva_MEM","Larva_Larva_MEM","Water_Bambo_MEM",""))
-#   
-# ,[4],"Larva_Larva_ALL","","Water_Larva_ALL"
-# [10],"","",""
-# [13],"","","Larva_Bambo_ALL"
-# [16],"Water_Bambo_ALL","Larva_Bambo_MEM",""
-# [19],"","",""
-# [22],"",""
-#col.mdf.stock.m <- subset(col.mdf.expstock.m,Sample_type=="Micro")
-
-col.mdf.expstock.m$Microbe_treatment <- factor(col.mdf.expstock.m$Microbe_treatment,levels=c("ECO","EMO","MMO","MEM","ALL"))
+col.mdf.wat <- subset(col.mdf.expstock.m,Sample_type=="Water")
 
 ##default plot
-plot_microshades(col.mdf.expstock.m, col.mdf.expstock.c)+
-  facet_grid(.~Microbe_treatment,scales="free")+
+plot <- plot_microshades(col.mdf.wat,col.mdf.expstock.c.new)+
+  facet_grid(.~Microbe_treatment,scales="free_x")+
   theme_cowplot()+
-  #facet_wrap(~Sample_type*Microbe_treatment,scales="free",nrow=1)+
-  #scale_x_discrete(labels=c("LAB","MOS","ENV"))+
-  #theme(axis.text.x=element_blank())+
-  theme(axis.text.x=element_text(angle=45,vjust=1,hjust=1))+
-  #xlab("Microbe stock")+
-  ylab("Relative abundance")+
-  #ggtitle("Mosquitoes")+
-  guides(color=guide_legend("Class-Family"),fill=guide_legend("Class-Family"))
+  theme(axis.text.x=element_text(angle=45,hjust=1))
 
-#col.mdf.exp.m <- subset(col.mdf.expstock.m,Sample_type!="Micro")
+# create the custom legend
+legend_1 <- custom_legend(col.mdf.wat, col.mdf.expstock.c.new,group_level="Order",subgroup_level="Genus")  
 
-# ##default plot
-# plot_microshades(col.mdf.exp.m, col.mdf.expstock.c)+
-#   facet_grid(.~Microbe_treatment,scales="free")+
-#   theme_cowplot()+
-#   #facet_wrap(~Sample_type*Microbe_treatment,scales="free",nrow=1)+
-#   #scale_x_discrete(labels=c("LAB","MOS","ENV"))+
-#   theme(axis.text.x=element_text(angle=45,vjust=1,hjust=1))+
-#   #xlab("Microbe stock")+
-#   ylab("Relative abundance")+
-#   #ggtitle("Mosquitoes")+
-#   guides(color=guide_legend("Class-Family"),fill=guide_legend("Class-Family"))
+# plot using the custom legend 
+plot_1 <- plot +
+  theme(legend.position="none") # removes the original legend.
+  #facet_wrap(~Sample_Type, scales="free_x", nrow=2)
+
+# output the plot and custom legend
+plot_grid(plot_1, legend_1)  
 
 
-
-#ggsave("microshades.stocks.class.fam.pdf",width=7,height=5)
 ```
 
 # Alluvium plot

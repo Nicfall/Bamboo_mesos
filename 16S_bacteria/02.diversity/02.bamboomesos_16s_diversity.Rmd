@@ -33,6 +33,8 @@ library("DHARMa")
 library("nlme")
 library("bestNormalize")
 library("dplyr")
+#install.packages("ggpattern")
+library("ggpattern")
 ```
 
 ## Data
@@ -105,109 +107,89 @@ stock.colors <- c("#7D0112","#C6A947","#84D1B5")
 
 gg.bars.stocks.rich <- ggplot(df.div.stocks,aes(x=Microbe_treatment,y=Observed,fill=Microbe_treatment,label=Observed))+
   geom_bar(stat="identity",color="black",width=0.75)+
-  geom_text(nudge_y=3,color="black")+
+  geom_text(nudge_y=4,color="black")+
   scale_fill_manual(values=stock.colors)+
-  scale_x_discrete(labels=c("Lab","Mosquito (Mos.)","Environment (Env.)"))+
+  scale_x_discrete(labels=c("LAB","MOS","ENV"))+
   theme_cowplot()+
-  ggtitle("Initial inocula")+
+  ggtitle("Inocula")+
   xlab("")+
   ylab("ASV richness")+
   guides(fill="none")+
-  theme(axis.text.x=element_text(angle=45,hjust=1))#+#+
+  theme(axis.text.x=element_text(angle=45,hjust=1),plot.margin = margin(t=7.5,b = 50))+
+  # geom_bar_pattern(
+  #   pattern = "stripe",
+  #   pattern_density = 0.2,     # How dense the pattern is (0–1)
+  #   pattern_spacing = 0.2,    # Spacing between stripes
+  #   pattern_color = "white",    # Color of the pattern
+  #   pattern_angle = 45,        # Angle of stripes (degrees)
+  #   colour = "black"           # Border color of the bar
+  # )
+ geom_bar_pattern(stat="identity",
+                  #position = position_dodge(preserve = "single"),
+                   color = "black", 
+                   pattern_fill = "black",
+                   pattern_angle = 45,
+                   pattern_density = 0.1,
+                   pattern_spacing = 0.1,
+                   pattern_key_scale_factor = 0.6)
   #theme(axis.text.x=element_text(angle=45,hjust=1),plot.margin = unit(c(1,2,3,1), "lines"))
   #ggtitle("Microbial source diversity")
 gg.bars.stocks.rich
-
-ps.ecol1 <- subset_samples(ps.clean,Microbe_treatment=="E. coli")
-ps.ecol <- prune_taxa(taxa_sums(ps.ecol1) > 0, ps.ecol1)
-ps.ecol@otu_table
-
-ps.larv1 <- subset_samples(ps.clean,Microbe_treatment=="None_larvae")
-ps.larv <- prune_taxa(taxa_sums(ps.larv1) > 0, ps.larv1)
-ps.larv@otu_table
-ps.larv@tax_table
 ```
 
 ### Samples
 
 ```{r}
-df.div.exp <- subset(df.all.div,Mesocosm_type=="Experiment")
-df.div.exp.no20 <- subset(df.div.exp,Exp_day!=20)
-df.div.exp.no20.noahk <- subset(df.div.exp.no20,Microbe_treatment!="AHK")
+df.div.exp1 <- subset(df.all.div,Mesocosm_type=="Experiment")
+#df.div.exp.no20 <- subset(df.div.exp,Exp_day!=20)
+df.div.exp <- subset(df.div.exp1,Microbe_treatment!="AHK")
 
 ##desired order
-df.div.exp.no20.noahk$Microbe_treatment <- factor(df.div.exp.no20.noahk$Microbe_treatment,levels=c("ECO","MMO","EMO","MEM","ALL"))
+df.div.exp$Microbe_treatment <- factor(df.div.exp$Microbe_treatment,levels=c("ECO","MMO","EMO","MEM","ALL"))
 
 ##calculate mean & standard error
-df.div.exp.no20.noahk.rich.se <- summarySE(df.div.exp.no20.noahk,measurevar="Observed",groupvar=c("Microbe_treatment","Food_type","Sample_type","Mesocosm_type"))
+df.div.exp.rich.se <- summarySE(df.div.exp,measurevar="Observed",groupvar=c("Microbe_treatment","Food_type","Sample_type","Mesocosm_type"))
 
 ##re-name variables for plotting
-df.div.exp.no20.noahk.rich.se$Food_type <- sub("Larval food","Standard diet",df.div.exp.no20.noahk.rich.se$Food_type)
-df.div.exp.no20.noahk.rich.se$Food_type <- sub("Bamboo","Bamboo diet",df.div.exp.no20.noahk.rich.se$Food_type)
-df.div.exp.no20.noahk.rich.se$Food_type <- factor(df.div.exp.no20.noahk.rich.se$Food_type,levels=c("Standard diet","Bamboo diet"))
+df.div.exp.rich.se$Food_type <- sub("Larval food","Standard diet",df.div.exp.rich.se$Food_type)
+df.div.exp.rich.se$Food_type <- sub("Bamboo","Bamboo diet",df.div.exp.rich.se$Food_type)
+df.div.exp.rich.se$Food_type <- factor(df.div.exp.rich.se$Food_type,levels=c("Standard diet","Bamboo diet"))
 
 ##current iteration = bar plot
 
-gg.bars.exp.rich <- ggplot(df.div.exp.no20.noahk.rich.se,aes(x=Microbe_treatment,y=Observed,fill=Microbe_treatment,alpha=Sample_type))+
+gg.bars.exp.rich <- ggplot(df.div.exp.rich.se,aes(x=Microbe_treatment,y=Observed,fill=Microbe_treatment,alpha=Food_type))+
   #geom_point(data=df.all.div.nocon.noday20.noahk,alpha=0.5,position=position_jitterdodge(0.9))+
   ggtitle("Experiment samples")+
   geom_bar(stat="identity",position="dodge",color="black")+
   geom_errorbar(aes(ymin=Observed-se,ymax=Observed+se),position=position_dodge(0.9),width=0.5,color="black")+
   #geom_point(position=position_dodge(0.5),color="black",size=2)+
   #facet_grid(Sample_type~Food_type)+
-  facet_wrap(~Food_type,scales="free_x")+
-  #ylim(0,65)+
-  scale_alpha_manual(values=c(1,0.6),name="Sample type",labels=c("Larvae","Mesocosm water"))+
+  facet_wrap(~Sample_type,scales="free_x")+
+  ylim(0,65)+
+  scale_alpha_manual(values=c(1,0.6),name="Diet",labels=c("Standard","Bamboo"))+
   scale_fill_manual(values=c(new.colors),name="Microbes")+
   #scale_color_manual(values=c("black","grey"))+
   #scale_shape_manual(values=c(24,22),name="Diet")+
-  scale_x_discrete(labels=c("Lab","Mos.","Env.","Mos.+Env.","Mos.+Env.+Lab"))+
+  scale_x_discrete(labels=c("LAB","MOS","ENV","MOS+ENV","MOS+ENV+LAB"))+
   #geom_text(aes(x=1,y=29),label="Mosq.",color="#D83706")+
   #geom_text(aes(x=1,y=73),label="Env.",color="#3B9FFD")+
   #geom_text(aes(x=5,y=5),label="E.coli",color="gray60")+
   ylab("ASV richness")+
   xlab("")+
   #xlim(-1,6)+
-  guides(fill="none",color="none")+
+  guides(fill="none",color="none",alpha="none")+
   theme_cowplot()+
-  #theme(axis.text.x=element_text(angle=45,hjust=1))#+
-  theme(axis.text.x=element_text(angle=45,hjust=1),plot.margin = unit(c(1,1,1.4,0), "lines"))
+  theme(axis.text.x=element_text(angle=45,hjust=1))#+
+  #theme(axis.text.x=element_text(angle=45,hjust=1),plot.margin = unit(c(1,1,1.4,0), "lines"))
 gg.bars.exp.rich
 
 #library("patchwork")
 
 #gg.bars.stocks.rich + gg.bars.exp.rich
 
-ggarrange(gg.bars.stocks.rich,gg.bars.exp.rich,widths=c(0.4,1),labels=c("(a)","(b)"))
-
-#ggsave("bamboomesos.rich.pdf",width=9,height=4)
-
-#ggsave("reusum23.alpha.diversity.pdf",width=9,height=4)
-#ggsave("reusum23.alpha.diversity.png",width=9,height=4)
-
-##previous iteration
-# ggplot(df.all.div.nocon.noday20.noahk.se,aes(x=Microbe_treatment,y=Observed,color=Microbe_treatment,shape=Food_type,fill=Microbe_treatment))+
-#   geom_hline(yintercept=8,color="gray60",linetype="longdash",alpha=0.7)+
-#   geom_hline(yintercept=38,color="#D83706",linetype="longdash",alpha=0.7)+
-#   geom_hline(yintercept=151,color="#3B9FFD",linetype="longdash",alpha=0.7)+
-#   geom_point(data=df.all.div.exp.stock.noahk,alpha=0.5,position=position_jitterdodge(0.1))+
-#   geom_errorbar(aes(ymin=Observed-se,ymax=Observed+se),position=position_dodge(0.5),width=0.3,color="black")+
-#   geom_point(position=position_dodge(0.5),color="black",size=2)+
-#   facet_wrap(~Sample_type)+
-#   scale_color_manual(values=c(new.colors),name="Microbes")+
-#   scale_fill_manual(values=c(new.colors),name="Microbes")+
-#   scale_shape_manual(values=c(24,22),name="Diet")+
-#   scale_x_discrete(labels=c("E. coli","Mosquito","Environmental","Mosq.+Envir.","Mosq.+Envir.+E.coli"))+
-#   geom_text(aes(x=1,y=29),label="Mosq.",color="#D83706")+
-#   geom_text(aes(x=1,y=73),label="Env.",color="#3B9FFD")+
-#   geom_text(aes(x=5,y=5),label="E.coli",color="gray60")+
-#   ylab("ASV richness")+
-#   xlab("Microbes")+
-#   #xlim(-1,6)+
-#   guides(fill="none",color="none")+
-#   theme_cowplot()+
-#   theme(axis.text.x=element_text(angle=45,hjust=1))
-# #ggsave()
+gg.richness.all <- ggarrange(gg.bars.stocks.rich,gg.bars.exp.rich,widths=c(0.3,1),labels=c("(a)","(b)"))
+gg.richness.all
+#ggsave("bamboomesos.rich.png",width=8,height=4)
 ```
 
 ## Inv. Simpson
@@ -233,15 +215,32 @@ df.div.stocks$invsimp.round
 
 gg.bars.stocks.simp <- ggplot(df.div.stocks,aes(x=Microbe_treatment,y=InvSimpson,fill=Microbe_treatment,label=invsimp.round))+
   geom_bar(stat="identity",color="black",width=0.75)+
-  geom_text(nudge_y=0.6,color="black")+
+  geom_text(nudge_y=1,color="black")+
   scale_fill_manual(values=stock.colors)+
   scale_x_discrete(labels=c("LAB","MOS","ENV"))+
   theme_cowplot()+
-  #ggtitle("Microbial stocks")+
-  xlab("Microbes")+
+  ggtitle("Inocula")+
+  xlab("")+
   ylab("Simpson's (inv.)")+
   guides(fill="none")+
-  theme(axis.text.x=element_text(angle=45,hjust=1),plot.margin = unit(c(1,2,3,1), "lines"))
+  theme(axis.text.x=element_text(angle=45,hjust=1),plot.margin = margin(t=10,b = 50))+
+  # geom_bar_pattern(
+  #   pattern = "stripe",
+  #   pattern_density = 0.2,     # How dense the pattern is (0–1)
+  #   pattern_spacing = 0.2,    # Spacing between stripes
+  #   pattern_color = "white",    # Color of the pattern
+  #   pattern_angle = 45,        # Angle of stripes (degrees)
+  #   colour = "black"           # Border color of the bar
+  # )
+ geom_bar_pattern(stat="identity",
+                  #position = position_dodge(preserve = "single"),
+                   color = "black", 
+                   pattern_fill = "black",
+                   pattern_angle = 45,
+                   pattern_density = 0.1,
+                   pattern_spacing = 0.1,
+                   pattern_key_scale_factor = 0.6)
+  #theme(axis.text.x=element_text(angle=45,hjust=1),plot.margin = unit(c(1,2,3,1), "lines"))
   #ggtitle("Microbial source diversity")
 gg.bars.stocks.simp
 ```
@@ -250,23 +249,25 @@ gg.bars.stocks.simp
 
 ```{r}
 ##calculate mean & standard error
-df.div.exp.no20.noahk.simp.se <- summarySE(df.div.exp.no20.noahk,measurevar="InvSimpson",groupvar=c("Microbe_treatment","Food_type","Sample_type","Mesocosm_type"))
+df.div.exp.simp.se <- summarySE(df.div.exp,measurevar="InvSimpson",groupvar=c("Microbe_treatment","Food_type","Sample_type","Mesocosm_type"))
 
 ##re-name variables for plotting
-df.div.exp.no20.noahk.simp.se$Food_type <- sub("Larval food","Artificial diet",df.div.exp.no20.noahk.simp.se$Food_type)
-df.div.exp.no20.noahk.simp.se$Food_type <- sub("Bamboo","Bamboo leaves",df.div.exp.no20.noahk.simp.se$Food_type)
+df.div.exp.simp.se$Food_type <- sub("Larval food","Standard diet",df.div.exp.simp.se$Food_type)
+df.div.exp.simp.se$Food_type <- sub("Bamboo","Bamboo diet",df.div.exp.simp.se$Food_type)
+df.div.exp.simp.se$Food_type <- factor(df.div.exp.simp.se$Food_type,levels=c("Standard diet","Bamboo diet"))
 
 ##current iteration = bar plot
-gg.bars.exp.simp <- ggplot(df.div.exp.no20.noahk.simp.se,aes(x=Microbe_treatment,y=InvSimpson,fill=Microbe_treatment,alpha=Sample_type))+
+
+gg.bars.exp.simp <- ggplot(df.div.exp.simp.se,aes(x=Microbe_treatment,y=InvSimpson,fill=Microbe_treatment,alpha=Food_type))+
   #geom_point(data=df.all.div.nocon.noday20.noahk,alpha=0.5,position=position_jitterdodge(0.9))+
-  #ggtitle("Experiment samples")+
+  ggtitle("Experiment samples")+
   geom_bar(stat="identity",position="dodge",color="black")+
   geom_errorbar(aes(ymin=InvSimpson-se,ymax=InvSimpson+se),position=position_dodge(0.9),width=0.5,color="black")+
   #geom_point(position=position_dodge(0.5),color="black",size=2)+
   #facet_grid(Sample_type~Food_type)+
-  facet_wrap(~Food_type,scales="free_x")+
-  #ylim(0,65)+
-  scale_alpha_manual(values=c(1,0.6),name="Sample type",labels=c("Larvae","Mesocosm water"))+
+  facet_wrap(~Sample_type,scales="free_x")+
+  ylim(0,15)+
+  scale_alpha_manual(values=c(1,0.6),name="Diet",labels=c("Standard","Bamboo"))+
   scale_fill_manual(values=c(new.colors),name="Microbes")+
   #scale_color_manual(values=c("black","grey"))+
   #scale_shape_manual(values=c(24,22),name="Diet")+
@@ -274,54 +275,130 @@ gg.bars.exp.simp <- ggplot(df.div.exp.no20.noahk.simp.se,aes(x=Microbe_treatment
   #geom_text(aes(x=1,y=29),label="Mosq.",color="#D83706")+
   #geom_text(aes(x=1,y=73),label="Env.",color="#3B9FFD")+
   #geom_text(aes(x=5,y=5),label="E.coli",color="gray60")+
-  ylab("Simpson's (inv.)")+
-  xlab("Microbes")+
+  ylab("")+
+  xlab("")+
   #xlim(-1,6)+
   guides(fill="none",color="none")+
   theme_cowplot()+
-  theme(axis.text.x=element_text(angle=45,hjust=1),plot.margin = unit(c(1,1,0,0), "lines"))
+  theme(axis.text.x=element_text(angle=45,hjust=1))#+
+  #theme(axis.text.x=element_text(angle=45,hjust=1),plot.margin = unit(c(1,1,1.4,0), "lines"))
 gg.bars.exp.simp
 
-#ggarrange(gg.bars.stocks.simp,gg.bars.exp.simp,widths=c(0.5,1),labels=c("(a)","(b)"))
+#library("patchwork")
 
-ggarrange(gg.bars.stocks.rich,gg.bars.exp.rich,gg.bars.stocks.simp,gg.bars.exp.simp,widths=c(0.5,1),labels=c("(a)","(b)","(c)","(d)"),common.legend=T,legend="right")
+#gg.bars.stocks.simp + gg.bars.exp.simp
 
-#ggsave("reusum23.alpha.diversity.pdf",width=9,height=8)
-#ggsave("reusum23.alpha.diversity.png",width=9,height=4)
+gg.simpness.all <- ggarrange(gg.bars.stocks.simp,gg.bars.exp.simp,widths=c(0.3,1),labels=c("(a)","(b)"))
+gg.simpness.all
+#ggsave("bamboomesos.simp.png",width=8,height=4)
 ```
 
 # Basic stats
 
+## Richness{.tabset}
+
+### Larvae
+
 ```{r}
-glm.obs.full.nor <- glmmTMB(Observed~Microbe_treatment*Food_type*Sample_type,data=df.div.exp.no20.noahk)
-summary(glm.obs.full)
+df.div.lar <- subset(df.div.exp,Sample_type=="Larvae")
 
-glm.obs.full.poi <- glmmTMB(Observed~Microbe_treatment*Food_type*Sample_type,data=df.div.exp.no20.noahk,family=poisson)
+glm.obs.lar.nor <- glmmTMB(Observed~Microbe_treatment*Food_type+offset(log(lib_size_clean)),data=df.div.lar,dispformula=~Microbe_treatment)
+summary(glm.obs.lar.nor)
+glm.obs.lar.poi <- glmmTMB(Observed~Microbe_treatment*Food_type+offset(log(lib_size_clean)),data=df.div.lar,family=poisson,dispformula=~Microbe_treatment)
+glm.obs.lar.com <- glmmTMB(Observed~Microbe_treatment*Food_type+offset(log(lib_size_clean)),data=df.div.lar,family=compois,dispformula=~Microbe_treatment)
+#summary(glm.obs.lar.com)
+glm.obs.lar.nb1 <- glmmTMB(Observed~Microbe_treatment*Food_type+offset(log(lib_size_clean)),data=df.div.lar,family=nbinom1,dispformula=~Microbe_treatment)
+glm.obs.lar.nb2 <- glmmTMB(Observed~Microbe_treatment*Food_type+offset(log(lib_size_clean)),data=df.div.lar,family=nbinom2,dispformula=~Microbe_treatment)
 
-glm.obs.full.nb1 <- glmmTMB(Observed~Microbe_treatment*Food_type*Sample_type,data=df.div.exp.no20.noahk,family=nbinom1)
+AICtab(glm.obs.lar.nor,glm.obs.lar.poi,glm.obs.lar.com,glm.obs.lar.nb1,glm.obs.lar.nb2)
 
-glm.obs.full.nb2 <- glmmTMB(Observed~Microbe_treatment*Food_type*Sample_type,data=df.div.exp.no20.noahk,family=nbinom2)
+summary(glm.obs.lar.nor)
 
-AICtab(glm.obs.full.nor,glm.obs.full.poi,glm.obs.full.nb1,glm.obs.full.nb2)
-##poisson best
+glm.obs.lar.nor.noint <- update(glm.obs.lar.nor,.~.-(Microbe_treatment:Food_type))
+summary(glm.obs.lar.nor.noint)
 
-##checking variable interactions
-glm.obs.poi.fm <- glmmTMB(Observed~Microbe_treatment*Food_type+Sample_type,data=df.div.exp.no20.noahk,family=poisson)
+anova(glm.obs.lar.nor,glm.obs.lar.nor.noint) #with interaction is better
+##0.003588 **
 
-glm.obs.poi.fs <- glmmTMB(Observed~Microbe_treatment+Food_type*Sample_type,data=df.div.exp.no20.noahk,family=poisson)
+glm.obs.lar.nor.resid <- simulateResiduals(fittedModel = glm.obs.lar.nor, plot = T)
+#qqnorm(resid(glm.obs.lar.nor))
+#qqline(resid(glm.obs.lar.nor))
 
-glm.obs.poi.ms <- glmmTMB(Observed~Microbe_treatment*Sample_type+Food_type,data=df.div.exp.no20.noahk,family=poisson)
+glm.obs.lar.nor.em <- emmeans(glm.obs.lar.nor,~Microbe_treatment:Food_type)
 
-AICtab(glm.obs.full.poi,glm.obs.poi.fm,glm.obs.poi.fs,glm.obs.poi.ms)
-##full model best
+multcomp::cld(glm.obs.lar.nor.em)
+```
 
-##checking sigs
-glm.obs.poi.no3 <- glmmTMB(Observed~Microbe_treatment+Sample_type+Food_type+Microbe_treatment:Food_type+Sample_type:Food_type+Microbe_treatment:Sample_type,data=df.div.exp.no20.noahk,family=poisson)
+### Water
 
-AICtab(glm.obs.poi.no3,glm.obs.full.poi)
+```{r}
+df.div.wat <- subset(df.div.exp,Sample_type=="Water")
 
-anova(glm.obs.poi.no3,glm.obs.full.poi) #ns
+glm.obs.wat.nor <- glmmTMB(Observed~Microbe_treatment*Food_type+offset(log(lib_size_clean)),data=df.div.wat,dispformula=~Microbe_treatment)
+summary(glm.obs.wat.nor)
+glm.obs.wat.poi <- glmmTMB(Observed~Microbe_treatment*Food_type+offset(log(lib_size_clean)),data=df.div.wat,family=poisson,dispformula=~Microbe_treatment)
+glm.obs.wat.com <- glmmTMB(Observed~Microbe_treatment*Food_type+offset(log(lib_size_clean)),data=df.div.wat,family=compois,dispformula=~Microbe_treatment)
+#summary(glm.obs.wat.com)
+glm.obs.wat.nb1 <- glmmTMB(Observed~Microbe_treatment*Food_type+offset(log(lib_size_clean)),data=df.div.wat,family=nbinom1,dispformula=~Microbe_treatment)
+#summary(glm.obs.wat.nb1)
+glm.obs.wat.nb2 <- glmmTMB(Observed~Microbe_treatment*Food_type+offset(log(lib_size_clean)),data=df.div.wat,family=nbinom2,dispformula=~Microbe_treatment)
 
+AICtab(glm.obs.wat.nor,glm.obs.wat.poi,glm.obs.wat.com,glm.obs.wat.nb1,glm.obs.wat.nb2)
+#summary(glm.obs.wat.nor)
+
+glm.obs.wat.nor.noint <- update(glm.obs.wat.nor,.~.-(Microbe_treatment:Food_type))
+summary(glm.obs.wat.nor.noint)
+
+anova(glm.obs.wat.nor,glm.obs.wat.nor.noint) #with interaction is better
+##2.2e-16 ***
+```
+
+## Simpson's
+
+### Larvae
+
+```{r}
+glm.simp.lar.nor <- glmmTMB(InvSimpson~Microbe_treatment*Food_type,data=df.div.lar)
+summary(glm.simp.lar.nor)
+
+#AICtab(glm.simp.lar.nor,glm.simp.lar.poi,glm.simp.lar.com,glm.simp.lar.nb1,glm.simp.lar.nb2)
+
+glm.simp.lar.nor.noint <- update(glm.simp.lar.nor,.~.-(Microbe_treatment:Food_type))
+summary(glm.simp.lar.nor.noint)
+
+anova(glm.simp.lar.nor,glm.simp.lar.nor.noint) #with interaction is better
+##0.00761 **
+
+glm.simp.lar.nor.resid <- simulateResiduals(fittedModel = glm.simp.lar.nor, plot = T)
+#qqnorm(resid(glm.simp.lar.nor))
+#qqline(resid(glm.simp.lar.nor))
+
+glm.simp.lar.nor.em <- emmeans(glm.simp.lar.nor,~Microbe_treatment:Food_type)
+
+multcomp::cld(glm.simp.lar.nor.em)
+```
+
+### Water
+
+```{r}
+glm.simp.wat.nor <- glmmTMB(InvSimpson~Microbe_treatment*Food_type,data=df.div.wat)
+summary(glm.simp.wat.nor)
+
+#AICtab(glm.simp.wat.nor,glm.simp.wat.poi,glm.simp.wat.com,glm.simp.wat.nb1,glm.simp.wat.nb2)
+
+glm.simp.wat.nor.noint <- update(glm.simp.wat.nor,.~.-(Microbe_treatment:Food_type))
+summary(glm.simp.wat.nor.noint)
+
+anova(glm.simp.wat.nor,glm.simp.wat.nor.noint) #with interaction is better
+##0.01795 *
+
+glm.simp.wat.nor.resid <- simulateResiduals(fittedModel = glm.simp.wat.nor, plot = T)
+#qqnorm(resid(glm.simp.wat.nor))
+#qqline(resid(glm.simp.wat.nor))
+
+glm.simp.wat.nor.em <- emmeans(glm.simp.wat.nor,~Microbe_treatment:Food_type)
+
+multcomp::cld(glm.simp.wat.nor.em)
 ```
 
 # Correlations by mesocosm

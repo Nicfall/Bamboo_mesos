@@ -1,5 +1,5 @@
 ---
-title: "SSU real script"
+title: "Bamboo mesos_fungi analysis"
 date: "`r Sys.Date()`"
 output:
  rmarkdown::html_document:
@@ -164,6 +164,9 @@ taxa_multi_sample <- names(sample_counts_per_taxon[sample_counts_per_taxon > 1])
 # Filter the original object
 ps.nosing <- prune_taxa(taxa_multi_sample, ps.fin)
 ps.nosing
+
+otu.nosing <- data.frame(ps.nosing@otu_table)
+#write.csv(otu.nosing,file="otutab.nosingletons.filtered.csv")
 ```
 
 ## Trimming <0.05% abundance per sample 
@@ -197,11 +200,11 @@ ps.fin.trim1
 ps.fin.trim <- prune_taxa(taxa_sums(ps.fin.trim1)!=0,ps.fin.trim1)
 ps.fin.trim
 ##removing missing samples
-# ps.fin.trim <- prune_samples(sample_sums(ps.fin.trim2)!=0,ps.fin.trim2)
-# ps.fin.trim
+#ps.fin.trim <- prune_samples(sample_sums(ps.fin.trim2)!=0,ps.fin.trim2)
+#ps.fin.trim
 ##52 taxa, 101 samples
 ##saving counts table for filtered read counts
-otu.trim.fin <- data.frame(ps.fin.trim@otu_table)
+#otu.trim.fin <- data.frame(ps.fin.trim@otu_table)
 #write.csv(otu.trim.fin,file="otutab.filtered.csv")
 ```
 
@@ -210,6 +213,7 @@ otu.trim.fin <- data.frame(ps.fin.trim@otu_table)
 ## E. coli investigations - stock
 
 ```{r}
+#ps.stocks1 <- subset_samples(ps.nosing,Mesocosm_type=="Microbe stock")
 ps.stocks1 <- subset_samples(ps.fin.trim,Mesocosm_type=="Microbe stock")
 ps.stocks <- prune_taxa(taxa_sums(ps.stocks1) > 0, ps.stocks1)
 ps.stocks
@@ -237,7 +241,7 @@ ps.stocks@otu_table
 # ##same
 ```
 
-## Samples
+## E. coli samples
 
 ```{r}
 ps.eco1 <- subset_samples(ps.fin.trim, Microbe_treatment=="ECO")
@@ -254,11 +258,28 @@ plot_bar(ps.fin.trim)+
 
 ## Controls
 
-```{r}
-ps.no20 <- subset_samples(ps.final.clean2, Exp_day!=20)
-ps.mem2 <- subset_samples(ps.no20, Microbe_treatment %in% c("MMO", "EMO", "MEM"))
-ps.mem2
+- Hatch_flask
+- Lab_water
 
+```{r}
+ps.trim.ctrls1 <- subset_samples(ps.fin.trim,Mesocosm_treatment=="Hatch_flask" | Mesocosm_treatment=="Lab_water")
+ps.trim.ctrls1
+
+ps.trim.ctrls <- prune_taxa(taxa_sums(ps.trim.ctrls1)!=0,ps.trim.ctrls1)
+ps.trim.ctrls
+
+plot_bar(ps.trim.ctrls,fill="asv.ids")+
+  facet_wrap(~Genus,scales="free")
+##take with caution:
+##ASV0005 [Saccharomyces]
+##ASV010 [Malassezia]
+##ASV034 [Malassezia]
+##ASV012 [Family_Phaseosphaeriaceae]
+```
+
+## Experiment samples
+
+```{r}
 #install.packages("remotes")
 #remotes::install_github("KarstensLab/microshades", dependencies = TRUE)
 #remotes::install_github("mikemc/speedyseq")
