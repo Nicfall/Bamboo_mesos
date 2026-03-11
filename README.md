@@ -1,6 +1,6 @@
 # Bamboo_mesos
 
-R scripts for the analyses in Kriefall et al. (submitting for publication soon)
+R scripts for the analyses in Kriefall et al. (submitting for publication spring 2026)
 
 ## Bioinformatics & Analysis
 
